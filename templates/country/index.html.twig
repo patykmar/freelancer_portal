@@ -1,0 +1,84 @@
+{% extends "base.html.twig" %}
+{% block title %}Státy{% endblock %}
+{% block body %}
+
+    <div class="panel panel-info col-sm-12">
+        <div class="panel-heading">
+            <h3 class="col-12">Seznam státu</h3>
+        </div>
+
+        {% if pagination is not empty %}
+        {# total items count #}
+        <div class="count">
+            Počet vozidel: <span class="font-weight-bold">{{ pagination.getTotalItemCount }}</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-light table-hover">
+                <thead>
+                <tr>
+                    {# sorting of properties based on query components #}
+                    <th class="text-center text-nowrap {% if pagination.isSorted('c.id') %}sorted{% endif %}">
+                        <span class="pr-3">{{ knp_pagination_sortable(pagination, 'ID', 'c.id') }}</span>
+                    </th>
+                    <th class="text-center {% if pagination.isSorted('c.name') %}sorted{% endif %}">
+                        <span class="fas fa-sticky-note"></span>
+                        {{ knp_pagination_sortable(pagination, 'Jméno', 'c.name') }}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {# table body #}
+                {% for country in pagination %}
+                    <tr>
+                        <td class="text-center align-middle">{{ country.id }}</td>
+                        <td class="text-center align-middle">{{ country.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {# display navigation #}
+            <div class="navigation d-flex justify-content-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteCarModal" tabindex="-1" role="dialog" aria-labelledby="deleteCarModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCarModalLongTitle">Odstranit vozidlo?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Vážně chcete odstranit vozidlo <span class="modal-note font-weight-bold p-1 rounded" style="">Popis</span> (SPZ: <span class="modal-spz font-weight-bold">SPZ</span>)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ne</button>
+                    <a href="" type="button" id="link" class="btn btn-danger">Ano</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#deleteCarModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget);
+            let spz = button.data('spz');
+            let note = button.data('note');
+            let url = button.data('url');
+            let color = button.data('color');
+            let background = button.data('background');
+            let modal = $(this);
+            modal.find('.modal-title').text('Odstranit vozidlo?');
+            modal.find('.modal-note').text(note);
+            modal.find('.modal-spz').text(spz);
+            modal.find('.modal-note').css({"color": color, "background-color": background});
+            modal.find('#link').attr("href", url);
+        });
+    </script>
+
+{% endblock %}
