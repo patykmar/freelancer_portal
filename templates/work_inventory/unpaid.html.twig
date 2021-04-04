@@ -1,0 +1,67 @@
+{# DO THIS: the '!' symbol tells Symfony to extend from the original template #}
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block content %}
+    <div class="content">
+        {# {{ dump(unpaidWorkInventory) }} #}
+
+        <section class="content-header">
+            <div class="d-flex flex-row justify-content-between align-content-center w-100">
+                <div class="content-header-title">
+                    <h1 class="title">
+                        {% block page_title %}Nevyfakturovaná práce{% endblock %}
+                    </h1>
+                </div>
+            </div>
+        </section>
+        <section id="main" class="content-body">
+
+            <div class="content-panel">
+                <div class="content-panel-body with-rounded-top with-min-h-250 without-padding ">
+                    <table class="table table-striped table-light table-hover">
+                        <thead>
+                        <tr>
+                            {# sorting of properties based on query components #}
+                            <th class="text-primary">
+                                <span class="fas fa-building"> Společnost</span>
+                            </th>
+                            <th class="text-primary text-nowrap">
+                                <span class="fas fa-sticky-note"> Tarif</span>
+                            </th>
+                            <th class="text-primary text-nowrap">
+                                <span class="fas fa-user-clock"> Odpracováno</span>
+                            </th>
+                            <th class="text-right" dir="ltr">
+                                <span class="fas fa-tag"> Cena za jednotku</span>
+                            </th>
+                            <th class="text-right" dir="ltr">
+                                <span class="fab fa-creative-commons-nc-eu"> Cena celkem</span>
+                            </th>
+                            <th dir="ltr">
+                                <span class="sr-only">Actions</span>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {# table body #}
+                        {% for item in unpaidWorkInventory %}
+                            <tr>
+                                <td class="text- field-text" dir="ltr"><span title="{{ item[0].company }}">{{ item[0].company }}</span></td>
+                                <td class="text-nowrap align-middle" dir="ltr">{{ item[0].tariff }}</td>
+                                <td class="text-nowrap align-middle" dir="ltr">{{ item.workDurationTotal }} hod.</td>
+                                <td class="text-right field-money" dir="ltr">{{ item.tariffPrice }} Kč</td>
+                                <td class="text-right field-money" dir="ltr">{{ item.totalPrice }} Kč</td>
+                                <td class="actions">
+                                    <a class="action-edit" href="{{ path('work_inventory_generate_invoice_by_company', {'companyId': item[0].company.getId()}) }}" title="Vytvoř fakturu pro společnost">Vytvoř fakturu</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock content %}

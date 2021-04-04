@@ -6,6 +6,7 @@ use App\Repository\InvoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=InvoiceRepository::class)
@@ -32,12 +33,14 @@ class Invoice
     private $subscriber;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity=PaymentType::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $payment_type;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="smallint")
      */
     private $due;
@@ -64,7 +67,7 @@ class Invoice
     private $user_created;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, unique=true)
      */
     private $vs;
 
@@ -74,13 +77,19 @@ class Invoice
     private $ks;
 
     /**
-     * @ORM\OneToMany(targetEntity=InvoiceItem::class, mappedBy="invoice", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=InvoiceItem::class, mappedBy="invoice", orphanRemoval=true, cascade={"persist"})
      */
     private $invoiceItems;
+
+    /**
+     * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="invoice")
+     */
+    private $workInventories;
 
     public function __construct()
     {
         $this->invoiceItems = new ArrayCollection();
+        $this->workInventories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -232,6 +241,36 @@ class Invoice
             // set the owning side to null (unless already changed)
             if ($invoiceItem->getInvoice() === $this) {
                 $invoiceItem->setInvoice(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WorkInventory[]
+     */
+    public function getWorkInventories(): Collection
+    {
+        return $this->workInventories;
+    }
+
+    public function addWorkInventory(WorkInventory $workInventory): self
+    {
+        if (!$this->workInventories->contains($workInventory)) {
+            $this->workInventories[] = $workInventory;
+            $workInventory->setInvoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorkInventory(WorkInventory $workInventory): self
+    {
+        if ($this->workInventories->removeElement($workInventory)) {
+            // set the owning side to null (unless already changed)
+            if ($workInventory->getInvoice() === $this) {
+                $workInventory->setInvoice(null);
             }
         }
 

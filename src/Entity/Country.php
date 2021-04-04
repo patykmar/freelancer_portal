@@ -38,4 +38,12 @@ class Country
 
         return $this;
     }
+
+    /**
+     * @return string name of country
+     */
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 }

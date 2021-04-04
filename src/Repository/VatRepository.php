@@ -19,6 +19,22 @@ class VatRepository extends ServiceEntityRepository
         parent::__construct($registry, Vat::class);
     }
 
+    /** Set is_default to FALSE for each rows */
+    public function unsetDefaultAll(): bool
+    {
+
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "UPDATE vat SET is_default = :param";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['param' => false]);
+
+        return true;
+        //$qb = $this->createQueryBuilder
+
+    }
+
     // /**
     //  * @return Vat[] Returns an array of Vat objects
     //  */

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CompanyRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -52,6 +54,11 @@ class Company
      */
     private $street;
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -77,6 +84,17 @@ class Company
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $iban;
+
+    /**
+     * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="company", orphanRemoval=true)
+     */
+    private $workInventories;
+
+    public function __construct()
+    {
+        $this->setCreated(new \DateTime());
+        $this->workInventories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -223,6 +241,36 @@ class Company
     public function setIban(?string $iban): self
     {
         $this->iban = $iban;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WorkInventory[]
+     */
+    public function getWorkInventories(): Collection
+    {
+        return $this->workInventories;
+    }
+
+    public function addWorkInventory(WorkInventory $workInventory): self
+    {
+        if (!$this->workInventories->contains($workInventory)) {
+            $this->workInventories[] = $workInventory;
+            $workInventory->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWorkInventory(WorkInventory $workInventory): self
+    {
+        if ($this->workInventories->removeElement($workInventory)) {
+            // set the owning side to null (unless already changed)
+            if ($workInventory->getCompany() === $this) {
+                $workInventory->setCompany(null);
+            }
+        }
 
         return $this;
     }
