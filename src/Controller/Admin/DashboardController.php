@@ -60,6 +60,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud("Firmy", 'fas fa-building', Company::class);
         yield MenuItem::linkToCrud("Platební metody", 'fas fa-wallet', PaymentType::class);
         yield MenuItem::linkToCrud("Země", 'fas fa-globe-europe', Country::class);
+        yield MenuItem::linkToCrud('DPH', 'fas fa-hand-holding-usd', Vat::class);
 
 
 
