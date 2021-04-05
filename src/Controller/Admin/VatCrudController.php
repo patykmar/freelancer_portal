@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Vat;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -36,5 +37,20 @@ class VatCrudController extends AbstractCrudController
             BooleanField::new('isDefault', 'Výchozí'),
         ];
     }
+
+    /**
+     * @param Crud $crud
+     * @return Crud
+     */
+    public function configureCrud(Crud $crud): Crud
+    {
+
+        return $crud
+            ->setPageTitle(Crud::PAGE_INDEX, 'DPH')
+            ->setPageTitle(Crud::PAGE_NEW, 'Přidej nový záznam')
+            ->setPageTitle(Crud::PAGE_EDIT, 'Edit DPH')
+            ;
+    }
+
 
 }
