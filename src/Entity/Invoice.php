@@ -67,7 +67,7 @@ class Invoice
     private $user_created;
 
     /**
-     * @ORM\Column(type="string", length=20, unique=true)
+     * @ORM\Column(type="string", length=20, unique=true, nullable=true)
      */
     private $vs;
 
@@ -198,8 +198,9 @@ class Invoice
         return $this->vs;
     }
 
-    public function setVs(string $vs): self
+    public function setVs(?string $vs): self
     {
+
         $this->vs = $vs;
 
         return $this;

@@ -19,6 +19,14 @@ class CompanyRepository extends ServiceEntityRepository
         parent::__construct($registry, Company::class);
     }
 
+    /**
+     * @return int|mixed|string
+     */
+    public function getSupplier()
+    {
+        return $this->findOneBy(array('isSupplier' => true));
+    }
+
     // /**
     //  * @return Company[] Returns an array of Company objects
     //  */

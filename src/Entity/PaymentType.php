@@ -22,6 +22,11 @@ class PaymentType
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isDefault;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -42,5 +47,17 @@ class PaymentType
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function getIsDefault(): ?bool
+    {
+        return $this->isDefault;
+    }
+
+    public function setIsDefault(?bool $isDefault): self
+    {
+        $this->isDefault = $isDefault;
+
+        return $this;
     }
 }

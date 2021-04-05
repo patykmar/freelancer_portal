@@ -5,7 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     invoiceDueDaysDefault: 14 # How many days will be calculate invoice due day: today + %invoiceDueDaysDefault%
-
+    defaultVatPercent: 0 # default percent of VAT
+    invoiceKsDefault: 308 # Default value of KS
 
 services:
     # default configuration for services in *this* file

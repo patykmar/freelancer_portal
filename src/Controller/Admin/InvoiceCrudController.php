@@ -53,12 +53,10 @@ class InvoiceCrudController extends AbstractCrudController
                 return $returnArray;
                 break;
             case Crud::PAGE_DETAIL:
-                $returnArray[] = [
-                    DateTimeField::new('due_date'),
-                    CollectionField::new('invoiceItems')
+                $returnArray[] = DateTimeField::new('due_date');
+                $returnArray[] = CollectionField::new('invoiceItems')
                         ->setEntryType(InvoiceItemFormType::class)
-                        ->setTemplatePath('admin/invoice/detail.html.twig')
-                ];
+                        ->setTemplatePath('admin/invoice/detail.html.twig');
                 return $returnArray;
                 break;
             default:

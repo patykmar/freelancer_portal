@@ -19,6 +19,11 @@ class PaymentTypeRepository extends ServiceEntityRepository
         parent::__construct($registry, PaymentType::class);
     }
 
+    public function getDefaultType()
+    {
+        return $this->findOneBy(array('isDefault' => true));
+    }
+
     // /**
     //  * @return PaymentType[] Returns an array of PaymentType objects
     //  */

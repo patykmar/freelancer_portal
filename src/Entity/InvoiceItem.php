@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class InvoiceItem
 {
+    //TODO: pridej referenci na tabulku VAT
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -42,7 +43,7 @@ class InvoiceItem
 
     /**
      * @Assert\Positive()
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="float")
      */
     private $unit_count;
 
@@ -59,22 +60,22 @@ class InvoiceItem
      *     )
      * @ORM\Column(type="smallint")
      */
-    private $discount;
+    private $discount = 0;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private $margin;
+    private $margin = 0;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $discount_total;
+    private $discount_total = 0.0;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $margin_total;
+    private $margin_total = 0.0;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
@@ -115,7 +116,6 @@ class InvoiceItem
         return $this;
     }
 
-
     public function getName(): ?string
     {
         return $this->name;
@@ -128,12 +128,12 @@ class InvoiceItem
         return $this;
     }
 
-    public function getUnitCount(): ?int
+    public function getUnitCount(): ?float
     {
         return $this->unit_count;
     }
 
-    public function setUnitCount(int $unit_count): self
+    public function setUnitCount(float $unit_count): self
     {
         $this->unit_count = $unit_count;
 

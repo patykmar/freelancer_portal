@@ -7,7 +7,6 @@ use App\Entity\WorkInventory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method WorkInventory|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,20 +23,22 @@ class WorkInventoryRepository extends ServiceEntityRepository
 
     /**
      * @param int $companyId
-     * @return QueryBuilder
+     * @return array
      */
-    public function getAllUnpaidWorkItemByCompanyId(int $companyId): QueryBuilder
+    public function getAllUnpaidWorkItemByCompanyId(int $companyId): array
     {
         return $this->createQueryBuilder('w')
             ->where('w.company = :compId')
-            ->setParameter('compId', $companyId);
+            ->setParameter('compId', $companyId)
+            ->getQuery()
+            ->execute();
     }
 
     /**
      * Return unpaid work items
-     * @return QueryBuilder
+     * @return array
      */
-    public function getAllUnpaidWorkItemGroupByCompany(): QueryBuilder
+    public function getAllUnpaidWorkItemGroupByCompany(): array
     {
         return $this->createQueryBuilder('w')
             ->addSelect('sum(w.work_duration) as workDurationTotal')
@@ -45,7 +46,9 @@ class WorkInventoryRepository extends ServiceEntityRepository
             ->addSelect('(sum(w.work_duration) * t.price) as totalPrice')
             ->where('w.invoice is null')
             ->innerJoin(Tariff::class,'t',Join::WITH,'w.tariff = t.id')
-            ->groupBy('w.company, w.tariff');
+            ->groupBy('w.company, w.tariff')
+            ->getQuery()
+            ->execute();
     }
 
 

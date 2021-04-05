@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Security;
 
 class WorkInventorySubscriber implements EventSubscriberInterface
 {
+    private const DAY_HOURS = 24;
+
     /**
      * @var Security
      */
@@ -101,7 +103,7 @@ class WorkInventorySubscriber implements EventSubscriberInterface
         $durationInHours += $duration->h;
 
         // handle days
-        $durationInHours += $duration->days * 24;
+        $durationInHours += $duration->days * self::DAY_HOURS;
 
 //        dump($durationInHours);
 //        dd($duration);

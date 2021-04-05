@@ -90,6 +90,11 @@ class Company
      */
     private $workInventories;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isSupplier;
+
     public function __construct()
     {
         $this->setCreated(new \DateTime());
@@ -271,6 +276,18 @@ class Company
                 $workInventory->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsSupplier(): ?bool
+    {
+        return $this->isSupplier;
+    }
+
+    public function setIsSupplier(?bool $isSupplier): self
+    {
+        $this->isSupplier = $isSupplier;
 
         return $this;
     }
