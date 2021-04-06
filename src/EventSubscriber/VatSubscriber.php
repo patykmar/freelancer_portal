@@ -6,6 +6,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\Vat;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,6 +21,7 @@ class VatSubscriber implements EventSubscriberInterface
 
     /**
      * VatSubscriber constructor.
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -29,11 +31,12 @@ class VatSubscriber implements EventSubscriberInterface
     /**
      * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             BeforeEntityUpdatedEvent::class => ['vatBeforeUpdated'],
-            BeforeEntityPersistedEvent::class => ['vatBeforePersisted']
+            BeforeEntityPersistedEvent::class => ['vatBeforePersisted'],
+            BeforeEntityDeletedEvent::class => ['vatBeforeDeleted']
         ];
     }
 
@@ -62,6 +65,17 @@ class VatSubscriber implements EventSubscriberInterface
 
         unset($entity);
     }
+
+    public function vatBeforeDeleted(BeforeEntityDeletedEvent $event)
+    {
+        $entity = $event->getEntityInstance();
+        if ($entity instanceof Vat) {
+            //TODO: osetri mazani vychozi hodnoty
+            dd($entity);
+        }
+        unset($entity);
+    }
+
 
     /**
      * Set isDefault to false for each rows
