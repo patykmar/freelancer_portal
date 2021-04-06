@@ -17,3 +17,6 @@
 
 ### php storm ###
 .idea/
+
+### VS code ###
+.vscode/
