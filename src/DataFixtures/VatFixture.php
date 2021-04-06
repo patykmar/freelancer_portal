@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 class VatFixture extends Fixture
 {
     public const NO_VAT = 'no-vat';
-    public  const VAT_21 = 'vat-21';
+    public const VAT_21 = 'vat-21';
 
     public function load(ObjectManager $manager)
     {
@@ -20,7 +20,7 @@ class VatFixture extends Fixture
             ->setIsDefault(TRUE);
 
         $vat21 = new Vat();
-        $vat21->setName("21%")
+        $vat21->setName("DPH 21%")
             ->setMultiplier(1.21)
             ->setPercent(21)
             ->setIsDefault(FALSE);

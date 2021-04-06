@@ -17,9 +17,11 @@ class PaymentTypeFixture extends Fixture
     {
         $prevod = new PaymentType();
         $prevod->setName("převodním příkazem");
+        $prevod->setIsDefault(true);
 
         $hotove = new PaymentType();
         $hotove->setName("hotově");
+        $hotove->setIsDefault(false);
 
         // díky tomuto se pak dostaneme k těmto uživatelům z jiných fixtur
         $this->addReference(self::PT_PREVOD, $prevod);
