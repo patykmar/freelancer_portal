@@ -24,6 +24,22 @@ class PaymentTypeRepository extends ServiceEntityRepository
         return $this->findOneBy(array('isDefault' => true));
     }
 
+    /** Set is_default to FALSE for each rows */
+    public function unsetDefaultAll(): bool
+    {
+
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "UPDATE payment_type SET is_default = :param";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['param' => false]);
+
+        return true;
+        //$qb = $this->createQueryBuilder
+
+    }
+
     // /**
     //  * @return PaymentType[] Returns an array of PaymentType objects
     //  */

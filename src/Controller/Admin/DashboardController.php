@@ -7,7 +7,6 @@ use App\Entity\Country;
 use App\Entity\Invoice;
 use App\Entity\PaymentType;
 use App\Entity\Tariff;
-use App\Entity\Unit;
 use App\Entity\User;
 use App\Entity\Vat;
 use App\Entity\WorkInventory;
@@ -15,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -84,7 +84,9 @@ class DashboardController extends AbstractDashboardController
         return [
             // native date picker format cannot be changed
             // Uses native HTML5 widgets when rendering this field in forms.
-            #DateTimeField::new('beginsAt')->setFormat('Y-MM-dd HH:mm')->renderAsNativeWidget(),
+            DateTimeField::new('beginsAt')
+                ->setFormat('Y-MM-dd HH:mm')
+                ->renderAsNativeWidget(),
         ];
 
     }
