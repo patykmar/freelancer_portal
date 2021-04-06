@@ -10,6 +10,9 @@ class PaymentTypeCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return PaymentType::class;
+
+        //TODO: update PaymentTypeCrudController
+        //TODO: create new Subscriber, when handle default value changing
     }
 
     /*
