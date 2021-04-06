@@ -1,0 +1,46 @@
+{{ dump('test - invoiceItemForm.html.twig') }}
+
+{#
+{% set formErrors = form.vars.errors.form.getErrors(true) %}
+
+{{ form_start(form) }}
+#}
+{# výpis errorů: #}{#
+{% if formErrors|length %}
+    <div class="errors">
+        {% for error in formErrors %}
+            <div class="alert alert-danger">{{ error.message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{{ form_label(form.name) }}
+{{ form_widget(form.name) }}
+{{ form_help(form.name) }}
+
+{{ form_label(form.unit_count) }}
+{{ form_widget(form.unit_count) }}
+{{ form_help(form.unit_count) }}
+
+{{ form_label(form.price) }}
+{{ form_widget(form.price) }}
+{{ form_help(form.price) }}
+
+{{ form_label(form.discount) }}
+{{ form_widget(form.discount) }}
+{{ form_help(form.discount) }}
+
+{{ form_label(form.margin) }}
+{{ form_widget(form.margin) }}
+{{ form_help(form.margin) }}
+
+{{ form_label(form.vat_id) }}
+{{ form_widget(form.vat_id) }}
+{{ form_help(form.vat_id) }}
+
+{{ form_label(form.unit_id) }}
+{{ form_widget(form.unit_id) }}
+{{ form_help(form.unit_id) }}
+
+{{ form_end(form) }}
+#}

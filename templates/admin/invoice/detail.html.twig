@@ -1,0 +1,37 @@
+{# {{ dump() }} #}
+{{ dump(field.value) }}
+
+
+<table class="table datagrid with-rounded-top ">
+    <thead>
+    <tr>
+        <th class="  text-" dir="ltr">Položka</th>
+        <th class="  text-" dir="ltr">Cena</th>
+        <th class="  text-" dir="ltr">DPH</th>
+        <th class="  text-" dir="ltr">Sleva</th>
+        <th class="  text-" dir="ltr">Marže</th>
+        <th class="  text-" dir="ltr">Počet jednotek</th>
+        <th class="  text-" dir="ltr">Celková cena</th>
+        <th dir="ltr">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for invoiceItem in field.value %}
+        <tr data-id="{{ invoiceItem.id }}">
+            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.name }}">{{ invoiceItem.name }}</span></td>
+            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.price }}">{{ invoiceItem.price }}</span></td>
+            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.vat }}">{{ invoiceItem.vat }}</span></td>
+            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.discount }}">{{ invoiceItem.discount }}</span></td>
+            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.margin }}">{{ invoiceItem.margin }}</span></td>
+            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.unitCount }}">{{ invoiceItem.unitCount }}</span></td>
+            <td class=" text- field-text" dir="ltr"><span title="{{ (invoiceItem.price) }}">{{ (invoiceItem.price) }}</span></td>
+            <td class="actions">
+{#                <a class=" action-detail" href="#">Show</a>#}
+{#                <a class=" action-workItemsByCompany" href="#"><i class="action-icon fa fa-envelope"></i> Work items: </a>#}
+{#                <a class=" action-edit" href="#">Edit</a>#}
+{#                <a class=" action-delete text-danger" href="#" formaction="#" data-toggle="modal" data-target="#modal-delete">Delete</a>#}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

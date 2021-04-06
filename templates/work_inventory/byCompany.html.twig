@@ -1,0 +1,30 @@
+{# DO THIS: the '!' symbol tells Symfony to extend from the original template #}
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block content %}
+<table class="table table-striped table-light table-hover">
+    <thead>
+    <tr>
+        {# sorting of properties based on query components #}
+        <th class="text-center text-nowrap">
+            <span class="pr-3">ID</span>
+        </th>
+        <th class="text-center">Popis</th>
+        <th class="text-primary text-nowrap">
+            <span class="fas fa-sticky-note">Tarif</span>
+        </th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {# table body #}
+    {% for item in workItemsByCompany %}
+        <tr>
+            <td class="text-center align-middle">{{ item.id }}</td>
+            <td class="text-center align-middle">{{ item.describe }}</td>
+            <td class="text-nowrap align-middle">{{ item.tarif }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

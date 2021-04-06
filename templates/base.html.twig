@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <!-- scaling / responzivita -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Login{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+              integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+              integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+              crossorigin="anonymous">
+    {% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+{% block navbar %}
+    {# BOOTSTRAP 4 NAVBAR #}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <a class="navbar-brand abs" href="/">Fakturační systém</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="collapsingNavbar">
+                {# LEFT ALIGN NAVBAR #}
+                <ul class="navbar-nav">
+                    {# REZERVACE #}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown_menu_1" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false"><span class="fas fa-clipboard-list"></span>
+                            Rezervace</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown_menu_1">
+                            <a class="dropdown-item" href="#"><span
+                                        class="fas fa-plus-circle"></span> Rezervovat</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><span
+                                        class="fas fa-clipboard-list"></span> Mé rezervace</a>
+                            <a class="dropdown-item" href="#"><span
+                                        class="fas fa-clipboard-list"></span> Všechny rezervace</a>
+                        </div>
+                    </li>
+                    {# VOZIDLA #}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown_menu_2" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false"><span class="fas fa-car-alt"></span> Vozidla</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown_menu_2">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a class="dropdown-item" href="#"><span
+                                            class="fas fa-plus-circle"></span> Přidat vozidlo</a>
+                                <div class="dropdown-divider"></div> {# ZDE PŘIDÁME DIVIDER #}
+                            {% endif %}
+                            <a class="dropdown-item" href="#"><span class="fas fa-list-alt"></span>
+                                Seznam vozidel</a>
+                        </div>
+                    </li>
+                    {# SPRÁVA UŽIVATELŮ #}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown_menu_3" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false"><span class="fas fa-user-edit"></span>Správa
+                                uživatelů</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown_menu_3">
+                                <a class="dropdown-item" href="#"><span class="fas fa-plus-circle"></span> Přidat
+                                    uzivatele</a>
+                                <a class="dropdown-item" href="#"><span class="fas fa-plus"></span>
+                                    Registrace</a>
+                                <a class="dropdown-item" href="#"><span
+                                            class="fas fa-list-alt"></span> Seznam uzivatelu</a>
+                            </div>
+
+                        </li>
+                    {% endif %}
+                </ul>
+                {# RIGHT ALIGN NAVBAR #}
+                <ul class="navbar-nav ml-auto">
+                    <a class="nav-link logged_in_as">Přihlášen jako: {{ app.user.email }}</a>
+                    <li class="nav-item dropdown order-3">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown_menu_4" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false"> <span class="fas fa-user"></span> Účet</a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_menu_3">
+                            <a class="dropdown-item" href="#"><span class="fas fa-pencil-alt"></span> Změnit účet</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ logout_path() }}"><span
+                                        class="fas fa-sign-out-alt"></span> Odhlásit se</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        {# # KONEC JEN PRO PŘIHLAŠENE KONEC #}
+    {% endif %}
+
+{% endblock %}
+
+{% block container %}
+    <div class="container card text-dark bg-light mb-3 mt-2 pt-5 pb-4">
+        <div class="row">
+            <div class="col">
+                {# flashbags - chybové hlášky, success, danger, warnings..; zkrácený zápis #}
+                <div class="alerts d-print-none">
+                    {% for type, flash_messages in app.session.flashBag.all %}
+                        {% for msg in flash_messages %}
+                            <div class="alert alert-{{ type }}">
+                                {{ msg }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+
+                {% block body %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {# Zobrazí(zvýrazní) v navigační liště, kde se právě nacházíme #}
+    <script type="text/javascript">
+        $(function () {
+            $('nav a[href^="/' + location.pathname.split("/")[1] + '"]').addClass('active');
+        });
+    </script>
+    <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('build/runtime.js') }}"></script>
+{% endblock %}
+</body>
+</html>
