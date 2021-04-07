@@ -17,10 +17,7 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-### php storm ###
+### IDEs local files ###
 .idea/
-
-### VS code ###
 .vscode/
 /nbproject/
-

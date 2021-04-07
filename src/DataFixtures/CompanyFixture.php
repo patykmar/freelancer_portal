@@ -7,6 +7,7 @@ use App\Entity\Country;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use \DateTime;
 
 class CompanyFixture extends Fixture implements DependentFixtureInterface
 {
@@ -27,7 +28,8 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCity("Opava - Kateřinky ")
             ->setZipCode("747 05")
             ->setAccountNumber("670100-2209225998/6210")
-            ->setCreated(new \DateTime("2014-01-13 22:17:20"))
+            ->setCreated(new DateTime("2014-01-13 22:17:20"))
+            ->setIsSupplier(true)
             ->setCountry($countryCz);
 
         $company2 = new Company();
@@ -38,7 +40,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setStreet("Olomoucká 8")
             ->setCity("Opava - Předměstí")
             ->setZipCode("746 01")
-            ->setCreated(new \DateTime("2014-01-13 22:24:39"))
+            ->setCreated(new DateTime("2014-01-13 22:24:39"))
             ->setCountry($countryCz);
 
         $company3 = new Company();
@@ -49,7 +51,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setStreet("U cukrovaru 12")
             ->setCity("Opava - Kateřinky")
             ->setZipCode("747 05")
-            ->setCreated(new \DateTime("2014-01-13 22:27:52"))
+            ->setCreated(new DateTime("2014-01-13 22:27:52"))
             ->setCountry($countryCz);
 
         $company4 = new Company();
@@ -60,7 +62,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setStreet("Rooseveltova 1940/33")
             ->setCity("Opava")
             ->setZipCode("746 01")
-            ->setCreated(new \DateTime("2014-01-13 22:31:07"))
+            ->setCreated(new DateTime("2014-01-13 22:31:07"))
             ->setCountry($countryCz);
 
         $company5 = new Company();
@@ -71,7 +73,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setStreet("8. května 1191/45")
             ->setCity("Rýmařov")
             ->setZipCode("795 01")
-            ->setCreated(new \DateTime("2014-01-13 22:32:26"))
+            ->setCreated(new DateTime("2014-01-13 22:32:26"))
             ->setCountry($countryCz);
 
         $company6 = new Company();
@@ -82,7 +84,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setStreet("Chudenická 1059/30")
             ->setCity("Praha - Hostivař")
             ->setZipCode("102 00")
-            ->setCreated(new \DateTime("2014-02-08 15:05:18"))
+            ->setCreated(new DateTime("2014-02-08 15:05:18"))
             ->setAccountNumber("2400578126/2010")
             ->setCountry($countryCz);
 
@@ -94,7 +96,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setStreet("Nákladní 4")
             ->setCity("Opava")
             ->setZipCode("746 01")
-            ->setCreated(new \DateTime())
+            ->setCreated(new DateTime())
             ->setAccountNumber("256256296/0300")
             ->setCountry($countryCz);
 
@@ -106,7 +108,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setStreet("Olomoucká 134")
             ->setCity("Slavkov u Opavy")
             ->setZipCode("747 57")
-            ->setCreated(new \DateTime())
+            ->setCreated(new DateTime())
             ->setAccountNumber("825242821/0100")
             ->setCountry($countryCz);
 
@@ -117,7 +119,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setStreet("Ratibořská 1148/36")
             ->setCity("Opava - Kateřinky")
             ->setZipCode("747 05")
-            ->setCreated(new \DateTime())
+            ->setCreated(new DateTime())
             ->setAccountNumber("2701577960/2010")
             ->setCountry($countryCz);
 
@@ -130,7 +132,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setStreet("Ratibořská 1148/36")
             ->setCity("Opava - Kateřinky")
             ->setZipCode("747 05")
-            ->setCreated(new \DateTime())
+            ->setCreated(new DateTime())
             ->setAccountNumber("952444821/0100")
             ->setCountry($countryCz);
 
