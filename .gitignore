@@ -24,3 +24,5 @@
 
 ### VS code ###
 .vscode/
+/nbproject/
+
