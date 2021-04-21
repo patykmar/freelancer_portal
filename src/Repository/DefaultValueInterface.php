@@ -8,6 +8,13 @@ namespace App\Repository;
  */
 interface DefaultValueInterface
 {
-   public function unsetDefaultAll(): bool;
-   public function getDefaultEntity();
+    public function unsetDefaultAll(): bool;
+
+    public function getDefaultEntity();
+
+    public function getCount();
+
+    public function findOneRow(int $id);
+
+    public function setIsDefaultById(int $id);
 }
