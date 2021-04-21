@@ -8,8 +8,6 @@ use App\Entity\Invoice;
 use App\Entity\InvoiceItem;
 use App\Entity\PaymentType;
 use App\Entity\WorkInventory;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -89,7 +87,7 @@ class WorkInventoryController extends AbstractController
                 ->getSupplier();
 
             $paymentType = $this->em->getRepository(PaymentType::class)
-                ->getDefaultType();
+                ->getDefaultEntity();
 
 
 //            dump("Last id: ");
