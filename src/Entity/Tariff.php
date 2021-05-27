@@ -33,7 +33,7 @@ class Tariff
     private $price;
 
     /**
-     * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="tarif")
+     * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="tarif", cascade={"persist"})
      */
     private $workInventories;
 
