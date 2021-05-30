@@ -13,7 +13,6 @@ class PaymentTypeCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return PaymentType::class;
-        //TODO: create new Subscriber, when handle default value changing
     }
 
     public function configureFields(string $pageName): iterable
@@ -21,8 +20,14 @@ class PaymentTypeCrudController extends AbstractCrudController
         return [
             IdField::new('id')
                 ->onlyOnIndex(),
-            TextField::new('name', 'Jméno" '),
-            BooleanField::new('isDefault', 'Výchozí ?: ')
+            TextField::new('name', 'Jméno: ')
+                ->onlyOnForms(),
+            TextField::new('name', 'Jméno')
+                ->onlyOnIndex(),
+            BooleanField::new('isDefault', 'Bude výchozí ?')
+                ->onlyOnForms(),
+            BooleanField::new('isDefault', 'Výchozí')
+                ->onlyOnIndex()
         ];
     }
 }
