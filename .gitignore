@@ -9,7 +9,7 @@
 /vendor/
 
 ###< symfony/framework-bundle ###
-
+/migrations/
 
 ###> symfony/phpunit-bridge ###
 .phpunit
@@ -21,3 +21,7 @@
 .idea/
 .vscode/
 /nbproject/
+
+### *.lock files ###
+composer.lock
+symfony.lock
