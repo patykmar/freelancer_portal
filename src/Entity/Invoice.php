@@ -2,23 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\InvoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use \DateTime;
 
 /**
  * @ORM\Entity(repositoryClass=InvoiceRepository::class)
+ * @ApiResource
  */
 class Invoice
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Company::class)
@@ -41,24 +44,24 @@ class Invoice
 
     /**
      * @Assert\NotBlank
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", options={"unsigned":true})
      */
-    private $due;
+    private int $due;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $invoice_created;
+    private DateTime $invoice_created;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $due_date;
+    private DateTime $due_date;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $payment_day;
+    private DateTime $payment_day;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
@@ -69,12 +72,12 @@ class Invoice
     /**
      * @ORM\Column(type="string", length=20, unique=true, nullable=true)
      */
-    private $vs;
+    private string $vs;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $ks;
+    private string $ks;
 
     /**
      * @ORM\OneToMany(targetEntity=InvoiceItem::class, mappedBy="invoice", orphanRemoval=true, cascade={"persist"})

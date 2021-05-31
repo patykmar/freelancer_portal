@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TariffRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,27 +11,28 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TariffRepository::class)
+ * @ApiResource
  */
 class Tariff
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private $id;
+    private int $id;
 
     /**
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @Assert\NotBlank
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private $price;
+    private int $price;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="tarif", cascade={"persist"})
