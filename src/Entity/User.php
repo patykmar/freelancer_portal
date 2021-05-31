@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use \DateTime;
+use \DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ApiResource
  */
 class User implements UserInterface
 {
@@ -61,7 +65,7 @@ class User implements UserInterface
 
     public function __constructor()
     {
-        $this->setCreated(new \DateTime());
+        $this->setCreated(new DateTime());
     }
 
     public function getId(): ?int
@@ -169,36 +173,36 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getLastLogin(): ?\DateTimeInterface
+    public function getLastLogin(): ?DateTimeInterface
     {
         return $this->last_login;
     }
 
-    public function setLastLogin(\DateTimeInterface $last_login): self
+    public function setLastLogin(DateTimeInterface $last_login): self
     {
         $this->last_login = $last_login;
 
         return $this;
     }
 
-    public function getCreated(): ?\DateTimeInterface
+    public function getCreated(): ?DateTimeInterface
     {
         return $this->created;
     }
 
-    public function setCreated(\DateTimeInterface $created): self
+    public function setCreated(DateTimeInterface $created): self
     {
         $this->created = $created;
 
         return $this;
     }
 
-    public function getPasswordChanged(): ?\DateTimeInterface
+    public function getPasswordChanged(): ?DateTimeInterface
     {
         return $this->password_changed;
     }
 
-    public function setPasswordChanged(?\DateTimeInterface $password_changed): self
+    public function setPasswordChanged(?DateTimeInterface $password_changed): self
     {
         $this->password_changed = $password_changed;
 
