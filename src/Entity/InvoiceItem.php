@@ -3,11 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\InvoiceItemRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=InvoiceItemRepository::class)
+ * @ApiResource
  */
 class InvoiceItem
 {
@@ -15,9 +19,9 @@ class InvoiceItem
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="invoiceItems", cascade={"persist"})
@@ -25,32 +29,24 @@ class InvoiceItem
      */
     private $invoice;
 
-    /**
-     * @Assert\Range(
-     *     min = 0,
-     *     max = 100,
-     *     notInRangeMessage = "You must be between {{ min }}cm and {{ max }}cm tall to enter",
-     *     )
-     * @ORM\Column(type="smallint")
-     */
-    private $vat;
+
 
     /**
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @Assert\Positive()
      * @ORM\Column(type="float")
      */
-    private $unit_count;
+    private float $unit_count;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="integer",options={"unsigned":true})
      */
-    private $price;
+    private int $price;
 
     /**
      * @Assert\Range(
@@ -60,12 +56,12 @@ class InvoiceItem
      *     )
      * @ORM\Column(type="smallint")
      */
-    private $discount = 0;
+    private int $discount = 0;
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
      */
-    private $margin = 0;
+    private int $margin = 0;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
@@ -87,6 +83,16 @@ class InvoiceItem
      */
     private $price_total_inc_vat;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Vat::class, mappedBy="invoiceItem")
+     */
+    private $vat;
+
+    public function __construct()
+    {
+        $this->vat = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -100,18 +106,6 @@ class InvoiceItem
     public function setInvoice(?invoice $invoice): self
     {
         $this->invoice = $invoice;
-
-        return $this;
-    }
-
-    public function getVat(): int
-    {
-        return $this->vat;
-    }
-
-    public function setVat(int $vat): self
-    {
-        $this->vat = $vat;
 
         return $this;
     }
@@ -145,7 +139,7 @@ class InvoiceItem
         return $this->price;
     }
 
-    public function setPrice(string $price): self
+    public function setPrice(int $price): self
     {
         $this->price = $price;
 
@@ -225,6 +219,36 @@ class InvoiceItem
     public function setPriceTotalIncVat(string $price_total_inc_vat): self
     {
         $this->price_total_inc_vat = $price_total_inc_vat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Vat[]
+     */
+    public function getVat(): Collection
+    {
+        return $this->vat;
+    }
+
+    public function addVat(Vat $vat): self
+    {
+        if (!$this->vat->contains($vat)) {
+            $this->vat[] = $vat;
+            $vat->setInvoiceItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVat(Vat $vat): self
+    {
+        if ($this->vat->removeElement($vat)) {
+            // set the owning side to null (unless already changed)
+            if ($vat->getInvoiceItem() === $this) {
+                $vat->setInvoiceItem(null);
+            }
+        }
 
         return $this;
     }
