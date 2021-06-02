@@ -51,9 +51,15 @@ class Vat
      */
     private $invoiceItems;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Tariff::class, mappedBy="vat")
+     */
+    private $tariffs;
+
     public function __construct()
     {
         $this->invoiceItems = new ArrayCollection();
+        $this->tariffs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,6 +151,36 @@ class Vat
             // set the owning side to null (unless already changed)
             if ($invoiceItem->getVat() === $this) {
                 $invoiceItem->setVat(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tariff[]
+     */
+    public function getTariffs(): Collection
+    {
+        return $this->tariffs;
+    }
+
+    public function addTariff(Tariff $tariff): self
+    {
+        if (!$this->tariffs->contains($tariff)) {
+            $this->tariffs[] = $tariff;
+            $tariff->setVat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTariff(Tariff $tariff): self
+    {
+        if ($this->tariffs->removeElement($tariff)) {
+            // set the owning side to null (unless already changed)
+            if ($tariff->getVat() === $this) {
+                $tariff->setVat(null);
             }
         }
 
