@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\VatRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,6 +45,16 @@ class Vat
      * @ORM\ManyToOne(targetEntity=InvoiceItem::class, inversedBy="vat")
      */
     private $invoiceItem;
+
+    /**
+     * @ORM\OneToMany(targetEntity=InvoiceItem::class, mappedBy="vat")
+     */
+    private $invoiceItems;
+
+    public function __construct()
+    {
+        $this->invoiceItems = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +117,36 @@ class Vat
     public function setInvoiceItem(?InvoiceItem $invoiceItem): self
     {
         $this->invoiceItem = $invoiceItem;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InvoiceItem[]
+     */
+    public function getInvoiceItems(): Collection
+    {
+        return $this->invoiceItems;
+    }
+
+    public function addInvoiceItem(InvoiceItem $invoiceItem): self
+    {
+        if (!$this->invoiceItems->contains($invoiceItem)) {
+            $this->invoiceItems[] = $invoiceItem;
+            $invoiceItem->setVat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoiceItem(InvoiceItem $invoiceItem): self
+    {
+        if ($this->invoiceItems->removeElement($invoiceItem)) {
+            // set the owning side to null (unless already changed)
+            if ($invoiceItem->getVat() === $this) {
+                $invoiceItem->setVat(null);
+            }
+        }
 
         return $this;
     }
