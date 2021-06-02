@@ -15,6 +15,10 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
     public const COMPANY_PATYKDESIGN = 'PATYKDESIGN';
     public const COMPANY_VAHYOPAVA = 'Vahy-opava';
     public const COMPANY_SEDKO = 'sedko-sro';
+    public const COMPANY_MAXXNET = 'maxxnet-sro';
+    public const INNOVATION_ADVISORS = 'innovation_advisors-sro';
+    public const GAPPAY_SRO = 'gappay-sro';
+    public const CGE_SRO = 'cge-sro';
 
 
     public function load(ObjectManager $manager)
@@ -111,6 +115,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCreated(new DateTime())
             ->setAccountNumber("256256296/0300")
             ->setCountry($countryCz);
+        $this->addReference(self::COMPANY_MAXXNET, $company7);
 
         $company8 = new Company();
         $company8->setName("GAPPAY s.r.o.")
@@ -123,6 +128,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCreated(new DateTime())
             ->setAccountNumber("825242821/0100")
             ->setCountry($countryCz);
+        $this->addReference(self::GAPPAY_SRO, $company8);
 
         $company9 = new Company();
         $company9->setName("Ondřej Patyk")
@@ -148,6 +154,30 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setAccountNumber("952444821/0100")
             ->setCountry($countryCz);
 
+        $company11 = new Company();
+        $company11->setName("Innovation Advisors s.r.o.")
+            ->setDescription("Innovation Advisors s.r.o.")
+            ->setCompanyId("40763200")
+            ->setVatNumber('CZ40763200')
+            ->setStreet("Boženy Němcové 1604/24")
+            ->setCity("Opava")
+            ->setZipCode("74601")
+            ->setCreated(new DateTime())
+            ->setCountry($countryCz);
+        $this->addReference(self::INNOVATION_ADVISORS, $company11);
+
+        $company12 = new Company();
+        $company12->setName("Czech Green Energy s.r.o.")
+            ->setDescription("Czech Green Energy s.r.o.")
+            ->setCompanyId("09703667")
+            ->setVatNumber('CZ09703667')
+            ->setStreet("Vinařská 460/3")
+            ->setCity("Brno - Pisárky")
+            ->setZipCode("603 00")
+            ->setCreated(new DateTime())
+            ->setCountry($countryCz);
+        $this->addReference(self::CGE_SRO, $company12);
+
 
         $manager->persist($company1);
         $manager->persist($company2);
@@ -159,6 +189,8 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
         $manager->persist($company8);
         $manager->persist($company9);
         $manager->persist($company10);
+        $manager->persist($company11);
+        $manager->persist($company12);
 
         $manager->flush();
     }
