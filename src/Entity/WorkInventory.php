@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WorkInventoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use \DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=WorkInventoryRepository::class)
+ * @ApiResource
  */
 class WorkInventory
 {
@@ -89,24 +92,24 @@ class WorkInventory
         return $this;
     }
 
-    public function getWorkStart(): ?\DateTimeInterface
+    public function getWorkStart(): ?DateTimeInterface
     {
         return $this->work_start;
     }
 
-    public function setWorkStart(\DateTimeInterface $work_start): self
+    public function setWorkStart(DateTimeInterface $work_start): self
     {
         $this->work_start = $work_start;
 
         return $this;
     }
 
-    public function getWorkEnd(): ?\DateTimeInterface
+    public function getWorkEnd(): ?DateTimeInterface
     {
         return $this->work_end;
     }
 
-    public function setWorkEnd(?\DateTimeInterface $work_end): self
+    public function setWorkEnd(?DateTimeInterface $work_end): self
     {
         $this->work_end = $work_end;
 

@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\VatRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=VatRepository::class)
+ * @ApiResource
  */
 class Vat
 {
@@ -15,27 +17,32 @@ class Vat
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isDefault;
+    private bool $isDefault;
 
     /**
      * @ORM\Column(type="smallint")
      */
-    private $percent;
+    private int $percent;
 
     /**
-     * @ORM\Column(type="decimal", precision=1, scale=2)
+     * @ORM\Column(type="integer")
      */
-    private $multiplier;
+    private int $multiplier;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=InvoiceItem::class, inversedBy="vat")
+     */
+    private $invoiceItem;
 
     public function getId(): ?int
     {
@@ -78,14 +85,26 @@ class Vat
         return $this;
     }
 
-    public function getMultiplier(): ?string
+    public function getMultiplier(): ?int
     {
         return $this->multiplier;
     }
 
-    public function setMultiplier(string $multiplier): self
+    public function setMultiplier(int $multiplier): self
     {
         $this->multiplier = $multiplier;
+
+        return $this;
+    }
+
+    public function getInvoiceItem(): ?InvoiceItem
+    {
+        return $this->invoiceItem;
+    }
+
+    public function setInvoiceItem(?InvoiceItem $invoiceItem): self
+    {
+        $this->invoiceItem = $invoiceItem;
 
         return $this;
     }

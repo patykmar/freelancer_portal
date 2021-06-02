@@ -11,13 +11,17 @@ use \DateTime;
 
 class CompanyFixture extends Fixture implements DependentFixtureInterface
 {
+    public const COMPANY_PATYK_MARTIN = 'Ing. Martin Patyk';
+    public const COMPANY_PATYKDESIGN = 'PATYKDESIGN';
+    public const COMPANY_VAHYOPAVA = 'Vahy-opava';
+    public const COMPANY_SEDKO = 'sedko-sro';
+
 
     public function load(ObjectManager $manager)
     {
         // get references from CountryFixtures class
         /** @var Country $countryCz */
         $countryCz = $this->getReference(CountryFixtures::COUNTRY_CZ_REFERENCE);
-
 
         $company1 = new Company();
         $company1->setName("Ing. Martin Patyk")
@@ -32,6 +36,8 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setIsSupplier(true)
             ->setCountry($countryCz);
 
+        $this->addReference(self::COMPANY_PATYK_MARTIN, $company1);
+
         $company2 = new Company();
         $company2->setName("PATYKDESIGN s.r.o.")
             ->setDescription("PATYKDESIGN s.r.o. - Olomoucka")
@@ -42,6 +48,8 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setZipCode("746 01")
             ->setCreated(new DateTime("2014-01-13 22:24:39"))
             ->setCountry($countryCz);
+
+        $this->addReference(self::COMPANY_PATYKDESIGN, $company2);
 
         $company3 = new Company();
         $company3->setName("Opravna vah")
@@ -54,6 +62,8 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCreated(new DateTime("2014-01-13 22:27:52"))
             ->setCountry($countryCz);
 
+        $this->addReference(self::COMPANY_VAHYOPAVA, $company3);
+
         $company4 = new Company();
         $company4->setName("SEDKO group s.r.o.")
             ->setDescription("SEDKO group s.r.o.")
@@ -64,6 +74,8 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setZipCode("746 01")
             ->setCreated(new DateTime("2014-01-13 22:31:07"))
             ->setCountry($countryCz);
+
+        $this->addReference(self::COMPANY_SEDKO, $company4);
 
         $company5 = new Company();
         $company5->setName("RD Rýmařov s.r.o.")
@@ -152,7 +164,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
     }
 
     // to which fixtures is depending, they load earlier
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return array(
             CountryFixtures::class

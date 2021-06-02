@@ -15,13 +15,13 @@ class VatFixture extends Fixture
     {
         $vatNo = new Vat();
         $vatNo->setName("Bez DPH")
-            ->setMultiplier(1.0)
+            ->setMultiplier(100)
             ->setPercent(0)
             ->setIsDefault(TRUE);
 
         $vat21 = new Vat();
         $vat21->setName("DPH 21%")
-            ->setMultiplier(1.21)
+            ->setMultiplier(121)
             ->setPercent(21)
             ->setIsDefault(FALSE);
 
