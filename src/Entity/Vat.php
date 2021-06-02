@@ -27,17 +27,17 @@ class Vat
     private string $name;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, options={"default": false})
      */
     private bool $isDefault;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", options={"unsigned":true, "default": 0})
      */
     private int $percent;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="smallint", options={"unsigned":true, "default": 0})
      */
     private int $multiplier;
 
@@ -78,14 +78,14 @@ class Vat
         return $this->isDefault;
     }
 
-    public function setIsDefault(?bool $isDefault): self
+    public function setIsDefault(bool $isDefault): self
     {
         $this->isDefault = $isDefault;
 
         return $this;
     }
 
-    public function getPercent(): ?int
+    public function getPercent(): int
     {
         return $this->percent;
     }
@@ -97,7 +97,7 @@ class Vat
         return $this;
     }
 
-    public function getMultiplier(): ?int
+    public function getMultiplier(): int
     {
         return $this->multiplier;
     }
