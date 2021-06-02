@@ -18,18 +18,23 @@ class CountryFixtures extends Fixture
     {
         $cz = new Country();
         $cz->setName("Česká republika");
+        $cz->setIso3166Alpha3("CZE");
 
         $sk = new Country();
         $sk->setName("Slovenská republika");
+        $sk->setIso3166Alpha3('SVK');
 
         $pl = new Country();
         $pl->setName('Polská republika');
+        $pl->setIso3166Alpha3('POL');
 
         $a = new Country();
         $a->setName('Republika Rakousko');
+        $a->setIso3166Alpha3('AUT');
 
         $d = new Country();
         $d->setName('Spolková republika Německo');
+        $d->setIso3166Alpha3('DEU');
 
         // díky tomuto se pak dostaneme k těmto uživatelům z jiných fixtur
         $this->addReference(self::COUNTRY_CZ_REFERENCE, $cz);
