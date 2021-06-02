@@ -71,9 +71,9 @@ class InvoiceItemSubscriber implements EventSubscriber
 
         $priceTotal = $this->invoiceItemServices->calculateTotalPrice(
             $invoiceItem->getPrice(),
-            $marginTotal,
-            $discountTotal,
-            $invoiceItem->getUnitCount()
+            $invoiceItem->getUnitCount(),
+            $invoiceItem->getMargin(),
+            $invoiceItem->getDiscount()
         );
         $invoiceItem->setPriceTotal($priceTotal);
 
