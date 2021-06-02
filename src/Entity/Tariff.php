@@ -37,7 +37,7 @@ class Tariff
     /**
      * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="tarif", cascade={"persist"})
      */
-    private ArrayCollection $workInventories;
+    private Collection $workInventories;
 
     /**
      * @ORM\ManyToOne(targetEntity=Vat::class, inversedBy="tariffs")
