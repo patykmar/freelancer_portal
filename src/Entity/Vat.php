@@ -17,7 +17,7 @@ class Vat
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private int $id;
 
@@ -29,7 +29,7 @@ class Vat
     /**
      * @ORM\Column(type="boolean", nullable=true, options={"default": false})
      */
-    private bool $isDefault;
+    private bool $isDefault = false;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned":true, "default": 0})
@@ -44,17 +44,17 @@ class Vat
     /**
      * @ORM\ManyToOne(targetEntity=InvoiceItem::class, inversedBy="vat")
      */
-    private $invoiceItem;
+    private InvoiceItem $invoiceItem;
 
     /**
      * @ORM\OneToMany(targetEntity=InvoiceItem::class, mappedBy="vat")
      */
-    private $invoiceItems;
+    private Collection $invoiceItems;
 
     /**
      * @ORM\OneToMany(targetEntity=Tariff::class, mappedBy="vat")
      */
-    private $tariffs;
+    private Collection $tariffs;
 
     public function __construct()
     {
