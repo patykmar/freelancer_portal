@@ -1,2 +1,4 @@
 ### temporary files ###
 *.dia.autosave
+*.pdf
+*.eps
