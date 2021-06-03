@@ -15,19 +15,19 @@ class PaymentType
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isDefault;
+    private bool $isDefault = false;
 
     public function getId(): ?int
     {
@@ -51,12 +51,12 @@ class PaymentType
         return $this->getName();
     }
 
-    public function getIsDefault(): ?bool
+    public function getIsDefault(): bool
     {
         return $this->isDefault;
     }
 
-    public function setIsDefault(?bool $isDefault): self
+    public function setIsDefault(bool $isDefault = false): self
     {
         $this->isDefault = $isDefault;
 
