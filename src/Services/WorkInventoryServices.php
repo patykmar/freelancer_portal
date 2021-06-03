@@ -4,7 +4,7 @@
 namespace App\Services;
 
 
-use DateTime;
+use DateTimeInterface;
 
 class WorkInventoryServices
 {
@@ -12,11 +12,11 @@ class WorkInventoryServices
 
     /**
      * Calculate interval between work_end and work_start and return how many hours is between those.
-     * @param DateTime $workStart - when work started
-     * @param DateTime $workEnd - when work ended
+     * @param DateTimeInterface $workStart - when work started
+     * @param DateTimeInterface $workEnd - when work ended
      * @return float - Duration in hours
      */
-    public function calculateDuration(DateTime $workStart, DateTime $workEnd): float
+    public function calculateDuration(DateTimeInterface $workStart, DateTimeInterface $workEnd): float
     {
 //        $workStart = new \DateTime("2021-03-05 20:20:00");
 //        $workEnd = new \DateTime("2021-03-05 21:20:00");
