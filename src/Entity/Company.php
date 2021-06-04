@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
+use DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=CompanyRepository::class)
@@ -45,12 +46,12 @@ class Company
     /**
      * @ORM\Column(type="datetime")
      */
-    private DateTime $created;
+    private DateTimeInterface $created;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private DateTime $modify;
+    private DateTimeInterface $modify;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -157,24 +158,24 @@ class Company
         return $this;
     }
 
-    public function getCreated(): ?\DateTimeInterface
+    public function getCreated(): ?DateTimeInterface
     {
         return $this->created;
     }
 
-    public function setCreated(\DateTimeInterface $created): self
+    public function setCreated(DateTimeInterface $created): self
     {
         $this->created = $created;
 
         return $this;
     }
 
-    public function getModify(): ?\DateTimeInterface
+    public function getModify(): DateTimeInterface
     {
         return $this->modify;
     }
 
-    public function setModify(?\DateTimeInterface $modify): self
+    public function setModify(DateTimeInterface $modify): self
     {
         $this->modify = $modify;
 
@@ -222,7 +223,7 @@ class Company
         return $this->country;
     }
 
-    public function setCountry(?country $country): self
+    public function setCountry(country $country): self
     {
         $this->country = $country;
 
@@ -283,12 +284,12 @@ class Company
         return $this;
     }
 
-    public function getIsSupplier(): ?bool
+    public function getIsSupplier(): bool
     {
         return $this->isSupplier;
     }
 
-    public function setIsSupplier(?bool $isSupplier): self
+    public function setIsSupplier(bool $isSupplier): self
     {
         $this->isSupplier = $isSupplier;
 
