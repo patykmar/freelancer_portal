@@ -62,28 +62,28 @@ class InvoiceItem
     /**
      * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private $discount_total;
+    private int $discount_total;
 
     /**
      * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private $margin_total;
+    private int $margin_total;
 
     /**
      * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private $price_total;
+    private int $price_total;
 
     /**
      * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private $price_total_inc_vat;
+    private int $price_total_inc_vat;
 
     /**
      * @ORM\ManyToOne(targetEntity=Vat::class, inversedBy="invoiceItems")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $vat;
+    private Vat $vat;
 
     public function getId(): ?int
     {
