@@ -5,7 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WorkInventoryRepository;
 use Doctrine\ORM\Mapping as ORM;
-use \DateTimeInterface;
+use DateTime;
+use DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=WorkInventoryRepository::class)
@@ -16,66 +17,66 @@ class WorkInventory
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $describe;
+    private string $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=Tariff::class, inversedBy="workInventories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $tariff;
+    private Tariff $tariff;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $work_start;
+    private DateTime $work_start;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $work_end;
+    private DateTime $work_end;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private User $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="workInventories")
      */
-    private $invoice;
+    private Invoice $invoice;
 
     /**
      * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="workInventories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $company;
+    private Company $company;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $work_duration;
+    private float $work_duration;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDescribe(): ?string
+    public function getDescription(): ?string
     {
-        return $this->describe;
+        return $this->description;
     }
 
-    public function setDescribe(string $describe): self
+    public function setDescription(string $description): self
     {
-        $this->describe = $describe;
+        $this->description = $description;
 
         return $this;
     }

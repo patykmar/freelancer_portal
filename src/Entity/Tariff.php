@@ -37,7 +37,13 @@ class Tariff
     /**
      * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="tarif", cascade={"persist"})
      */
-    private $workInventories;
+    private Collection $workInventories;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Vat::class, inversedBy="tariffs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Vat $vat;
 
 
     public function __construct()
@@ -111,5 +117,21 @@ class Tariff
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function getVat(): ?Vat
+    {
+        return $this->vat;
+    }
+
+    /**
+     * @param Vat|null $vat
+     * @return $this
+     */
+    public function setVat(?Vat $vat): self
+    {
+        $this->vat = $vat;
+
+        return $this;
     }
 }

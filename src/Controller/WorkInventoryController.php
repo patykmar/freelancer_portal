@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use DateTime;
 
 class WorkInventoryController extends AbstractController
 {
@@ -102,8 +103,8 @@ class WorkInventoryController extends AbstractController
 
             $invoice = new Invoice();
 
-            $invoice->setInvoiceCreated(new \DateTime());
-            $invoice->setDueDate(new \DateTime("+" . $dueDays . " days"));
+            $invoice->setInvoiceCreated(new DateTime());
+            $invoice->setDueDate(new DateTime("+" . $dueDays . " days"));
             $invoice->setDue($dueDays);
             $invoice->setUserCreated($this->security->getUser());
             $invoice->setSubscriber($company);
@@ -117,11 +118,11 @@ class WorkInventoryController extends AbstractController
 
             foreach ($workItemsByCompanyId as $item) {
                 $invoiceItem = new InvoiceItem();
-                $invoiceItem->setName($item->getDescribe());
+                $invoiceItem->setName($item->getDescription());
                 $invoiceItem->setPrice($item->getTariff()->getPrice());
                 $invoiceItem->setUnitCount($item->getWorkDuration());
                 $invoiceItem->setPriceTotal($item->getTariff()->getPrice()*$item->getWorkDuration());
-                $invoiceItem->setVat($this->getParameter('defaultVatPercent'));
+                $invoiceItem->setVat($item->getTariff()->getVat());
                 $invoiceItem->setPriceTotalIncVat($this->calculateTotalPriceIncVat($invoiceItem->getPriceTotal()));
 
                 // relates InvoiceItem with the new Invoice
@@ -179,7 +180,7 @@ class WorkInventoryController extends AbstractController
 
     private function calculateVs(int $lastInvoiceId): string
     {
-        $date = new \DateTime();
+        $date = new DateTime();
         $year = $date->format("Y");
         return $year.str_pad(++$lastInvoiceId,6,"0",STR_PAD_LEFT);
     }

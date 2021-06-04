@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\InvoiceItemRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -15,7 +13,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
  */
 class InvoiceItem
 {
-    //TODO: pridej referenci na tabulku VAT
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -30,7 +27,6 @@ class InvoiceItem
     private $invoice;
 
 
-
     /**
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
@@ -39,12 +35,12 @@ class InvoiceItem
 
     /**
      * @Assert\Positive()
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float",options={"unsigned":true, "default": 0.0})
      */
     private float $unit_count;
 
     /**
-     * @ORM\Column(type="integer",options={"unsigned":true})
+     * @ORM\Column(type="bigint",options={"unsigned":true, "default": 0})
      */
     private int $price;
 
@@ -54,44 +50,40 @@ class InvoiceItem
      *     max = 100,
      *     notInRangeMessage = "You must be between {{ min }}cm and {{ max }}cm tall to enter",
      *     )
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint",options={"unsigned":true, "default": 0})
      */
     private int $discount = 0;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="smallint", nullable=false, options={"unsigned":true, "default": 0})
      */
     private int $margin = 0;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private $discount_total = 0.0;
+    private int $discount_total;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private $margin_total = 0.0;
+    private int $margin_total;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private $price_total;
+    private int $price_total;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private $price_total_inc_vat;
+    private int $price_total_inc_vat;
 
     /**
-     * @ORM\OneToMany(targetEntity=Vat::class, mappedBy="invoiceItem")
+     * @ORM\ManyToOne(targetEntity=Vat::class, inversedBy="invoiceItems")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $vat;
-
-    public function __construct()
-    {
-        $this->vat = new ArrayCollection();
-    }
+    private Vat $vat;
 
     public function getId(): ?int
     {
@@ -122,7 +114,7 @@ class InvoiceItem
         return $this;
     }
 
-    public function getUnitCount(): ?float
+    public function getUnitCount(): float
     {
         return $this->unit_count;
     }
@@ -134,7 +126,7 @@ class InvoiceItem
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?int
     {
         return $this->price;
     }
@@ -163,7 +155,7 @@ class InvoiceItem
         return $this->margin;
     }
 
-    public function setMargin(?int $margin): self
+    public function setMargin(int $margin): self
     {
         $this->margin = $margin;
 
@@ -175,48 +167,48 @@ class InvoiceItem
         return $this->getName();
     }
 
-    public function getDiscountTotal(): ?string
+    public function getDiscountTotal(): ?int
     {
         return $this->discount_total;
     }
 
-    public function setDiscountTotal(string $discount_total): self
+    public function setDiscountTotal(int $discount_total): self
     {
         $this->discount_total = $discount_total;
 
         return $this;
     }
 
-    public function getMarginTotal(): ?string
+    public function getMarginTotal(): ?int
     {
         return $this->margin_total;
     }
 
-    public function setMarginTotal(string $margin_total): self
+    public function setMarginTotal(int $margin_total): self
     {
         $this->margin_total = $margin_total;
 
         return $this;
     }
 
-    public function getPriceTotal(): ?string
+    public function getPriceTotal(): ?int
     {
         return $this->price_total;
     }
 
-    public function setPriceTotal(string $price_total): self
+    public function setPriceTotal(int $price_total): self
     {
         $this->price_total = $price_total;
 
         return $this;
     }
 
-    public function getPriceTotalIncVat(): ?string
+    public function getPriceTotalIncVat(): ?int
     {
         return $this->price_total_inc_vat;
     }
 
-    public function setPriceTotalIncVat(string $price_total_inc_vat): self
+    public function setPriceTotalIncVat(int $price_total_inc_vat): self
     {
         $this->price_total_inc_vat = $price_total_inc_vat;
 
@@ -224,33 +216,17 @@ class InvoiceItem
     }
 
     /**
-     * @return Collection|Vat[]
+     * @return Vat
      */
-    public function getVat(): Collection
+    public function getVat(): Vat
     {
         return $this->vat;
     }
 
-    public function addVat(Vat $vat): self
+    public function setVat(Vat $vat): self
     {
-        if (!$this->vat->contains($vat)) {
-            $this->vat[] = $vat;
-            $vat->setInvoiceItem($this);
-        }
+        $this->vat = $vat;
 
         return $this;
     }
-
-    public function removeVat(Vat $vat): self
-    {
-        if ($this->vat->removeElement($vat)) {
-            // set the owning side to null (unless already changed)
-            if ($vat->getInvoiceItem() === $this) {
-                $vat->setInvoiceItem(null);
-            }
-        }
-
-        return $this;
-    }
-
 }

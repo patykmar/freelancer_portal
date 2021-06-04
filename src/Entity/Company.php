@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
+use DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=CompanyRepository::class)
@@ -17,44 +19,44 @@ class Company
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $company_id;
+    private string $company_id;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $vat_number;
+    private string $vat_number;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created;
+    private DateTimeInterface $created;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $modify;
+    private DateTimeInterface $modify;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $street;
+    private string $street;
 
     public function __toString()
     {
@@ -64,42 +66,42 @@ class Company
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $city;
+    private string $city;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private $zip_code;
+    private string $zip_code;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $country;
+    private Country $country;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $account_number;
+    private string $account_number;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $iban;
+    private string $iban;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="company", orphanRemoval=true)
      */
-    private $workInventories;
+    private Collection $workInventories;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, options={"default": false})
      */
-    private $isSupplier;
+    private bool $isSupplier;
 
     public function __construct()
     {
-        $this->setCreated(new \DateTime());
+        $this->setCreated(new DateTime());
         $this->workInventories = new ArrayCollection();
     }
 
@@ -156,24 +158,24 @@ class Company
         return $this;
     }
 
-    public function getCreated(): ?\DateTimeInterface
+    public function getCreated(): ?DateTimeInterface
     {
         return $this->created;
     }
 
-    public function setCreated(\DateTimeInterface $created): self
+    public function setCreated(DateTimeInterface $created): self
     {
         $this->created = $created;
 
         return $this;
     }
 
-    public function getModify(): ?\DateTimeInterface
+    public function getModify(): DateTimeInterface
     {
         return $this->modify;
     }
 
-    public function setModify(?\DateTimeInterface $modify): self
+    public function setModify(DateTimeInterface $modify): self
     {
         $this->modify = $modify;
 
@@ -221,7 +223,7 @@ class Company
         return $this->country;
     }
 
-    public function setCountry(?country $country): self
+    public function setCountry(country $country): self
     {
         $this->country = $country;
 
@@ -282,12 +284,12 @@ class Company
         return $this;
     }
 
-    public function getIsSupplier(): ?bool
+    public function getIsSupplier(): bool
     {
         return $this->isSupplier;
     }
 
-    public function setIsSupplier(?bool $isSupplier): self
+    public function setIsSupplier(bool $isSupplier): self
     {
         $this->isSupplier = $isSupplier;
 

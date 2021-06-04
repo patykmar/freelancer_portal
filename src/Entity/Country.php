@@ -17,19 +17,24 @@ class Country
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $name;
+    private string $name;
 
-    public function getId(): ?int
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private string $iso3166Alpha3;
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -48,4 +53,23 @@ class Country
     {
         return $this->name;
     }
+
+    /**
+     * @return string
+     */
+    public function getIso3166Alpha3(): string
+    {
+        return $this->iso3166Alpha3;
+    }
+
+    /**
+     * @param string $iso3166Alpha3
+     */
+    public function setIso3166Alpha3(string $iso3166Alpha3): self
+    {
+        $this->iso3166Alpha3 = $iso3166Alpha3;
+        return $this;
+    }
+
+
 }
