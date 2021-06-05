@@ -14,7 +14,11 @@ use DateTime;
 class InvoiceSubscriber implements EventSubscriber
 {
 
+    /**
+     * @var EntityManagerInterface
+     */
     private EntityManagerInterface $entityManager;
+
 
     /**
      * InvoiceSubscriber constructor.
