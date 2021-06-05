@@ -23,7 +23,7 @@ class InvoiceItemServices
      */
     public function calculateTotalDiscount(int $priceMargin, int $discount): int
     {
-        return round((float)(($priceMargin / 100) * $discount),0);
+        return round((float)(($priceMargin / 100) * $discount), 0);
     }
 
     /**
@@ -36,9 +36,9 @@ class InvoiceItemServices
     public function calculateTotalPrice(int $price, float $unitCunt, int $margin = 0, int $discount = 0): int
     {
         $marginTotal = $this->calculateTotalMargin($price, $margin);
-        $discountTotal = $this->calculateTotalDiscount(($price + $marginTotal),$discount);
+        $discountTotal = $this->calculateTotalDiscount(($price + $marginTotal), $discount);
 
-        return round((float)((($price + $marginTotal) - $discountTotal) * $unitCunt),0);
+        return round((float)((($price + $marginTotal) - $discountTotal) * $unitCunt), 0);
     }
 
     /**
@@ -48,6 +48,6 @@ class InvoiceItemServices
      */
     public function calculateTotalPriceIncVat(int $priceTotal, int $vatMultiplier): int
     {
-        return round((float)($priceTotal * ($vatMultiplier/100)),0);
+        return round((float)($priceTotal * ($vatMultiplier / 100)), 0);
     }
 }
