@@ -9,7 +9,7 @@
         <th class="  text-" dir="ltr">DPH</th>
         <th class="  text-" dir="ltr">Sleva</th>
         <th class="  text-" dir="ltr">Marže</th>
-        <th class="  text-" dir="ltr">Počet jednotek</th>
+        <th class="  text-" dir="ltr">Množství</th>
         <th class="  text-" dir="ltr">Celková cena</th>
         <th dir="ltr">Actions</th>
     </tr>
@@ -23,7 +23,7 @@
             <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.discount }}">{{ invoiceItem.discount }}</span></td>
             <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.margin }}">{{ invoiceItem.margin }}</span></td>
             <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.unitCount }}">{{ invoiceItem.unitCount }}</span></td>
-            <td class=" text- field-text" dir="ltr"><span title="{{ (invoiceItem.price) }}">{{ (invoiceItem.price) }}</span></td>
+            <td class=" text- field-text" dir="ltr"><span title="{{ (invoiceItem.priceTotalIncVat) }}">{{ (invoiceItem.priceTotalIncVat) }}</span></td>
             <td class="actions">
 {#                <a class=" action-detail" href="#">Show</a>#}
 {#                <a class=" action-workItemsByCompany" href="#"><i class="action-icon fa fa-envelope"></i> Work items: </a>#}
