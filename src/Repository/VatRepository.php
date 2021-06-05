@@ -41,7 +41,7 @@ class VatRepository extends ServiceEntityRepository implements DefaultValueInter
      * Return default entry or null
      * @return Vat|null Description
      */
-    public function getDefaultEntity()
+    public function getDefaultEntity(): ?Vat
     {
         return $this->findOneBy(array('isDefault' => true));
     }
