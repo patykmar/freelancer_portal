@@ -56,6 +56,7 @@ class InvoiceItemFormType extends AbstractType
                 'currency' => 'CZK',
                 'help' => 'Cena za kus',
                 'required' => true,
+                'divisor' => 100,
             ])
             ->add('discount', PercentType::class, [
                 'label' => 'Sleva',
