@@ -40,7 +40,6 @@ class UserFixture extends Fixture
         $user2->setLastLogin(new DateTime());
         $user2->setRoles(["ROLE_USER"]);
 
-        // díky tomuto se pak dostaneme k těmto uživatelům z jiných fixtur
         $this->addReference(self::USER_ADMIN_REFERENCE, $user1);
         $this->addReference(self::USER_USER_REFERENCE, $user2);
 
