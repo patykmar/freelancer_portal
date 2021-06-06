@@ -17,7 +17,7 @@ class Country
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private int $id = 0;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
