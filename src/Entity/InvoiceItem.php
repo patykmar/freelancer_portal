@@ -18,13 +18,13 @@ class InvoiceItem
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private int $id;
+    private int $id = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="invoiceItems", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $invoice;
+    private Invoice $invoice;
 
 
     /**
@@ -62,22 +62,22 @@ class InvoiceItem
     /**
      * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private int $discount_total;
+    private int $discount_total = 0;
 
     /**
      * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private int $margin_total;
+    private int $margin_total = 0;
 
     /**
      * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private int $price_total;
+    private int $price_total = 0;
 
     /**
      * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
      */
-    private int $price_total_inc_vat;
+    private int $price_total_inc_vat = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity=Vat::class, inversedBy="invoiceItems")
