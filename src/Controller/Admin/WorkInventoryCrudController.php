@@ -27,13 +27,31 @@ class WorkInventoryCrudController extends AbstractCrudController
             TextField::new('description', 'Popis')
                 ->setMaxLength(30),
             AssociationField::new('tariff'),
-            AssociationField::new('company'),
-            DateTimeField::new('work_start'),
-            DateTimeField::new('work_end')->onlyOnForms(),
+            AssociationField::new('company')
         ];
 
-        if ($pageName === Crud::PAGE_INDEX)
+        // fix FireFox bug https://bugzil.la/888320
+        // more info https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local
+        if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Firefox')) {
+            $fieldConfig[] =
+                DateTimeField::new('work_start')
+                    ->renderAsNativeWidget(false);
+            $fieldConfig[] =
+                DateTimeField::new('work_end')
+                    ->onlyOnForms()
+                    ->renderAsNativeWidget(false);
+        } else {
+            $fieldConfig[] =
+                DateTimeField::new('work_start');
+            $fieldConfig[] =
+                DateTimeField::new('work_end')
+                    ->onlyOnForms();
+        }
+
+
+        if ($pageName === Crud::PAGE_INDEX) {
             $fieldConfig[] = NumberField::new('work_duration');
+        }
 
 
         return $fieldConfig;
