@@ -8,7 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use \DateTime;
+use DateTime;
+use DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=InvoiceRepository::class)
@@ -21,26 +22,26 @@ class Invoice
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private int $id;
+    private int $id = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity=Company::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $supplier;
+    private Company $supplier;
 
     /**
      * @ORM\ManyToOne(targetEntity=Company::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $subscriber;
+    private Company $subscriber;
 
     /**
      * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity=PaymentType::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $payment_type;
+    private PaymentType $payment_type;
 
     /**
      * @Assert\NotBlank
@@ -67,7 +68,7 @@ class Invoice
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user_created;
+    private User $user_created;
 
     /**
      * @ORM\Column(type="string", length=20, unique=true, nullable=true)
@@ -82,12 +83,12 @@ class Invoice
     /**
      * @ORM\OneToMany(targetEntity=InvoiceItem::class, mappedBy="invoice", orphanRemoval=true, cascade={"persist"})
      */
-    private $invoiceItems;
+    private Collection $invoiceItems;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="invoice")
      */
-    private $workInventories;
+    private Collection $workInventories;
 
     public function __construct()
     {
@@ -148,36 +149,36 @@ class Invoice
         return $this;
     }
 
-    public function getInvoiceCreated(): ?\DateTimeInterface
+    public function getInvoiceCreated(): ?DateTimeInterface
     {
         return $this->invoice_created;
     }
 
-    public function setInvoiceCreated(\DateTimeInterface $invoice_created): self
+    public function setInvoiceCreated(DateTimeInterface $invoice_created): self
     {
         $this->invoice_created = $invoice_created;
 
         return $this;
     }
 
-    public function getDueDate(): ?\DateTimeInterface
+    public function getDueDate(): ?DateTimeInterface
     {
         return $this->due_date;
     }
 
-    public function setDueDate(\DateTimeInterface $due_date): self
+    public function setDueDate(DateTimeInterface $due_date): self
     {
         $this->due_date = $due_date;
 
         return $this;
     }
 
-    public function getPaymentDay(): ?\DateTimeInterface
+    public function getPaymentDay(): ?DateTimeInterface
     {
         return $this->payment_day;
     }
 
-    public function setPaymentDay(?\DateTimeInterface $payment_day): self
+    public function setPaymentDay(?DateTimeInterface $payment_day): self
     {
         $this->payment_day = $payment_day;
 

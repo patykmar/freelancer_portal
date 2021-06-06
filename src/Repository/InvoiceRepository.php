@@ -24,11 +24,14 @@ class InvoiceRepository extends ServiceEntityRepository
      */
     public function getLastId()
     {
-        return $this->createQueryBuilder('i')
-            ->select('i.id')
-            ->orderBy('i.id','ASC')
-            ->setMaxResults(1)
-            ->getQuery()
+        //TODO: test it, i'm not sure if response is correct
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select('i.id')
+            ->from(Invoice::class, 'i')
+            ->orderBy('i.id', 'DESC')
+            ->setMaxResults(1);
+
+        return $queryBuilder->getQuery()
             ->getResult();
     }
 

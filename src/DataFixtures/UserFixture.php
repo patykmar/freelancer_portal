@@ -13,14 +13,14 @@ class UserFixture extends Fixture
     public const USER_USER_REFERENCE = 'user-user';
     public const USER_ADMIN_REFERENCE = 'user-admin';
 
-    private $encoder;
+    private UserPasswordEncoderInterface $encoder;
 
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->encoder = $encoder;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $user1 = new User();
         $user1->setPassword($this->encoder->encodePassword($user1, "7C8K8zszyuBkGDKY"));
@@ -40,7 +40,6 @@ class UserFixture extends Fixture
         $user2->setLastLogin(new DateTime());
         $user2->setRoles(["ROLE_USER"]);
 
-        // díky tomuto se pak dostaneme k těmto uživatelům z jiných fixtur
         $this->addReference(self::USER_ADMIN_REFERENCE, $user1);
         $this->addReference(self::USER_USER_REFERENCE, $user2);
 

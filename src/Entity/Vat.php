@@ -19,7 +19,7 @@ class Vat
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private int $id;
+    private int $id = 0;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -40,11 +40,6 @@ class Vat
      * @ORM\Column(type="smallint", options={"unsigned":true, "default": 0})
      */
     private int $multiplier;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=InvoiceItem::class, inversedBy="vat")
-     */
-    private InvoiceItem $invoiceItem;
 
     /**
      * @ORM\OneToMany(targetEntity=InvoiceItem::class, mappedBy="vat")
@@ -115,18 +110,6 @@ class Vat
         return $this;
     }
 
-    public function getInvoiceItem(): ?InvoiceItem
-    {
-        return $this->invoiceItem;
-    }
-
-    public function setInvoiceItem(?InvoiceItem $invoiceItem): self
-    {
-        $this->invoiceItem = $invoiceItem;
-
-        return $this;
-    }
-
     /**
      * @return Collection|InvoiceItem[]
      */
@@ -186,4 +169,11 @@ class Vat
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+
 }

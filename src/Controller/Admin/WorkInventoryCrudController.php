@@ -24,12 +24,12 @@ class WorkInventoryCrudController extends AbstractCrudController
         $fieldConfig = [
             IdField::new('id')
                 ->onlyOnIndex(),
-            TextField::new('describe', 'Popis')
+            TextField::new('description', 'Popis')
                 ->setMaxLength(30),
             AssociationField::new('tariff'),
             AssociationField::new('company'),
             DateTimeField::new('work_start'),
-            DateTimeField::new('work_end'),
+            DateTimeField::new('work_end')->onlyOnForms(),
         ];
 
         if ($pageName === Crud::PAGE_INDEX)
