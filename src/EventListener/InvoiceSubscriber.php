@@ -4,29 +4,26 @@
 namespace App\EventListener;
 
 use App\Entity\Invoice;
+use App\Services\InvoiceServices;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use DateTime;
+use Exception;
 
 
 class InvoiceSubscriber implements EventSubscriber
 {
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
+    /** @var InvoiceServices $invoiceServices */
+    private InvoiceServices $invoiceServices;
 
     /**
      * InvoiceSubscriber constructor.
-     * @param EntityManagerInterface $entityManager
+     * @param InvoiceServices $invoiceServices
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(InvoiceServices $invoiceServices)
     {
-        $this->entityManager = $entityManager;
+        $this->invoiceServices = $invoiceServices;
     }
 
 
@@ -41,6 +38,9 @@ class InvoiceSubscriber implements EventSubscriber
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     public function prePersist(LifecycleEventArgs $args): void
     {
         if ($args->getObject() instanceof Invoice) {
@@ -48,6 +48,9 @@ class InvoiceSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function preUpdate(LifecycleEventArgs $args): void
     {
         if ($args->getObject() instanceof Invoice) {
@@ -57,7 +60,7 @@ class InvoiceSubscriber implements EventSubscriber
 
     /**
      * @param Invoice $invoice
-     * @throws \Exception
+     * @throws Exception
      */
     private function calculateMissingValues(Invoice $invoice): void
     {
@@ -66,24 +69,10 @@ class InvoiceSubscriber implements EventSubscriber
             ->setDueDate(new DateTime("+" . $invoice->getDue() . " days"));
 
         // if user not defined VS calculate it
-        if(is_null($invoice->getVs())){
-            $invoice->setVs($this->calculateInvoiceVs());
+        if (is_null($invoice->getVs())) {
+            $invoice->setVs($this->invoiceServices->calculateInvoiceVs());
         }
     }
 
 
-    /**
-     * @return string
-     */
-    private function calculateInvoiceVs(): string
-    {
-        $lastInvoiceId = $this->entityManager->getRepository(Invoice::class)
-            ->getLastId();
-        if (count($lastInvoiceId) == 0){
-            $lastInvoiceId['id'] = 0;
-        }
-        $today = new DateTime('now');
-        $year = $today->format('Y');
-        return $year.str_pad(++$lastInvoiceId['id'],6,"0",STR_PAD_LEFT);
-    }
 }
