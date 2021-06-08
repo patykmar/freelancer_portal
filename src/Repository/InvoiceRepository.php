@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Invoice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method Invoice|null find($id, $lockMode = null, $lockVersion = null)
@@ -20,19 +21,19 @@ class InvoiceRepository extends ServiceEntityRepository
     }
 
     /**
+     * Return object with last Invoice
      * @return int|mixed|string
+     * @throws NonUniqueResultException
      */
-    public function getLastId()
+    public function getLastInvoice(): ?Invoice
     {
-        //TODO: test it, i'm not sure if response is correct
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('i.id')
-            ->from(Invoice::class, 'i')
+        return $this->createQueryBuilder('i')
+//            ->select('i.id')
             ->orderBy('i.id', 'DESC')
-            ->setMaxResults(1);
-
-        return $queryBuilder->getQuery()
-            ->getResult();
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
+            ;
     }
 
     // /**
