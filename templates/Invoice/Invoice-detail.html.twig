@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <!-- scaling / responzivita -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Invoice {{ invoice.vs }}</title>
+    <link rel="stylesheet" href="{{ asset('css/w3.css') }}"/>
+</head>
+<body>
+
+<div class="w3-container">
+    <div class="w3-row">
+        <div class="w3-col">Invoice: {{ invoice.vs }}</div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-col">
+            {# Supplier details #}
+            <div class="w3-container">
+                <div class="w3-row">
+                    <div class="w3-col">
+                        <h1>supplier</h1>
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-col">
+                        <strong>&nbsp;</strong>
+                    </div>
+                    <div class="w3-col">
+                        {{ invoice.supplier.getname() }}
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-col">
+                        <strong>&nbsp;</strong>
+                    </div>
+                    <div class="w3-col">
+                        {{ invoice.supplier.getStreet() }}
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-col">
+                        <strong>&nbsp;</strong>
+                    </div>
+                    <div class="w3-col">
+                        {{ invoice.supplier.getZipCode() }}
+                        {{ invoice.supplier.getCity() }}
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-col">
+                        <strong>Company ID:</strong>
+                    </div>
+                    <div class="w3-col">
+                        {{ invoice.supplier.getCompanyId() }}
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-col">
+                        <strong>VAT number:</strong>
+                    </div>
+                    <div class="w3-col">
+                        {{ invoice.supplier.getVatNumber() }}
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-col">
+                        <strong>Bank account:</strong>
+                    </div>
+                    <div class="w3-col">
+                        {{ invoice.supplier.getAccountNumber() }}
+                    </div>
+                </div>
+                {% if(invoice.supplier.getIban() is not null) %}
+                <div class="w3-row">
+                    <div class="w3-col">
+                        <strong>IBAN:</strong>
+                    </div>
+                    <div class="w3-col">
+                        {{ invoice.supplier.getIban() }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+        <div class="w3-col"></div>
+    </div>
+</div>
+
+</body>
+</html>
