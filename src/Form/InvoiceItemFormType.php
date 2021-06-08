@@ -3,35 +3,18 @@
 namespace App\Form;
 
 use App\Entity\InvoiceItem;
-use App\Entity\Unit;
 use App\Entity\Vat;
-use App\Repository\VatRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InvoiceItemFormType extends AbstractType
 {
-
-    /**
-     * @var VatRepository
-     */
-    private VatRepository $vatRepository;
-
-    /**
-     * InvoiceItemFormType constructor.
-     * @param VatRepository $vatRepository
-     */
-    public function __construct(VatRepository $vatRepository)
-    {
-        $this->vatRepository = $vatRepository;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -50,7 +33,7 @@ class InvoiceItemFormType extends AbstractType
                     'min' => 1,
                     'max' => 9999,
                 ],
-                'html5' =>true,
+                'html5' => true,
             ])
             ->add('price', MoneyType::class, [
                 'currency' => 'CZK',
@@ -62,17 +45,28 @@ class InvoiceItemFormType extends AbstractType
                 'label' => 'Sleva',
                 'help' => 'Vyjádřená v procentech',
                 'type' => 'integer',
+                'data' => 0,
+                'attr' => [
+                    'min' => 0,
+                    'max' => 100,
+                ],
+                'html5' => true,
             ])
             ->add('margin', PercentType::class, [
                 'label' => 'Marže',
                 'help' => 'Procentuální vyjádření marže',
                 'type' => 'integer',
+                'data' => 0,
+                'attr' => [
+                    'min' => 0,
+                    'max' => 999,
+                ],
+                'html5' => true,
             ])
             ->add('vat', EntityType::class, [
                 'label' => 'DPH',
                 'class' => Vat::class
             ]);
-
 
     }
 
