@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="cs">
 <head>
     <meta charset="UTF-8"/>
     <!-- scaling / responzivita -->
@@ -7,85 +7,197 @@
 
     <title>Invoice {{ invoice.vs }}</title>
     <link rel="stylesheet" href="{{ asset('css/w3.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/invoice_generate.css') }}"/>
+
 </head>
-<body>
+<body class="w3-content">
 
 <div class="w3-container">
     <div class="w3-row">
-        <div class="w3-col">Invoice: {{ invoice.vs }}</div>
+        <div class="w3-container w3-right-align"><h2>Faktura: {{ invoice.vs }}</h2></div>
     </div>
     <div class="w3-row">
-        <div class="w3-col">
+        <div class="w3-half w3-container">
             {# Supplier details #}
             <div class="w3-container">
                 <div class="w3-row">
-                    <div class="w3-col">
-                        <h1>supplier</h1>
-                    </div>
+                    <table>
+                        <tr>
+                            <th class="w3-right-align mp-padding-right-5">Dodavatel:</th>
+                            <td class="w3-left-align"><strong>{{ invoice.supplier.getname() }}</strong></td>
+                        </tr>
+                        {% if((invoice.supplier.getStreet() is not null) or
+                            (invoice.supplier.getZipCode() is not null) or
+                            (invoice.supplier.getCity() is not null)) %}
+                            <tr>
+                                <th class="w3-cell-top w3-right-align mp-padding-right-5">Adresa:</th>
+                                <td class="w3-cell-top w3-left-align">
+                                    {{ invoice.supplier.getStreet() }}<br/>
+                                    {{ invoice.supplier.getZipCode() }}
+                                    {{ invoice.supplier.getCity() }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if(invoice.supplier.getCompanyId() is not null) %}
+                            <tr>
+                                <th class="w3-cell-top w3-right-align mp-padding-right-5">IČ:</th>
+                                <td class="w3-cell-top w3-left-align">
+                                    {{ invoice.supplier.getCompanyId() }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if(invoice.supplier.getVatNumber() is not null) %}
+                            <tr>
+                                <th class="w3-cell-top w3-right-align mp-padding-right-5">DIČ:</th>
+                                <td class="w3-cell-top w3-left-align">
+                                    {{ invoice.supplier.getVatNumber() }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if(invoice.supplier.getAccountNumber() is not null) %}
+                            <tr>
+                                <th class="w3-cell-top w3-right-align mp-padding-right-5">Bankovní účet:</th>
+                                <td class="w3-cell-top w3-left-align">
+                                    {{ invoice.supplier.getAccountNumber() }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if(invoice.supplier.getIban() is not null) %}
+                            <tr>
+                                <th class="w3-cell-top w3-right-align mp-padding-right-5">IBAN:</th>
+                                <td class="w3-cell-top w3-left-align">
+                                    {{ invoice.supplier.getIban() }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </table>
                 </div>
-                <div class="w3-row">
-                    <div class="w3-col">
-                        <strong>&nbsp;</strong>
-                    </div>
-                    <div class="w3-col">
-                        {{ invoice.supplier.getname() }}
-                    </div>
-                </div>
-                <div class="w3-row">
-                    <div class="w3-col">
-                        <strong>&nbsp;</strong>
-                    </div>
-                    <div class="w3-col">
-                        {{ invoice.supplier.getStreet() }}
-                    </div>
-                </div>
-                <div class="w3-row">
-                    <div class="w3-col">
-                        <strong>&nbsp;</strong>
-                    </div>
-                    <div class="w3-col">
-                        {{ invoice.supplier.getZipCode() }}
-                        {{ invoice.supplier.getCity() }}
-                    </div>
-                </div>
-                <div class="w3-row">
-                    <div class="w3-col">
-                        <strong>Company ID:</strong>
-                    </div>
-                    <div class="w3-col">
-                        {{ invoice.supplier.getCompanyId() }}
-                    </div>
-                </div>
-                <div class="w3-row">
-                    <div class="w3-col">
-                        <strong>VAT number:</strong>
-                    </div>
-                    <div class="w3-col">
-                        {{ invoice.supplier.getVatNumber() }}
-                    </div>
-                </div>
-                <div class="w3-row">
-                    <div class="w3-col">
-                        <strong>Bank account:</strong>
-                    </div>
-                    <div class="w3-col">
-                        {{ invoice.supplier.getAccountNumber() }}
-                    </div>
-                </div>
-                {% if(invoice.supplier.getIban() is not null) %}
-                <div class="w3-row">
-                    <div class="w3-col">
-                        <strong>IBAN:</strong>
-                    </div>
-                    <div class="w3-col">
-                        {{ invoice.supplier.getIban() }}
-                    </div>
-                </div>
-                {% endif %}
             </div>
 
         </div>
-        <div class="w3-col"></div>
+        <div class="w3-half w3-container">
+            {# Subscriber #}
+            <div class="w3-row">
+                <table class="w3-border w3-large">
+                    <tr>
+                        <th class="w3-cell-top w3-right-align mp-padding-right-5">Odběratel:</th>
+                        <td class="w3-cell-top w3-left-align"><strong>{{ invoice.subscriber.getname() }}</strong></td>
+                    </tr>
+                    {% if((invoice.subscriber.getStreet() is not null) or
+                        (invoice.subscriber.getZipCode() is not null) or
+                        (invoice.subscriber.getCity() is not null)) %}
+                        <tr>
+                            <th class="w3-cell-top w3-right-align mp-padding-right-5">Adresa:</th>
+                            <td class="w3-cell-top w3-left-align">
+                                {{ invoice.subscriber.getStreet() }}<br/>
+                                {{ invoice.subscriber.getZipCode() }}
+                                {{ invoice.subscriber.getCity() }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if(invoice.subscriber.getCompanyId() is not null) %}
+                        <tr>
+                            <th class="w3-cell-top w3-right-align mp-padding-right-5">IČ:</th>
+                            <td class="w3-cell-top w3-left-align">
+                                {{ invoice.subscriber.getCompanyId() }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if(invoice.subscriber.getVatNumber() is not null) %}
+                        <tr>
+                            <th class="w3-cell-top w3-right-align mp-padding-right-5">DIČ:</th>
+                            <td class="w3-cell-top w3-left-align">
+                                {{ invoice.subscriber.getVatNumber() }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if(invoice.subscriber.getAccountNumber() is not null) %}
+                        <tr>
+                            <th class="w3-cell-top w3-right-align mp-padding-right-5">Bankovní účet:</th>
+                            <td class="w3-cell-top w3-left-align">
+                                {{ invoice.subscriber.getAccountNumber() }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if(invoice.subscriber.getIban() is not null) %}
+                        <tr>
+                            <th class="w3-cell-top w3-right-align mp-padding-right-5">IBAN:</th>
+                            <td class="w3-cell-top w3-left-align">
+                                {{ invoice.subscriber.getIban() }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-row w3-gray w3-padding-small">
+        <div class="w3-third w3-container">
+        </div>
+        <div class="w3-third w3-container">
+            <table>
+                <tr>
+                    <th class="w3-right-align">Datum vystavení:</th>
+                    <td class="w3-left-align">{{ invoice.invoiceCreated|date('d.m. Y') }}</td>
+                </tr>
+                <tr>
+                    <th class="w3-right-align">Datum splatnosti:</th>
+                    <td class="w3-left-align">{{ invoice.dueDate|date('d.m. Y') }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="w3-third w3-container">
+            <table>
+                <tr>
+                    <th class="w3-right-align">Forma úhrady:</th>
+                    <td class="w3-left-align">{{ invoice.paymentType }}</td>
+                </tr>
+                <tr>
+                    <th class="w3-right-align">Variabilní symbol:</th>
+                    <td class="w3-left-align">{{ invoice.vs }}</td>
+                </tr>
+                <tr>
+                    <th class="w3-right-align">Konstatní symbol:</th>
+                    <td class="w3-left-align">{{ invoice.ks }}</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="w3-row">
+        <div class="w3-col">
+            <table class="w3-table-all w3-striped w3-border w3-centered">
+                <thead>
+                <tr>
+                    <th dir="ltr">Položka</th>
+                    <th dir="ltr">Cena</th>
+                    <th dir="ltr">DPH</th>
+                    <th dir="ltr">Sleva</th>
+                    <th dir="ltr">Množství</th>
+                    <th dir="ltr">Celková cena</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for invoiceItem in invoice.invoiceItems %}
+                    <tr data-id="{{ invoiceItem.id }}">
+                        <td dir="ltr"><span title="{{ invoiceItem.name }}">{{ invoiceItem.name }}</span></td>
+                        <td dir="ltr"><span
+                                    title="{{ invoiceItem.price }}">{{ ((invoiceItem.price + invoiceItem.marginTotal)/100)|format_currency('CZK') }}</span>
+                        </td>
+                        <td dir="ltr"><span title="{{ invoiceItem.vat }}">{{ invoiceItem.vat.percent }} %</span></td>
+                        <td dir="ltr"><span title="{{ invoiceItem.discount }}">{{ invoiceItem.discount }}</span></td>
+                        <td dir="ltr"><span title="{{ invoiceItem.unitCount }}">{{ (invoiceItem.unitCount/100) }}</span>
+                        </td>
+                        <td dir="ltr"><span
+                                    title="{{ (invoiceItem.priceTotalIncVat) }}">{{ (invoiceItem.priceTotalIncVat/100)|format_currency('CZK') }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
