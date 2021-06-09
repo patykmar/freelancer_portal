@@ -17,6 +17,9 @@ use DateTimeInterface;
  */
 class Invoice
 {
+    /** @const int MAX_DUE_DAYS */
+    public const MAX_DUE_DAYS = 130;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -52,17 +55,17 @@ class Invoice
     /**
      * @ORM\Column(type="datetime")
      */
-    private DateTime $invoice_created;
+    private DateTimeInterface $invoice_created;
 
     /**
      * @ORM\Column(type="date")
      */
-    private DateTime $due_date;
+    private DateTimeInterface $due_date;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private DateTime $payment_day;
+    private ?DateTime $payment_day = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
@@ -73,12 +76,12 @@ class Invoice
     /**
      * @ORM\Column(type="string", length=20, unique=true, nullable=true)
      */
-    private string $vs;
+    private ?string $vs = null;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private string $ks;
+    private ?string $ks = null;
 
     /**
      * @ORM\OneToMany(targetEntity=InvoiceItem::class, mappedBy="invoice", orphanRemoval=true, cascade={"persist"})
@@ -101,36 +104,36 @@ class Invoice
         return $this->id;
     }
 
-    public function getSupplier(): ?Company
+    public function getSupplier(): Company
     {
         return $this->supplier;
     }
 
-    public function setSupplier(?Company $supplier): self
+    public function setSupplier(Company $supplier): self
     {
         $this->supplier = $supplier;
 
         return $this;
     }
 
-    public function getSubscriber(): ?Company
+    public function getSubscriber(): Company
     {
         return $this->subscriber;
     }
 
-    public function setSubscriber(?Company $subscriber): self
+    public function setSubscriber(Company $subscriber): self
     {
         $this->subscriber = $subscriber;
 
         return $this;
     }
 
-    public function getPaymentType(): ?paymentType
+    public function getPaymentType(): paymentType
     {
         return $this->payment_type;
     }
 
-    public function setPaymentType(?paymentType $payment_type): self
+    public function setPaymentType(paymentType $payment_type): self
     {
         $this->payment_type = $payment_type;
 
@@ -185,12 +188,12 @@ class Invoice
         return $this;
     }
 
-    public function getUserCreated(): ?User
+    public function getUserCreated(): User
     {
         return $this->user_created;
     }
 
-    public function setUserCreated(?User $user_created): self
+    public function setUserCreated(User $user_created): self
     {
         $this->user_created = $user_created;
 
