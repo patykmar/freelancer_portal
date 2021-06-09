@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Doctrine\ORM\NonUniqueResultException;
+use DateTime;
 
 class InvoiceCrudController extends AbstractCrudController
 {
@@ -56,27 +57,36 @@ class InvoiceCrudController extends AbstractCrudController
 
         // in case I'm editing or adding item show InvoiceItems
         switch ($pageName) {
-            case Crud::PAGE_NEW:
+               case Crud::PAGE_NEW:
+                   $invoiceCreated_minValue = new DateTime('-1 year');
                 // new Invoice form
+                $returnArray[] = DateTimeField::new('invoice_created')
+                    ->setFormTypeOptions([
+                        'data' => new DateTime('now'),
+                        'attr' => [
+                            'min' => $invoiceCreated_minValue->format('Y-m-d H:i:s'),
+                        ]
+                    ]);
+
                 $returnArray[] = IntegerField::new('due', 'Splatnost: ')
-                        ->setFormTypeOptions([
-                            'data' => 14,
-                            'attr' => [
-                                'min' => 1,
-                                'max' => 99,
-                            ],
-                        ])
-                        ->setHelp('Počet dní splatnost faktury')
-                        ->onlyOnForms()
-                        ->setRequired(true);
+                    ->setFormTypeOptions([
+                        'data' => 14,
+                        'attr' => [
+                            'min' => 1,
+                            'max' => 99,
+                        ],
+                    ])
+                    ->setHelp('Počet dní splatnost faktury')
+                    ->onlyOnForms()
+                    ->setRequired(true);
 
                 $returnArray[] = TextField::new('vs')
-                        ->setFormTypeOptions([
-                            'data' => $this->invoiceServices->calculateInvoiceVs(),
-                        ])
-                        ->setRequired(true);
+                    ->setFormTypeOptions([
+                        'data' => $this->invoiceServices->calculateInvoiceVs(),
+                    ])
+                    ->setRequired(true);
                 $returnArray[] = TextField::new('ks')
-                        ->setFormTypeOptions(['data' => '0308']);
+                    ->setFormTypeOptions(['data' => '0308']);
                 $returnArray[] = CollectionField::new('invoiceItems')
                     ->setEntryType(InvoiceItemFormType::class);
 
@@ -97,7 +107,7 @@ class InvoiceCrudController extends AbstractCrudController
 //                $returnArray[] = AssociationField::new('user', 'Created by: ');
                 $returnArray[] = DateTimeField::new('invoice_created');
                 $returnArray[] = IntegerField::new('due', 'Due: ');
-                $returnArray[] = DateTimeField::new('due_date','Due date: ');
+                $returnArray[] = DateTimeField::new('due_date', 'Due date: ');
                 $returnArray[] = CollectionField::new('invoiceItems')
                     ->setEntryType(InvoiceItemFormType::class)
                     ->setTemplatePath('admin/invoice/detail.html.twig');
