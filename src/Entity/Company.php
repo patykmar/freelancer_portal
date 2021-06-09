@@ -21,7 +21,7 @@ class Company
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private $id;
+    private int $id = 0;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -31,17 +31,17 @@ class Company
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $description;
+    private ?string $description = null;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private string $company_id;
+    private ?string $company_id = null;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private string $vat_number;
+    private ?string $vat_number = null;
 
     /**
      * @ORM\Column(type="datetime")
@@ -51,43 +51,38 @@ class Company
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private DateTimeInterface $modify;
+    private ?DateTimeInterface $modify = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $street;
-
-    public function __toString()
-    {
-        return $this->getName();
-    }
+    private ?string $street = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $city;
+    private ?string $city = null;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
      */
-    private string $zip_code;
+    private ?string $zip_code = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private Country $country;
+    private ?Country $country = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $account_number;
+    private ?string $account_number = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $iban;
+    private ?string $iban = null;
 
     /**
      * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="company", orphanRemoval=true)
@@ -294,5 +289,13 @@ class Company
         $this->isSupplier = $isSupplier;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }
