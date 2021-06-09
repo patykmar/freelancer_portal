@@ -50,8 +50,8 @@
                                 <td class="text- field-text" dir="ltr"><span title="{{ item[0].company }}">{{ item[0].company }}</span></td>
                                 <td class="text-nowrap align-middle" dir="ltr">{{ item[0].tariff }}</td>
                                 <td class="text-nowrap align-middle" dir="ltr">{{ item.workDurationTotal }} hod.</td>
-                                <td class="text-right field-money" dir="ltr">{{ item.tariffPrice }} Kč</td>
-                                <td class="text-right field-money" dir="ltr">{{ item.totalPrice }} Kč</td>
+                                <td class="text-right field-money" dir="ltr">{{ (item.tariffPrice/100)|format_currency('CZK', {fraction_digit: 0}, locale='cz') }}</td>
+                                <td class="text-right field-money" dir="ltr">{{ (item.totalPrice/100)|format_currency('CZK', {fraction_digit: 0}, locale='cz') }}</td>
                                 <td class="actions">
                                     <a class="action-edit" href="{{ path('work_inventory_generate_invoice_by_company', {'companyId': item[0].company.getId()}) }}" title="Vytvoř fakturu pro společnost">Vytvoř fakturu</a>
                                 </td>
