@@ -4,7 +4,8 @@
 namespace App\Controller;
 
 use App\Repository\InvoiceRepository;
-use Dompdf\Dompdf;
+use Mpdf\Mpdf;
+use Mpdf\MpdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,6 @@ class InvoiceController extends AbstractController
     private InvoiceRepository $invoiceRepository;
     private ParameterBagInterface $parameterBag;
 
-    private Dompdf $dompdf;
 
     /**
      * InvoiceController constructor.
@@ -26,28 +26,41 @@ class InvoiceController extends AbstractController
     {
         $this->invoiceRepository = $invoiceRepository;
         $this->parameterBag = $parameterBag;
-        $this->dompdf = new Dompdf();
     }
 
 
     /**
      * @Route("/invoice/generate-pdf/{invoiceId}", name="inventory_generate_pdf", requirements={"invoiceId"="\d+"})
+     * @throws MpdfException
      */
     public function generatePdfInvoice(int $invoiceId): void
     {
         $invoice = $this->invoiceRepository->find($invoiceId);
+        $totalPrice = 0;
+        $totalDiscount = 0;
+
+        foreach ($invoice->getInvoiceItems() as $item) {
+            $totalPrice += $item->getPrice() + $item->getMarginTotal();
+            $totalDiscount += $item->getDiscountTotal();
+        }
+
+        $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
 
 
         $html = $this->renderView('Invoice/Invoice-detail.html.twig', [
             'invoice' => $invoice,
+            'total_price' => $totalPrice,
+            'total_discount' => $totalDiscount,
         ]);
-        $this->dompdf->loadHtml($html);
-        $this->dompdf->setPaper('A4');
-        $this->dompdf->render();
 
-        $this->dompdf->stream($this->parameterBag->get('kernel.project_dir'). '/public/pdf/' . $invoice->getVs() . '.pdf',
-            ['Attachment' => false]
-        );
+        $mpdf->WriteHTML($html);
+
+        $mpdf->Output();
+
+
+//        $this->dompdf->stream($this->parameterBag->get('kernel.project_dir'). '/public/pdf/' . $invoice->getVs() . '.pdf',
+//            ['Attachment' => false]
+//        );
     }
 
     /**
@@ -56,10 +69,19 @@ class InvoiceController extends AbstractController
     public function generateHtmlInvoice(int $invoiceId): Response
     {
         $invoice = $this->invoiceRepository->find($invoiceId);
+        $totalPrice = 0;
+        $totalDiscount = 0;
 
+
+        foreach ($invoice->getInvoiceItems() as $item) {
+            $totalPrice += $item->getPrice() + $item->getMarginTotal();
+            $totalDiscount += $item->getDiscountTotal();
+        }
 
         return $this->render('Invoice/Invoice-detail.html.twig', [
             'invoice' => $invoice,
+            'total_price' => $totalPrice,
+            'total_discount' => $totalDiscount,
         ]);
     }
 }
