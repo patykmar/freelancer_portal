@@ -66,6 +66,8 @@ class InvoiceCrudController extends AbstractCrudController
         $dueIntegerField = IntegerField::new('due', 'Days due: ')
             ->setRequired(true);
 
+        $dueDateDateTimeField = DateTimeField::new('due_date', 'Due date: ');
+
         $vsTextField = TextField::new('vs', 'Variable symbol: ')
             ->setRequired(true);
 
@@ -120,7 +122,7 @@ class InvoiceCrudController extends AbstractCrudController
                 $returnArray[] = $invoiceCreatedDateTimeField;
                 $returnArray[] = $vsTextField;
                 $returnArray[] = $dueIntegerField;
-                $returnArray[] = DateTimeField::new('due_date', 'Due date: ');
+                $returnArray[] = $dueDateDateTimeField;
                 $returnArray[] = $invoiceItemsCollectionField
                     ->setTemplatePath('admin/invoice/detail.html.twig');
                 unset($userCreatedAssociationField,$invoiceCreatedDateTimeField,$vsTextField,$dueIntegerField,$invoiceItemsCollectionField);
@@ -128,6 +130,7 @@ class InvoiceCrudController extends AbstractCrudController
             default:
                 // Crud::PAGE_INDEX
                 $returnArray[] = $vsTextField;
+                $returnArray[] = $dueDateDateTimeField;
                 return $returnArray;
         }
 
