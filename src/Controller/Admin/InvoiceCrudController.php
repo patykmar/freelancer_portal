@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Invoice;
-use App\Form\InvoiceItemEditFormType;
 use App\Form\InvoiceItemFormType;
 use App\Services\InvoiceServices;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -16,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Doctrine\ORM\NonUniqueResultException;
+use DateTime;
 
 class InvoiceCrudController extends AbstractCrudController
 {
@@ -44,66 +44,93 @@ class InvoiceCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         // prepare fields which want to show
-        $returnArray = [
+        $returnArray[] =
             AssociationField::new('supplier', 'Dodavatel: ')
-                ->setRequired(true),
+                ->setRequired(true);
+        $returnArray[] =
             AssociationField::new('subscriber', 'Odběratel: ')
-                ->setRequired(true),
+                ->setRequired(true);
+        $returnArray[] =
             AssociationField::new('payment_type', 'Forma úhrady: ')
-                ->setRequired(true),
-        ];
+                ->setRequired(true);
+        $userCreatedAssociationField = AssociationField::new('user_created', 'Created by: ');
+
+        $invoiceCreatedDateTimeField =
+            DateTimeField::new('invoice_created');
+        if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Firefox')) {
+            // fix FireFox bug https://bugzil.la/888320
+            // more info https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local
+            $invoiceCreatedDateTimeField->renderAsNativeWidget(false);
+        }
+
+        $dueIntegerField = IntegerField::new('due', 'Days due: ')
+            ->setRequired(true);
+
+        $vsTextField = TextField::new('vs', 'Variable symbol: ')
+            ->setRequired(true);
+
+        $ksTextField = TextField::new('ks', 'Constant symbol: ');
+
+        $invoiceItemsCollectionField = CollectionField::new('invoiceItems', 'Invoice Items: ')
+            ->setEntryType(InvoiceItemFormType::class);
 
 
         // in case I'm editing or adding item show InvoiceItems
         switch ($pageName) {
             case Crud::PAGE_NEW:
                 // new Invoice form
-                $returnArray[] = IntegerField::new('due', 'Splatnost: ')
-                        ->setFormTypeOptions([
-                            'data' => 14,
-                            'attr' => [
-                                'min' => 1,
-                                'max' => 99,
-                            ],
-                        ])
-                        ->setHelp('Počet dní splatnost faktury')
-                        ->onlyOnForms()
-                        ->setRequired(true);
+                $returnArray[] = $invoiceCreatedDateTimeField->setFormTypeOptions([
+                    'data' => new DateTime('now'),
+                ]);
 
-                $returnArray[] = TextField::new('vs')
-                        ->setFormTypeOptions([
-                            'data' => $this->invoiceServices->calculateInvoiceVs(),
-                        ])
-                        ->setRequired(true);
-                $returnArray[] = TextField::new('ks')
-                        ->setFormTypeOptions(['data' => '0308']);
-                $returnArray[] = CollectionField::new('invoiceItems')
-                    ->setEntryType(InvoiceItemFormType::class);
+                $returnArray[] = $dueIntegerField->setFormTypeOptions([
+                    'data' => 14,
+                    'attr' => [
+                        'min' => 1,
+                        'max' => Invoice::MAX_DUE_DAYS,
+                    ],
+                ])
+                    ->setHelp('Number of days due invoice')
+                    ->onlyOnForms()
+                    ->setRequired(true);
 
+                $returnArray[] = $vsTextField->setFormTypeOptions([
+                    'data' => $this->invoiceServices->calculateInvoiceVs(),
+                ]);
+                $returnArray[] = $ksTextField->setFormTypeOptions(['data' => '0308']);
+                $returnArray[] = $invoiceItemsCollectionField;
+
+                unset($invoiceCreatedDateTimeField, $dueIntegerField, $vsTextField, $ksTextField, $invoiceItemsCollectionField);
                 return $returnArray;
 
             case Crud::PAGE_EDIT:
-                $returnArray[] = IntegerField::new('due', 'Due: ')
-                    ->setRequired(true);
-                $returnArray[] = TextField::new('vs', 'Variable symbol: ')
-                    ->setRequired(true);
-                $returnArray[] = CollectionField::new('invoiceItems')
-                    ->setEntryType(InvoiceItemEditFormType::class)
+                $returnArray[] = $userCreatedAssociationField;
+                $returnArray[] = $dueIntegerField;
+                $returnArray[] = $vsTextField;
+                $returnArray[] = $ksTextField;
+                $returnArray[] = $invoiceItemsCollectionField
                     //TODO: nefunguje nacteni sablony
                     ->setTemplatePath('admin/invoice/invoiceItemForm.html.twig');
+
+                unset($dueIntegerField, $vsTextField, $ksTextField, $invoiceItemsCollectionField);
                 return $returnArray;
 
             case Crud::PAGE_DETAIL:
-//                $returnArray[] = AssociationField::new('user', 'Created by: ');
-                $returnArray[] = DateTimeField::new('invoice_created');
-                $returnArray[] = IntegerField::new('due', 'Due: ');
-                $returnArray[] = DateTimeField::new('due_date','Due date: ');
-                $returnArray[] = CollectionField::new('invoiceItems')
-                    ->setEntryType(InvoiceItemFormType::class)
+                $returnArray[] = $userCreatedAssociationField;
+                $returnArray[] = $invoiceCreatedDateTimeField;
+                $returnArray[] = $vsTextField;
+                $returnArray[] = $dueIntegerField;
+                $returnArray[] = DateTimeField::new('due_date', 'Due date: ');
+                $returnArray[] = $invoiceItemsCollectionField
                     ->setTemplatePath('admin/invoice/detail.html.twig');
+                unset($userCreatedAssociationField,$invoiceCreatedDateTimeField,$vsTextField,$dueIntegerField,$invoiceItemsCollectionField);
+                return $returnArray;
+            default:
+                // Crud::PAGE_INDEX
+                $returnArray[] = $vsTextField;
                 return $returnArray;
         }
-        return $returnArray;
+
     }
 
     public function configureActions(Actions $actions): Actions
