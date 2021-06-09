@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use DateTime;
 
 class WorkInventoryCrudController extends AbstractCrudController
 {
@@ -21,59 +22,54 @@ class WorkInventoryCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $fieldConfig = [
-            IdField::new('id')
-                ->onlyOnIndex(),
-            TextField::new('description', 'Popis')
-                ->setMaxLength(30),
-            AssociationField::new('tariff'),
-            AssociationField::new('company')
-        ];
+        $idField = IdField::new('id')
+            ->onlyOnIndex();
+        $descriptionTextField = TextField::new('description', 'Description: ')
+            ->setMaxLength(30);
+        $tariffAssociationField = AssociationField::new('tariff')
+            ->setRequired(true);
+        $companyAssociationField = AssociationField::new('company')
+            ->setRequired(true);
 
-        // fix FireFox bug https://bugzil.la/888320
-        // more info https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local
+        $workStartDateTimeField = DateTimeField::new('work_start');
+        $workEndDateTimeField = DateTimeField::new('work_end')
+            ->onlyOnForms();
+
         if (str_contains($_SERVER['HTTP_USER_AGENT'], 'Firefox')) {
-            $fieldConfig[] =
-                DateTimeField::new('work_start')
-                    ->renderAsNativeWidget(false);
-            $fieldConfig[] =
-                DateTimeField::new('work_end')
-                    ->onlyOnForms()
-                    ->renderAsNativeWidget(false);
-        } else {
-            $fieldConfig[] =
-                DateTimeField::new('work_start');
-            $fieldConfig[] =
-                DateTimeField::new('work_end')
-                    ->onlyOnForms();
+            // fix FireFox bug https://bugzil.la/888320
+            // more info https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local
+            $workStartDateTimeField->renderAsNativeWidget(false);
+            $workEndDateTimeField->renderAsNativeWidget(false);
+        }
+        $workDurationNumberField = NumberField::new('work_duration')
+            ->onlyOnIndex();
+
+        if (Crud::PAGE_NEW == $pageName) {
+            $workStartDateTimeField->setFormTypeOptions([
+                'data' => new DateTime('now'),
+            ]);
         }
 
-
-        if ($pageName === Crud::PAGE_INDEX) {
-            $fieldConfig[] = NumberField::new('work_duration');
-        }
-
-
-        return $fieldConfig;
+        return [
+            $idField,
+            $descriptionTextField,
+            $tariffAssociationField,
+            $companyAssociationField,
+            $workStartDateTimeField,
+            $workEndDateTimeField,
+            $workDurationNumberField,
+        ];
     }
+
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
             // ->showEntityActionsAsDropdown()// ...
-            ->setPageTitle(Crud::PAGE_INDEX, 'Pracovní výkaz')
+            ->setPageTitle(Crud::PAGE_INDEX, 'Work inventory')
+            ->setPageTitle(Crud::PAGE_NEW, 'Create work inventory')
+            ->setPageTitle(Crud::PAGE_EDIT, 'Edit work inventory')
             ->setDefaultSort(['id' => 'DESC']);
     }
-
-//    public function configureFilters(Filters $filters): Filters
-//    {
-//        return $filters
-//            ->add(ArrayFilter::new('id'))
-////            ->add('tarif')
-//            // most of the times there is no need to define the
-//            // filter type because EasyAdmin can guess it automatically
-//           # ->add(BooleanFilter::new('published'))
-//            ;
-//    }
 
 }
