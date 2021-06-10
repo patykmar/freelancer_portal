@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTime;
 
 class InvoiceController extends AbstractController
 {
@@ -38,6 +39,8 @@ class InvoiceController extends AbstractController
         $invoice = $this->invoiceRepository->find($invoiceId);
         $totalPrice = 0;
         $totalDiscount = 0;
+        $today = new DateTime('now');
+        $filename = $today->format('Ymdhis').'_'.$invoice->getVs().'.pdf';
 
         foreach ($invoice->getInvoiceItems() as $item) {
             $totalPrice += $item->getPrice() + $item->getMarginTotal();
@@ -55,9 +58,10 @@ class InvoiceController extends AbstractController
 
         $mpdf->WriteHTML($html);
 
-        $mpdf->Output();
+        /** @link http://mpdf.github.io/reference/mpdf-functions/output.html */
+        $mpdf->Output($filename,'I');
 
-
+// Save files
 //        $this->dompdf->stream($this->parameterBag->get('kernel.project_dir'). '/public/pdf/' . $invoice->getVs() . '.pdf',
 //            ['Attachment' => false]
 //        );
