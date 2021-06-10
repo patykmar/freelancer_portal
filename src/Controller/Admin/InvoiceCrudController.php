@@ -57,8 +57,8 @@ class InvoiceCrudController extends AbstractCrudController
 
         // in case I'm editing or adding item show InvoiceItems
         switch ($pageName) {
-               case Crud::PAGE_NEW:
-                   $invoiceCreated_minValue = new DateTime('-1 year');
+            case Crud::PAGE_NEW:
+                $invoiceCreated_minValue = new DateTime('-1 year');
                 // new Invoice form
                 $returnArray[] = DateTimeField::new('invoice_created')
                     ->setFormTypeOptions([
@@ -118,18 +118,16 @@ class InvoiceCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $viewInvoiceHtml = Action::new('viewInvoiceHtml','PDF', 'fas fa-file-pdf');
-        $viewInvoiceHtml->linkToRoute('inventory_generate_pdf',function (Invoice $invoice):array{
-            return[
-                'invoiceId' => $invoice->getId(),
-            ];
-        })
-        ;
+        $viewInvoiceHtml = Action::new('viewInvoiceHtml', 'PDF', 'fas fa-file-pdf');
+        $viewInvoiceHtml
+            ->linkToRoute('inventory_generate_pdf', function (Invoice $invoice): array {
+                return ['invoiceId' => $invoice->getId()];
+            })
+            ->setHtmlAttributes(['target' => '_blank']);
 
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->add(Crud::PAGE_INDEX, $viewInvoiceHtml)
-            ;
+            ->add(Crud::PAGE_INDEX, $viewInvoiceHtml);
 
     }
 
