@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- scaling / responzivita -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Invoice {{ invoice.vs }}</title>
+
+    <style lang="text/css">
+        body{
+            font-size: 10px;
+            color: black;
+            font-family: 'DejaVuSans';
+        }
+    </style>
+
+{#    <link rel="stylesheet" href="{{ asset('css/w3.css') }}"/>#}
+{#    <link rel="stylesheet" href="{{ asset('css/invoice_generate.css') }}"/>#}
+
+</head>
+<body>
+<div style="text-align: right; border-bottom: 2px solid #000; font-weight: bold; font-size: 20px;">Faktura: {{ invoice.vs }}</div>
+
+<table style="text-align: left;">
+    <tr>
+        <td style="vertical-align: top; width: 400px">
+            <span style="font-weight: bold; text-transform: uppercase;">Dodavatel:</span>
+            <table style="margin-bottom: 15px;">
+                <tr>
+                    <th style="font-weight: bold;">&nbsp;</th>
+                    <td style="font-weight: bold;">{{ invoice.supplier.getname() }}</td>
+                </tr>
+                <tr>
+                    <th style="font-weight: bold;">&nbsp;</th>
+                    <td>{{ invoice.supplier.getStreet() }}</td>
+                </tr>
+                <tr>
+                    <th style="font-weight: bold;">&nbsp;</th>
+                    <td>{{ invoice.supplier.getZipCode() }}, {{ invoice.supplier.getCity() }}</td>
+                </tr>
+                {% if(invoice.supplier.getCompanyId() is not null) %}
+                <tr>
+                    <th style="font-weight: bold; text-align: left;">IČ:</th>
+                    <td>{{ invoice.supplier.getCompanyId() }}</td>
+                </tr>
+                {% endif %}
+                {% if(invoice.supplier.getVatNumber() is not null) %}
+                <tr>
+                    <th style="font-weight: bold; text-align: left;">DIČ:</th>
+                    <td>{{ invoice.supplier.getVatNumber() }}</td>
+                </tr>
+                {% endif %}
+                {% if(invoice.supplier.getAccountNumber() is not null) %}
+                <tr>
+                    <th style="font-weight: bold; text-align: left;">Bankovní účet:</th>
+                    <td>{{ invoice.supplier.getAccountNumber() }}</td>
+                </tr>
+                {% endif %}
+                {% if(invoice.supplier.getIban() is not null) %}
+                <tr>
+                    <th style="font-weight: bold; text-align: left;">IBAN:</th>
+                    <td>{{ invoice.supplier.getIban() }}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </td>
+        <td style="vertical-align: top;">
+            <span style="font-weight: bold; text-transform: uppercase;">Odběratel:</span>
+            <table style="margin-bottom: 15px;">
+                <tr>
+                    <th style="font-weight: bold;">&nbsp;</th>
+                    <td style="font-weight: bold;">{{ invoice.subscriber.getname() }}</td>
+                </tr>
+                {% if(invoice.subscriber.getStreet() is not null) %}
+                <tr>
+                    <th style="font-weight: bold;">&nbsp;</th>
+                    <td>{{ invoice.subscriber.getStreet() }}</td>
+                </tr>
+                {% endif %}
+                {% if((invoice.subscriber.getZipCode() is not null) or
+                    (invoice.subscriber.getCity() is not null)) %}
+                <tr>
+                    <th style="font-weight: bold;">&nbsp;</th>
+                    <td>{{ invoice.subscriber.getZipCode() }}, {{ invoice.subscriber.getCity() }}</td>
+                </tr>
+                {% endif %}
+                {% if(invoice.subscriber.getCompanyId() is not null) %}
+                <tr>
+                    <td style="font-weight: bold;">IČ:</td>
+                    <td>{{ invoice.subscriber.getCompanyId() }}</td>
+                </tr>
+                {% endif %}
+                {% if(invoice.subscriber.getVatNumber() is not null) %}
+                <tr>
+                    <td style="font-weight: bold;">DIČ:</td>
+                    <td>{{ invoice.subscriber.getVatNumber() }}</td>
+                </tr>
+                {% endif %}
+                {% if(invoice.subscriber.getAccountNumber() is not null) %}
+                <tr>
+                    <td style="font-weight: bold;">Bankovní účet:</td>
+                    <td>{{ invoice.subscriber.getAccountNumber() }}</td>
+                </tr>
+                {% endif %}
+                {% if(invoice.subscriber.getIban() is not null) %}
+                <tr>
+                    <td style="font-weight: bold;">IBAN:</td>
+                    <td>{{ invoice.subscriber.getIban() }}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </td>
+    </tr>
+</table>
+
+<table style="vertical-align: top; background-color: #D9D9D9; width: 100%; color: black; font-size: 10px;  text-align: left;">
+    <tr>
+        <td>
+            <table style="vertical-align: top; width:220px">
+                <tr>
+                    <th style="text-align: left">Datum vystavení:</th>
+                    <td style="text-align: left">{{ invoice.invoiceCreated|date('d.m.Y') }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left">Datum splatnosti:</th>
+                    <td style="text-align: left">{{ invoice.dueDate|date('d.m.Y') }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left">Datum uskutečnění zdanitelného plnění:</th>
+                    <td style="text-align: left">{{ invoice.invoiceCreated|date('d.m.Y') }}</td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <table style="width:200px">
+                <tr>
+                    <th style="text-align: left">Variabilní symbol:</th>
+                    <td style="text-align: left">{{ invoice.vs }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left">Specifický symbol:</th>
+                    <td style="text-align: left">--</td>
+                </tr>
+                {% if(invoice.ks is not null) %}
+                <tr>
+                    <th style="text-align: left">Konstantní symbol:</th>
+                    <td style="text-align: left">{{ invoice.ks }}</td>
+                </tr>
+                {% endif %}
+            </table>
+        </td>
+        <td>
+            <table style="width:200px">
+                <tr>
+                    <th style="text-align: left">Forma úhrady:</th>
+                    <td style="text-align: left">{{ invoice.paymentType }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left">Číslo objednávky:</th>
+                    <td style="text-align: left">--</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left">Číslo dodávky:</th>
+                    <td style="text-align: left">--</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+
+
+<h2>Fakturujeme Vám za položky a služby:</h2>
+<div style="clear: both; margin-bottom: 15px;">
+    <table style="border-collapse: inherit; font-size: 10px; color: black;">
+        <tr style="background-color: #D9D9D9;">
+            <td style="text-align: left; width: 450px; border-color: #D9D9D9"><strong>Položka</strong></td>
+            <td style="text-align: center; width: 70px;border-color: #D9D9D9"><strong>Cena/jedn.</strong></td>
+            <td style="text-align: center; width: 50px;border-color: #D9D9D9"><strong>Počet</strong></td>
+            <td style="text-align: center; width: 50px;border-color: #D9D9D9"><strong>Sleva(%)</strong></td>
+            <td style="text-align: center; width: 100px;border-color: #D9D9D9"><strong>Suma(Kč)</strong></td>
+        </tr>
+        {% for invoiceItem in invoice.invoiceItems %}
+        <tr>
+            <td style="text-align: left;">{{ invoiceItem.name|u.truncate(75) }}</td>
+            <td style="text-align: center;">{{ ((invoiceItem.price + invoiceItem.marginTotal)/100)|format_currency('CZK', {decimal_always_shown: false}, locale='cz' ) }}</td>
+        {#  <td style="text-align: center;">{$item['pocet_polozek'].$item['jednotka']}</td> #}
+            <td style="text-align: center;">{{ (invoiceItem.unitCount/100) }}</td>
+            <td style="text-align: center;">{{ invoiceItem.discount }}</td>
+            <td style="text-align: center;">{{ (invoiceItem.priceTotalIncVat/100)|format_currency('CZK', {decimal_always_shown: false}, locale='cz') }}</td>
+        </tr>
+{#        <tr n:ifset="$item['dodatek']">#}
+{#            <td colspan="5" style="padding-left: 50px; font-style: italic; font-size: 9px;">{$item['dodatek']}</td>#}
+{#        </tr>#}
+        {% endfor %}
+    </table>
+</div>
+
+<table style="padding-top: 20px; page-break-inside: avoid;">
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <th style="text-align: right">Celkem k zaplacení:</th>
+                    <td style="text-align: right">{{ total_price|format_currency('CZK', {decimal_always_shown: false}, locale='cz' ) }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">Sleva celkem:</th>
+                    <td style="text-align: right">{{ total_discount|format_currency('CZK', {decimal_always_shown: false}, locale='cz' ) }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">Celkem k zaplacení po slevě:</th>
+                    <td style="text-align: right">{{ (total_price - total_discount)|format_currency('CZK', {decimal_always_shown: false}, locale='cz' ) }}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table style="background-color: #D9D9D9; font-size: 14pt; margin-bottom: 15px; margin-left: 352px">
+                <tr>
+                    <td>Celkem k úhradě:</td>
+                    <td style="text-align: right; font-weight: bold;">{{ (total_price - total_discount)|format_currency('CZK', {fraction_digit: 2}, locale='cz') }}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td style="text-align: left; width: 440px; font-size: 14pt; color: #999; vertical-align: top">Nejsme plátci DPH</td>
+                    <td>
+                        <div style="font-weight: bold; font-size: 8pt; text-align: center">Vystavil, razítko, podpis:</div>
+                        <img src="{{ asset('/img/razitko_scan.png') }}" alt="Razitko s podpisem" width="150px" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
