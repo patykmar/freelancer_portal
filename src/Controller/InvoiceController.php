@@ -40,7 +40,7 @@ class InvoiceController extends AbstractController
         $totalPrice = 0;
         $totalDiscount = 0;
         $today = new DateTime('now');
-        $filename = $today->format('Ymdhis').'_'.$invoice->getVs().'.pdf';
+        $filename = $today->format('Ymdhis') . '_' . $invoice->getVs() . '.pdf';
 
         foreach ($invoice->getInvoiceItems() as $item) {
             $totalPrice += $item->getPrice() + $item->getMarginTotal();
@@ -50,16 +50,22 @@ class InvoiceController extends AbstractController
         $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
 
 
-        $html = $this->renderView('Invoice/Invoice-detail.html.twig', [
+        $htmlBody = $this->renderView('Invoice/Invoice-detail.html.twig', [
             'invoice' => $invoice,
             'total_price' => $totalPrice,
             'total_discount' => $totalDiscount,
+            'total_price-total_discount' => $totalPrice - $totalDiscount,
         ]);
 
-        $mpdf->WriteHTML($html);
+        $htmlFooter = $this->renderView('Invoice/footer.html.twig', [
+            'invoice' => $invoice,
+        ]);
+
+        $mpdf->WriteHTML($htmlBody);
+        $mpdf->SetHTMLFooter($htmlFooter);
 
         /** @link http://mpdf.github.io/reference/mpdf-functions/output.html */
-        $mpdf->Output($filename,'I');
+        $mpdf->Output($filename, 'I');
 
 // Save files
 //        $this->dompdf->stream($this->parameterBag->get('kernel.project_dir'). '/public/pdf/' . $invoice->getVs() . '.pdf',
