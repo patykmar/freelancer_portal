@@ -9,7 +9,7 @@
 
     <style lang="text/css">
         body {
-            font-size: 10px;
+            font-size: 7pt;
             color: black;
             font-family: 'DejaVuSans';
         }
@@ -118,41 +118,41 @@
 <table style="vertical-align: top; background-color: #D9D9D9; width: 100%; color: black; font-size: 10px;  text-align: left;">
     <tr>
         <td>
-            <table style="vertical-align: top; width:220px">
+            <table style="vertical-align: top">
                 <tr>
-                    <th style="text-align: left">Datum vystavení:</th>
+                    <th style="text-align: right">Datum vystavení:</th>
                     <td style="text-align: left">{{ invoice.invoiceCreated|date('d.m.Y') }}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left">Datum splatnosti:</th>
+                    <th style="text-align: right">Datum splatnosti:</th>
                     <td style="text-align: left">{{ invoice.dueDate|date('d.m.Y') }}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left">Datum uskutečnění zdanitelného plnění:</th>
+                    <th style="text-align: right">Datum zdanitelného plnění:</th>
                     <td style="text-align: left">{{ invoice.invoiceCreated|date('d.m.Y') }}</td>
                 </tr>
             </table>
         </td>
         <td>
-            <table style="width:200px">
+            <table style="width:185px">
                 <tr>
-                    <th style="text-align: left">Variabilní symbol:</th>
+                    <th style="text-align: right">Variabilní symbol:</th>
                     <td style="text-align: left">{{ invoice.vs }}</td>
                 </tr>
                 <tr>
-                    <th style="text-align: left">Specifický symbol:</th>
+                    <th style="text-align: right">Specifický symbol:</th>
                     <td style="text-align: left">--</td>
                 </tr>
                 {% if(invoice.ks is not null) %}
                     <tr>
-                        <th style="text-align: left">Konstantní symbol:</th>
+                        <th style="text-align: right">Konstantní symbol:</th>
                         <td style="text-align: left">{{ invoice.ks }}</td>
                     </tr>
                 {% endif %}
             </table>
         </td>
         <td>
-            <table style="width:200px">
+            <table>
                 <tr>
                     <th style="text-align: left">Forma úhrady:</th>
                     <td style="text-align: left">{{ invoice.paymentType }}</td>
@@ -177,9 +177,9 @@
         <tr style="background-color: #D9D9D9;">
             <td style="text-align: left; width: 450px; border-color: #D9D9D9"><strong>Položka</strong></td>
             <td style="text-align: center; width: 70px;border-color: #D9D9D9"><strong>Cena/jedn.</strong></td>
-            <td style="text-align: center; width: 50px;border-color: #D9D9D9"><strong>Počet</strong></td>
+            <td style="text-align: center; width: 50px;border-color: #D9D9D9"><strong>Množství</strong></td>
             <td style="text-align: center; width: 50px;border-color: #D9D9D9"><strong>Sleva(%)</strong></td>
-            <td style="text-align: center; width: 100px;border-color: #D9D9D9"><strong>Suma(Kč)</strong></td>
+            <td style="text-align: right; width: 100px;border-color: #D9D9D9"><strong>Suma(Kč)</strong></td>
         </tr>
         {% for invoiceItem in invoice.invoiceItems %}
             <tr>
@@ -188,7 +188,7 @@
                 {# <td style="text-align: center;">{$item['pocet_polozek'].$item['jednotka']}</td> #}
                 <td style="text-align: center;">{{ (invoiceItem.unitCount/100) }}</td>
                 <td style="text-align: center;">{{ invoiceItem.discount }}</td>
-                <td style="text-align: center;">{{ (invoiceItem.priceTotalIncVat/100)|format_currency('CZK', {decimal_always_shown: false}, locale='cs') }}</td>
+                <td style="text-align: right;">{{ (invoiceItem.priceTotalIncVat/100)|format_currency('CZK', {decimal_always_shown: false}, locale='cs') }}</td>
             </tr>
             {# <tr n:ifset="$item['dodatek']"> #}
             {# <td colspan="5" style="padding-left: 50px; font-style: italic; font-size: 9px;">{$item['dodatek']}</td> #}
@@ -203,25 +203,25 @@
             <table>
                 <tr>
                     <th style="text-align: right">Celkem k zaplacení:</th>
-                    <td style="text-align: right">{{ total_price|format_currency('CZK', {decimal_always_shown: false}, locale='cs' ) }}</td>
+                    <td style="text-align: right">{{ (total_price/100)|format_currency('CZK', {fraction_digit: 2}, locale='cs' ) }}</td>
                 </tr>
                 <tr>
                     <th style="text-align: right">Sleva celkem:</th>
-                    <td style="text-align: right">{{ total_discount|format_currency('CZK', {decimal_always_shown: false}, locale='cs' ) }}</td>
+                    <td style="text-align: right">{{ (total_discount/100)|format_currency('CZK', {fraction_digit: 2}, locale='cs' ) }}</td>
                 </tr>
                 <tr>
                     <th style="text-align: right">Celkem k zaplacení po slevě:</th>
-                    <td style="text-align: right">{{ (total_price - total_discount)|format_currency('CZK', {decimal_always_shown: false}, locale='cs' ) }}</td>
+                    <td style="text-align: right">{{ ((total_price-total_discount)/100)|format_currency('CZK', {fraction_digit: 2}, locale='cs' ) }}</td>
                 </tr>
             </table>
         </td>
     </tr>
     <tr>
         <td>
-            <table style="background-color: #D9D9D9; font-size: 14pt; margin-bottom: 15px; margin-left: 352px">
+            <table style="background-color: #D9D9D9; font-size: 14pt; margin-bottom: 15px; margin-left: 350px">
                 <tr>
-                    <td>Celkem k úhradě:</td>
-                    <td style="text-align: right; font-weight: bold;">{{ (total_price - total_discount)|format_currency('CZK', {fraction_digit: 2}, locale='cs') }}</td>
+                    <td style="width: 171px">Celkem k úhradě:</td>
+                    <td style="text-align: right; font-weight: bold; min-width: 200px">{{ ((total_price-total_discount)/100)|format_currency('CZK', {fraction_digit: 2}, locale='cs') }}</td>
                 </tr>
             </table>
         </td>
