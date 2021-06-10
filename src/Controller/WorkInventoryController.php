@@ -11,13 +11,18 @@ use App\Entity\WorkInventory;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use http\Exception\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Security as UserSecurity;
 use DateTime;
+use Exception;
 
+
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 class WorkInventoryController extends AbstractController
 {
     /**
@@ -31,17 +36,17 @@ class WorkInventoryController extends AbstractController
     private EntityManagerInterface $em;
 
     /**
-     * @var Security
+     * @var UserSecurity
      */
-    private Security $security;
+    private UserSecurity $security;
 
     /**
      * WorkInventoryController constructor.
      * @param AdminUrlGenerator $adminUrlGenerator
      * @param EntityManagerInterface $em
-     * @param Security $security
+     * @param UserSecurity $security
      */
-    public function __construct(AdminUrlGenerator $adminUrlGenerator, EntityManagerInterface $em, Security $security)
+    public function __construct(AdminUrlGenerator $adminUrlGenerator, EntityManagerInterface $em, UserSecurity $security)
     {
         $this->adminUrlGenerator = $adminUrlGenerator;
         $this->em = $em;
@@ -63,7 +68,7 @@ class WorkInventoryController extends AbstractController
     /**
      * @Route("/work-inventory/generate-invoice-by-company/{companyId}", name="work_inventory_generate_invoice_by_company")
      */
-    public function showAllWorkInventoryByCompany(int $companyId)
+    public function showAllWorkInventoryByCompany(int $companyId): Response
     {
         // generate URL to EasyAdmin controller
         $destinationUrl = $this->adminUrlGenerator
@@ -75,7 +80,7 @@ class WorkInventoryController extends AbstractController
                 ->getAllUnpaidWorkItemByCompanyId($companyId);
 
             if (!(count($workItemsByCompanyId) > 1))
-                throw new InvalidArgumentException("No work inventory items which could be transformer to invoice");
+                throw new Exception("No work inventory items which could be transformer to invoice");
 
             // get company by ID
             $company = $this->em->getRepository(Company::class)
@@ -144,7 +149,7 @@ class WorkInventoryController extends AbstractController
 
 
             return $this->redirect($destinationUrl);
-        } catch (InvalidArgumentException $exception) {
+        } catch (Exception $exception) {
             $this->addFlash('danger', $exception->getMessage());
             return $this->redirect($destinationUrl);
         }
