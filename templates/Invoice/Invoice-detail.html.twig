@@ -6,14 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Invoice {{ invoice.vs }}</title>
-    <link rel="stylesheet" href="{{ asset('css/w3.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('css/invoice_generate.css') }}"/>
+
+    <style lang="text/css">
+        body{
+            font-size: 10px;
+            color: black;
+            font-family: 'DejaVuSans';
+        }
+    </style>
+
+{#    <link rel="stylesheet" href="{{ asset('css/w3.css') }}"/>#}
+{#    <link rel="stylesheet" href="{{ asset('css/invoice_generate.css') }}"/>#}
 
 </head>
 <body>
 <div style="text-align: right; border-bottom: 2px solid #000; font-weight: bold; font-size: 20px;">Faktura: {{ invoice.vs }}</div>
 
-<table class="icicialy" style="font-family: DejaVuSans; color: black; font-size: 10px;  text-align: left;">
+<table style="text-align: left;">
     <tr>
         <td style="vertical-align: top; width: 400px">
             <span style="font-weight: bold; text-transform: uppercase;">Dodavatel:</span>
@@ -105,72 +114,66 @@
     </tr>
 </table>
 
-<table style="vertical-align: top; background-color: #D9D9D9; width: 100%; font-family: DejaVuSans; color: black; font-size: 10px;  text-align: left;">
+<table style="vertical-align: top; background-color: #D9D9D9; width: 100%; color: black; font-size: 10px;  text-align: left;">
     <tr>
         <td>
-            <table width="220px" style="vertical-align: top;">
+            <table style="vertical-align: top; width:220px">
                 <tr>
-                    <th align="left">Datum vystavení:</th>
-                    <td align="left">{{ invoice.invoiceCreated|date('d.m.Y') }}</td>
+                    <th style="text-align: left">Datum vystavení:</th>
+                    <td style="text-align: left">{{ invoice.invoiceCreated|date('d.m.Y') }}</td>
                 </tr>
                 <tr>
-                    <th align="left">Datum splatnosti:</th>
-                    <td align="left">{{ invoice.dueDate|date('d.m.Y') }}</td>
+                    <th style="text-align: left">Datum splatnosti:</th>
+                    <td style="text-align: left">{{ invoice.dueDate|date('d.m.Y') }}</td>
                 </tr>
                 <tr>
-                    <th align="left">Datum uskutečnění zdanitelného plnění:</th>
-                    <td align="left">{{ invoice.invoiceCreated|date('d.m.Y') }}</td>
+                    <th style="text-align: left">Datum uskutečnění zdanitelného plnění:</th>
+                    <td style="text-align: left">{{ invoice.invoiceCreated|date('d.m.Y') }}</td>
                 </tr>
             </table>
         </td>
         <td>
-            <table width="200px">
+            <table style="width:200px">
                 <tr>
-                    <th align="left">Variabilní symbol:</th>
-                    <td align="left">{{ invoice.vs }}</td>
+                    <th style="text-align: left">Variabilní symbol:</th>
+                    <td style="text-align: left">{{ invoice.vs }}</td>
                 </tr>
                 <tr>
-                    <th align="left">Specifický symbol:</th>
-                    <td align="left">--</td>
+                    <th style="text-align: left">Specifický symbol:</th>
+                    <td style="text-align: left">--</td>
                 </tr>
                 {% if(invoice.ks is not null) %}
                 <tr>
-                    <th align="left">Konstantní symbol:</th>
-                    <td align="left">{{ invoice.ks }}</td>
+                    <th style="text-align: left">Konstantní symbol:</th>
+                    <td style="text-align: left">{{ invoice.ks }}</td>
                 </tr>
                 {% endif %}
             </table>
         </td>
         <td>
-            <table width="200px">
+            <table style="width:200px">
                 <tr>
-                    <th align="left">Forma úhrady:</th>
-                    <td align="left">{{ invoice.paymentType }}</td>
+                    <th style="text-align: left">Forma úhrady:</th>
+                    <td style="text-align: left">{{ invoice.paymentType }}</td>
                 </tr>
                 <tr>
-                    <th align="left">Číslo objednávky:</th>
-                    <td align="left">--</td>
+                    <th style="text-align: left">Číslo objednávky:</th>
+                    <td style="text-align: left">--</td>
                 </tr>
                 <tr>
-                    <th align="left">Číslo dodávky:</th>
-                    <td align="left">--</td>
+                    <th style="text-align: left">Číslo dodávky:</th>
+                    <td style="text-align: left">--</td>
                 </tr>
             </table>
         </td>
     </tr>
 </table>
 
-<style lang="text/css">
-    body{
-        font-size: 10px;
-        color: black;
-        font-family: DejaVuSans;
-    }
-</style>
+
 
 <h2>Fakturujeme Vám za položky a služby:</h2>
 <div style="clear: both; margin-bottom: 15px;">
-    <table style="border-collapse: inherit; font-size: 10px; color: black; font-family: DejaVuSans;">
+    <table style="border-collapse: inherit; font-size: 10px; color: black;">
         <tr style="background-color: #D9D9D9;">
             <td style="text-align: left; width: 450px; border-color: #D9D9D9"><strong>Položka</strong></td>
             <td style="text-align: center; width: 70px;border-color: #D9D9D9"><strong>Cena/jedn.</strong></td>
@@ -218,7 +221,7 @@
             <table style="background-color: #D9D9D9; font-size: 14pt; margin-bottom: 15px; margin-left: 352px">
                 <tr>
                     <td>Celkem k úhradě:</td>
-                    <td style="text-align: right; font-weight: bold;">{{ (total_price - total_discount)|format_currency('CZK', {decimal_always_shown: false}, locale='cz' ) }}</td>
+                    <td style="text-align: right; font-weight: bold;">{{ (total_price - total_discount)|format_currency('CZK', {fraction_digit: 2}, locale='cz') }}</td>
                 </tr>
             </table>
         </td>
