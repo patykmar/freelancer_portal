@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Invoice;
+use App\Form\InvoiceItemEditFormType;
 use App\Form\InvoiceItemFormType;
 use App\Services\InvoiceServices;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -73,9 +74,7 @@ class InvoiceCrudController extends AbstractCrudController
 
         $ksTextField = TextField::new('ks', 'Constant symbol: ');
 
-        $invoiceItemsCollectionField = CollectionField::new('invoiceItems', 'Invoice Items: ')
-            ->setEntryType(InvoiceItemFormType::class);
-
+        $invoiceItemsCollectionField = CollectionField::new('invoiceItems', 'Invoice Items: ');
 
         // in case I'm editing or adding item show InvoiceItems
         switch ($pageName) {
@@ -100,7 +99,8 @@ class InvoiceCrudController extends AbstractCrudController
                     'data' => $this->invoiceServices->calculateInvoiceVs(),
                 ]);
                 $returnArray[] = $ksTextField->setFormTypeOptions(['data' => '0308']);
-                $returnArray[] = $invoiceItemsCollectionField;
+                $returnArray[] = $invoiceItemsCollectionField
+                    ->setEntryType(InvoiceItemFormType::class);
 
                 unset($invoiceCreatedDateTimeField, $dueIntegerField, $vsTextField, $ksTextField, $invoiceItemsCollectionField);
                 return $returnArray;
@@ -111,8 +111,9 @@ class InvoiceCrudController extends AbstractCrudController
                 $returnArray[] = $vsTextField;
                 $returnArray[] = $ksTextField;
                 $returnArray[] = $invoiceItemsCollectionField
+                    ->setEntryType(InvoiceItemEditFormType::class)
                     //TODO: nefunguje nacteni sablony
-                    ->setTemplatePath('admin/invoice/invoiceItemForm.html.twig');
+                    ->setTemplatePath('admin/invoice/InvoiceItemEditFormType.html.twig');
 
                 unset($dueIntegerField, $vsTextField, $ksTextField, $invoiceItemsCollectionField);
                 return $returnArray;
