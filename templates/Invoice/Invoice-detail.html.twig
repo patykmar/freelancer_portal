@@ -184,7 +184,7 @@
         {% for invoiceItem in invoice.invoiceItems %}
             <tr>
                 <td style="text-align: left;">{{ invoiceItem.name|u.truncate(75) }}</td>
-                <td style="text-align: center;">{{ ((invoiceItem.price + invoiceItem.marginTotal)/100)|format_currency('CZK', locale='cs' ) }}</td>
+                <td style="text-align: right;">{{ ((invoiceItem.price + invoiceItem.marginTotal)/100)|format_currency('CZK', locale='cs' ) }}</td>
                 {# <td style="text-align: center;">{$item['pocet_polozek'].$item['jednotka']}</td> #}
                 <td style="text-align: center;">{{ (invoiceItem.unitCount/100) }}</td>
                 <td style="text-align: center;">{{ invoiceItem.discount }}</td>
