@@ -33,7 +33,6 @@ class InvoiceItemEditFormType extends AbstractType
                     'min' => 0.01,
                     'max' => 99999.99,
                 ],
-                'html5' => true,
             ])
             ->add('price', MoneyType::class, [
                 'currency' => 'CZK',
