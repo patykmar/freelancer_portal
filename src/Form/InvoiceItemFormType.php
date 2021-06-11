@@ -29,9 +29,11 @@ class InvoiceItemFormType extends AbstractType
             ])
             ->add('unit_count', NumberType::class, [
                 'label' => 'Počet jednotek',
+                'data' => 1.0,
                 'attr' => [
                     'min' => 0.01,
                     'max' => 99999.99,
+                    'step' => 0.25,
                 ],
                 'html5' => true,
             ])
@@ -40,6 +42,7 @@ class InvoiceItemFormType extends AbstractType
                 'help' => 'Cena za kus',
                 'required' => true,
                 'divisor' => 100,
+                'data' => 100
             ])
             ->add('discount', PercentType::class, [
                 'label' => 'Sleva',
@@ -49,6 +52,7 @@ class InvoiceItemFormType extends AbstractType
                 'attr' => [
                     'min' => 0,
                     'max' => 100,
+                    'step' => 1
                 ],
                 'html5' => true,
             ])
@@ -60,6 +64,7 @@ class InvoiceItemFormType extends AbstractType
                 'attr' => [
                     'min' => 0,
                     'max' => 999,
+                    'step' => 10,
                 ],
                 'html5' => true,
             ])
