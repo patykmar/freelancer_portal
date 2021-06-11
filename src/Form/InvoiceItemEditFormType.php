@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class InvoiceItemEditFormType extends AbstractType
 {
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
@@ -30,8 +30,8 @@ class InvoiceItemEditFormType extends AbstractType
             ->add('unit_count', NumberType::class, [
                 'label' => 'Počet jednotek',
                 'attr' => [
-                    'min' => 1,
-                    'max' => 9999,
+                    'min' => 0.01,
+                    'max' => 99999.99,
                 ],
                 'html5' => true,
             ])
