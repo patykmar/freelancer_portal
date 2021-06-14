@@ -26,7 +26,6 @@ class InvoiceItem
      */
     private Invoice $invoice;
 
-
     /**
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
@@ -35,7 +34,12 @@ class InvoiceItem
 
     /**
      * @Assert\Positive()
-     * @ORM\Column(type="float",options={"unsigned":true, "default": 0.0})
+     * @Assert\Range(
+     *     min = 0.01,
+     *     max = 999999.99,
+     *     notInRangeMessage="You must be between {{ min }}cm and {{ max }}cm tall to enter"
+     * )
+     * @ORM\Column(type="float",options={"unsigned":true, "default": 1.0})
      */
     private float $unit_count;
 
@@ -85,17 +89,25 @@ class InvoiceItem
      */
     private Vat $vat;
 
+    /**
+     * @return string|null
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getInvoice(): ?invoice
+    public function getInvoice(): invoice
     {
         return $this->invoice;
     }
 
-    public function setInvoice(?invoice $invoice): self
+    public function setInvoice(invoice $invoice): self
     {
         $this->invoice = $invoice;
 
@@ -160,11 +172,6 @@ class InvoiceItem
         $this->margin = $margin;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->getName();
     }
 
     public function getDiscountTotal(): ?int
