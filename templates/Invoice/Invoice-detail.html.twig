@@ -178,7 +178,9 @@
             <td style="text-align: left; width: 450px; border-color: #D9D9D9"><strong>Položka</strong></td>
             <td style="text-align: center; width: 70px;border-color: #D9D9D9"><strong>Cena/jedn.</strong></td>
             <td style="text-align: center; width: 50px;border-color: #D9D9D9"><strong>Množství</strong></td>
+            {% if show_discount %}
             <td style="text-align: center; width: 50px;border-color: #D9D9D9"><strong>Sleva(%)</strong></td>
+            {% endif %}
             <td style="text-align: right; width: 100px;border-color: #D9D9D9"><strong>Suma(Kč)</strong></td>
         </tr>
         {% for invoiceItem in invoice.invoiceItems %}
@@ -187,7 +189,9 @@
                 <td style="text-align: right;">{{ ((invoiceItem.price + invoiceItem.marginTotal)/100)|format_currency('CZK', locale='cs' ) }}</td>
                 {# <td style="text-align: center;">{$item['pocet_polozek'].$item['jednotka']}</td> #}
                 <td style="text-align: center;">{{ (invoiceItem.unitCount) }}</td>
+                {% if show_discount %}
                 <td style="text-align: center;">{{ invoiceItem.discount }}</td>
+                {% endif %}
                 <td style="text-align: right;">{{ (invoiceItem.priceTotalIncVat/100)|format_currency('CZK', {decimal_always_shown: false}, locale='cs') }}</td>
             </tr>
             {# <tr n:ifset="$item['dodatek']"> #}
@@ -205,6 +209,7 @@
                     <th style="text-align: right">Celkem k zaplacení:</th>
                     <td style="text-align: right">{{ (total_price/100)|format_currency('CZK', {fraction_digit: 2}, locale='cs' ) }}</td>
                 </tr>
+                {% if show_discount %}
                 <tr>
                     <th style="text-align: right">Sleva celkem:</th>
                     <td style="text-align: right">{{ (total_discount/100)|format_currency('CZK', {fraction_digit: 2}, locale='cs' ) }}</td>
@@ -213,6 +218,7 @@
                     <th style="text-align: right">Celkem k zaplacení po slevě:</th>
                     <td style="text-align: right">{{ ((total_price-total_discount)/100)|format_currency('CZK', {fraction_digit: 2}, locale='cs' ) }}</td>
                 </tr>
+                {% endif %}
             </table>
         </td>
     </tr>

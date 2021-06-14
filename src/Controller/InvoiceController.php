@@ -39,12 +39,16 @@ class InvoiceController extends AbstractController
         $invoice = $this->invoiceRepository->find($invoiceId);
         $totalPrice = 0;
         $totalDiscount = 0;
+        $showDiscount = false;
         $today = new DateTime('now');
         $filename = $today->format('Ymdhis') . '_' . $invoice->getVs() . '.pdf';
 
         foreach ($invoice->getInvoiceItems() as $item) {
             $totalPrice += ($item->getPriceTotal() + $item->getMarginTotal());
             $totalDiscount += $item->getDiscountTotal();
+            if($item->getDiscount() > 0){
+                $showDiscount = true;
+            }
         }
 
         $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
@@ -55,6 +59,7 @@ class InvoiceController extends AbstractController
             'total_price' => $totalPrice,
             'total_discount' => $totalDiscount,
             'total_price-total_discount' => $totalPrice - $totalDiscount,
+            'show_discount' => $showDiscount
         ]);
 
         $htmlFooter = $this->renderView('Invoice/footer.html.twig', [
@@ -81,17 +86,23 @@ class InvoiceController extends AbstractController
         $invoice = $this->invoiceRepository->find($invoiceId);
         $totalPrice = 0;
         $totalDiscount = 0;
+        $showDiscount = false;
 
 
         foreach ($invoice->getInvoiceItems() as $item) {
             $totalPrice += ($item->getPriceTotal() + $item->getMarginTotal());
             $totalDiscount += $item->getDiscountTotal();
+            if($item->getDiscount() > 0){
+                $showDiscount = true;
+            }
         }
 
         return $this->render('Invoice/Invoice-detail.html.twig', [
             'invoice' => $invoice,
             'total_price' => $totalPrice,
             'total_discount' => $totalDiscount,
+            'total_price-total_discount' => $totalPrice - $totalDiscount,
+            'show_discount' => $showDiscount
         ]);
     }
 }
