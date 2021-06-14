@@ -63,7 +63,7 @@ class InvoiceItemFormType extends AbstractType
                 'data' => 0,
                 'attr' => [
                     'min' => 0,
-                    'max' => 999,
+                    'max' => 9999,
                     'step' => 10,
                 ],
                 'html5' => true,
