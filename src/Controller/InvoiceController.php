@@ -44,9 +44,9 @@ class InvoiceController extends AbstractController
         $filename = $today->format('Ymdhis') . '_' . $invoice->getVs() . '.pdf';
 
         foreach ($invoice->getInvoiceItems() as $item) {
-            $totalPrice += ($item->getPriceTotal() + $item->getMarginTotal());
+            $totalPrice += $item->getPriceTotal();
             $totalDiscount += $item->getDiscountTotal();
-            if($item->getDiscount() > 0){
+            if ($item->getDiscount() > 0) {
                 $showDiscount = true;
             }
         }
@@ -90,9 +90,9 @@ class InvoiceController extends AbstractController
 
 
         foreach ($invoice->getInvoiceItems() as $item) {
-            $totalPrice += ($item->getPriceTotal() + $item->getMarginTotal());
+            $totalPrice += $item->getPriceTotal();
             $totalDiscount += $item->getDiscountTotal();
-            if($item->getDiscount() > 0){
+            if ($item->getDiscount() > 0) {
                 $showDiscount = true;
             }
         }
