@@ -192,7 +192,7 @@
                 <td style="text-align: center;">{{ (invoiceItem.unitCount) }}</td>
                 {% if show_discount %}
                 <td style="text-align: center;">{{ invoiceItem.discount }}</td>
-                <td style="text-align: right;">{{ invoiceItem.discountTotal|format_currency('CZK', locale='cs' ) }}</td>
+                <td style="text-align: right;">{{ (invoiceItem.discountTotal/100)|format_currency('CZK', locale='cs' ) }}</td>
                 {% endif %}
                 <td style="text-align: right;">{{ (invoiceItem.priceTotalIncVat/100)|format_currency('CZK', {decimal_always_shown: false}, locale='cs') }}</td>
             </tr>
