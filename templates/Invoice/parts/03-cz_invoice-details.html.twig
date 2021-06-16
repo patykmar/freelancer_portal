@@ -1,0 +1,54 @@
+<table style="vertical-align: top; background-color: #D9D9D9; width: 100%; color: black; font-size: 10px;  text-align: left;">
+    <tr>
+        <td>
+            <table style="vertical-align: top">
+                <tr>
+                    <th style="text-align: right">Datum vystavení:</th>
+                    <td style="text-align: left">{{ invoice.invoiceCreated|date('d.m.Y') }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">Datum splatnosti:</th>
+                    <td style="text-align: left">{{ invoice.dueDate|date('d.m.Y') }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">Datum zdanitelného plnění:</th>
+                    <td style="text-align: left">{{ invoice.invoiceCreated|date('d.m.Y') }}</td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <table style="width:185px">
+                <tr>
+                    <th style="text-align: right">Variabilní symbol:</th>
+                    <td style="text-align: left">{{ invoice.vs }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: right">Specifický symbol:</th>
+                    <td style="text-align: left">--</td>
+                </tr>
+                {% if(invoice.ks is not null) %}
+                    <tr>
+                        <th style="text-align: right">Konstantní symbol:</th>
+                        <td style="text-align: left">{{ invoice.ks }}</td>
+                    </tr>
+                {% endif %}
+            </table>
+        </td>
+        <td>
+            <table>
+                <tr>
+                    <th style="text-align: left">Forma úhrady:</th>
+                    <td style="text-align: left">{{ invoice.paymentType }}</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left">Číslo objednávky:</th>
+                    <td style="text-align: left">--</td>
+                </tr>
+                <tr>
+                    <th style="text-align: left">Číslo dodávky:</th>
+                    <td style="text-align: left">--</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

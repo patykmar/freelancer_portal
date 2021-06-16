@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- scaling / responzivita -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Invoice {{ invoice.vs }}</title>
+
+    <style lang="text/css">
+        body {
+            font-size: 7pt;
+            color: black;
+            font-family: 'DejaVuSans';
+        }
+    </style>
+
+    {# <link rel="stylesheet" href="{{ asset('css/w3.css') }}"/> #}
+    {# <link rel="stylesheet" href="{{ asset('css/invoice_generate.css') }}"/> #}
+
+</head>
+<body>
+<div style="text-align: right; border-bottom: 2px solid #000; font-weight: bold; font-size: 20px;">Faktura: {{ invoice.vs }}</div>

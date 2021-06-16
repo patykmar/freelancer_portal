@@ -1,0 +1,92 @@
+
+<table style="text-align: left;">
+    <tr>
+        <td style="vertical-align: top; width: 400px">
+            <span style="font-weight: bold; text-transform: uppercase;">Dodavatel:</span>
+            <table style="margin-bottom: 15px;">
+                <tr>
+                    <th style="font-weight: bold;">&nbsp;</th>
+                    <td style="font-weight: bold;">{{ invoice.supplier.getname() }}</td>
+                </tr>
+                <tr>
+                    <th style="font-weight: bold;">&nbsp;</th>
+                    <td>{{ invoice.supplier.getStreet() }}</td>
+                </tr>
+                <tr>
+                    <th style="font-weight: bold;">&nbsp;</th>
+                    <td>{{ invoice.supplier.getZipCode() }}, {{ invoice.supplier.getCity() }}</td>
+                </tr>
+                {% if(invoice.supplier.getCompanyId() is not null) %}
+                    <tr>
+                        <th style="font-weight: bold; text-align: left;">IČ:</th>
+                        <td>{{ invoice.supplier.getCompanyId() }}</td>
+                    </tr>
+                {% endif %}
+                {% if(invoice.supplier.getVatNumber() is not null) %}
+                    <tr>
+                        <th style="font-weight: bold; text-align: left;">DIČ:</th>
+                        <td>{{ invoice.supplier.getVatNumber() }}</td>
+                    </tr>
+                {% endif %}
+                {% if(invoice.supplier.getAccountNumber() is not null) %}
+                    <tr>
+                        <th style="font-weight: bold; text-align: left;">Bankovní účet:</th>
+                        <td>{{ invoice.supplier.getAccountNumber() }}</td>
+                    </tr>
+                {% endif %}
+                {% if(invoice.supplier.getIban() is not null) %}
+                    <tr>
+                        <th style="font-weight: bold; text-align: left;">IBAN:</th>
+                        <td>{{ invoice.supplier.getIban() }}</td>
+                    </tr>
+                {% endif %}
+            </table>
+        </td>
+        <td style="vertical-align: top;">
+            <span style="font-weight: bold; text-transform: uppercase;">Odběratel:</span>
+            <table style="margin-bottom: 15px;">
+                <tr>
+                    <th style="font-weight: bold;">&nbsp;</th>
+                    <td style="font-weight: bold;">{{ invoice.subscriber.getname() }}</td>
+                </tr>
+                {% if(invoice.subscriber.getStreet() is not null) %}
+                    <tr>
+                        <th style="font-weight: bold;">&nbsp;</th>
+                        <td>{{ invoice.subscriber.getStreet() }}</td>
+                    </tr>
+                {% endif %}
+                {% if((invoice.subscriber.getZipCode() is not null) or
+                    (invoice.subscriber.getCity() is not null)) %}
+                    <tr>
+                        <th style="font-weight: bold;">&nbsp;</th>
+                        <td>{{ invoice.subscriber.getZipCode() }}, {{ invoice.subscriber.getCity() }}</td>
+                    </tr>
+                {% endif %}
+                {% if(invoice.subscriber.getCompanyId() is not null) %}
+                    <tr>
+                        <td style="font-weight: bold;">IČ:</td>
+                        <td>{{ invoice.subscriber.getCompanyId() }}</td>
+                    </tr>
+                {% endif %}
+                {% if(invoice.subscriber.getVatNumber() is not null) %}
+                    <tr>
+                        <td style="font-weight: bold;">DIČ:</td>
+                        <td>{{ invoice.subscriber.getVatNumber() }}</td>
+                    </tr>
+                {% endif %}
+                {% if(invoice.subscriber.getAccountNumber() is not null) %}
+                    <tr>
+                        <td style="font-weight: bold;">Bankovní účet:</td>
+                        <td>{{ invoice.subscriber.getAccountNumber() }}</td>
+                    </tr>
+                {% endif %}
+                {% if(invoice.subscriber.getIban() is not null) %}
+                    <tr>
+                        <td style="font-weight: bold;">IBAN:</td>
+                        <td>{{ invoice.subscriber.getIban() }}</td>
+                    </tr>
+                {% endif %}
+            </table>
+        </td>
+    </tr>
+</table>
