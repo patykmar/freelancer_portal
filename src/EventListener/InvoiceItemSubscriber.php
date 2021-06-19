@@ -37,6 +37,9 @@ class InvoiceItemSubscriber implements EventSubscriber
         ];
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function prePersist(LifecycleEventArgs $args): void
     {
         if ($args->getObject() instanceof InvoiceItem) {
@@ -44,6 +47,9 @@ class InvoiceItemSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function preUpdate(LifecycleEventArgs $args): void
     {
         if ($args->getObject() instanceof InvoiceItem) {
@@ -52,39 +58,64 @@ class InvoiceItemSubscriber implements EventSubscriber
     }
 
     /**
-     * Set MarginTotal, DiscountTotal, PriceTotal, PriceTotalIncVat items before insert/update to database
+     * Set missing items before insert/update to database
      * @param InvoiceItem $invoiceItem
      */
     private function calculateTotalValues(InvoiceItem $invoiceItem)
     {
-        $marginTotal = $this->invoiceItemServices->calculateTotalMargin(
+        $marginTotal = $this->invoiceItemServices->calculateMarginTotal(
             $invoiceItem->getPrice(),
             $invoiceItem->getMargin()
         );
         $invoiceItem->setMarginTotal($marginTotal);
 
-        $discountTotal = $this->invoiceItemServices->calculateTotalDiscount(
-            ($marginTotal + $invoiceItem->getPrice()),
+        $priceIncMargin = $this->invoiceItemServices->calculatePriceIncMargin(
+            $invoiceItem->getPrice(),
+            $marginTotal
+        );
+        $invoiceItem->setPriceIncMargin($priceIncMargin);
+
+        $discountTotal = $this->invoiceItemServices->calculateDiscountTotal(
+            $priceIncMargin,
             $invoiceItem->getDiscount()
         );
         $invoiceItem->setDiscountTotal($discountTotal);
 
-        $priceTotal = $this->invoiceItemServices->calculateTotalPrice(
-            $invoiceItem->getPrice(),
-            $invoiceItem->getUnitCount(),
-            $invoiceItem->getMargin(),
-            $invoiceItem->getDiscount()
+        $priceIncMarginMinusDiscount = $this->invoiceItemServices->calculatePriceIncMarginMinusDiscount(
+            $priceIncMargin,
+            $discountTotal
         );
-        $invoiceItem->setPriceTotal($priceTotal);
+        $invoiceItem->setPriceIncMarginMinusDiscount($priceIncMarginMinusDiscount);
 
-        $priceTotalIncVat = $this->invoiceItemServices->calculateTotalPriceIncVat(
-            $priceTotal,
+        $priceIncMarginDiscountMultiVat = $this->invoiceItemServices->calculatePriceIncMarginDiscountMultiVat(
+            $priceIncMarginMinusDiscount,
             $invoiceItem->getVat()->getMultiplier()
         );
-        $invoiceItem->setPriceTotalIncVat($priceTotalIncVat);
+        $invoiceItem->setPriceIncMarginDiscountMultiVat($priceIncMarginDiscountMultiVat);
+
+        $priceIncMarginMultiVat = $this->invoiceItemServices->calculatePriceIncMarginMultiVat(
+            $priceIncMargin,
+            $invoiceItem->getVat()->getMultiplier()
+        );
+        $invoiceItem->setPriceIncMarginMultiVat($priceIncMarginMultiVat);
+
+        $totalPriceIncMarginDiscountVat = $this->invoiceItemServices->calculateTotalPriceIncMarginDiscountVat(
+            $priceIncMarginDiscountMultiVat,
+            $invoiceItem->getUnitCount()
+        );
+        $invoiceItem->setTotalPriceIncMarginDiscountVat($totalPriceIncMarginDiscountVat);
+
+        $totalPriceIncMarginVat = $this->invoiceItemServices->calculateTotalPriceIncMarginVat(
+            $priceIncMarginMultiVat,
+            $invoiceItem->getUnitCount()
+        );
+        $invoiceItem->setTotalPriceIncMarginVat($totalPriceIncMarginVat);
 
         // unset local variables
-        unset($marginTotal, $discountTotal, $priceTotal, $priceTotalIncVat);
+        unset($priceIncMargin, $marginTotal, $discountTotal, $priceTotal,
+            $priceIncMarginMinusDiscount, $priceIncMarginDiscountMultiVat,
+            $priceIncMarginMultiVat, $totalPriceIncMarginDiscountVat,
+            $totalPriceIncMarginVat);
 
     }
 
