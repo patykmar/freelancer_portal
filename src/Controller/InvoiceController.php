@@ -31,69 +31,86 @@ class InvoiceController extends AbstractController
      */
     public function generatePdfInvoice(int $invoiceId): void
     {
-        $invoice = $this->invoiceRepository->find($invoiceId);
-        $totalPrice = 0;
-        $totalDiscount = 0;
+        $invoiceFromDb = $this->invoiceRepository->find($invoiceId);
+        if (!$invoiceFromDb) {
+            throw $this->createNotFoundException('The invoice does not exist!');
+        }
+
+        $sumTotalPriceIncMarginDiscountVat = 0;
+        $sumTotalPriceIncMarginVat = 0;
         $showDiscount = false;
         $showVat = false;
         $today = new DateTime('now');
-        $filename = $today->format('Ymdhis') . '_' . $invoice->getVs() . '.pdf';
+        $filename = $today->format('Ymdhis') . '_' . $invoiceFromDb->getVs() . '.pdf';
+        $vatSum = array();
 
-        foreach ($invoice->getInvoiceItems() as $item) {
-            $totalPrice += $item->getPriceTotal();
-            $totalDiscount += $item->getDiscountTotal();
+        foreach ($invoiceFromDb->getInvoiceItems() as $item) {
+            $sumTotalPriceIncMarginDiscountVat += $item->getTotalPriceIncMarginDiscountVat();
+            $sumTotalPriceIncMarginVat += $item->getTotalPriceIncMarginVat();
             if ($item->getDiscount() > 0) {
                 $showDiscount = true;
             }
             if ($item->getVat()->getPercent() > 0) {
                 $showVat = true;
             }
+            if (!isset($vatSum[$item->getVat()->getPercent()])) {
+                $vatSum[$item->getVat()->getPercent()] = 0;
+            }
+            $vatSum[$item->getVat()->getPercent()] += ($item->getPriceIncMarginDiscountMultiVat() - $item->getPriceIncMarginMinusDiscount());
         }
+
+//        dump($sumTotalPriceIncMarginVat);
+//        dd($sumTotalPriceIncMarginDiscountVat);
+
+        $totalDiscount = $sumTotalPriceIncMarginVat - $sumTotalPriceIncMarginDiscountVat;
 
         $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
 
-
-        $htmlBody = $this->renderView('Invoice/parts/01-cz_header.html.twig',[
-            'invoice' => $invoice,
+        $htmlBody = $this->renderView('Invoice/parts/01-cz_header.html.twig', [
+            'invoice' => $invoiceFromDb,
         ]);
 
         $htmlBody .= $this->renderView('Invoice/parts/02-cz_supplier-and-subscriber-details.html.twig', [
-            'invoice' => $invoice,
+            'invoice' => $invoiceFromDb,
         ]);
 
         $htmlBody .= $this->renderView('Invoice/parts/03-cz_invoice-details.html.twig', [
-            'invoice' => $invoice,
+            'invoice' => $invoiceFromDb,
         ]);
 
-        if (!$showVat){
+        if (!$showVat) {
+            // no vat
             $htmlBody .= $this->renderView('Invoice/parts/04a-cz_invoice-items-table.html.twig', [
-                'invoice' => $invoice,
+                'invoice' => $invoiceFromDb,
                 'show_discount' => $showDiscount
             ]);
 
             $htmlBody .= $this->renderView('Invoice/parts/05a-cz_invoice-summary.html.twig', [
-                'total_price' => $totalPrice,
+                'total_price' => $sumTotalPriceIncMarginDiscountVat,
+                'total_price_with_discount' => $sumTotalPriceIncMarginVat,
                 'total_discount' => $totalDiscount,
-                'total_price_minus_total_discount' => $totalPrice - $totalDiscount,
+                'total_price_minus_total_discount' => $sumTotalPriceIncMarginDiscountVat - $totalDiscount,
                 'show_discount' => $showDiscount
             ]);
-        }else{
+        } else {
+            // show vat
             $htmlBody .= $this->renderView('Invoice/parts/04b-cz_invoice-items-table.html.twig', [
-                'invoice' => $invoice,
+                'invoice' => $invoiceFromDb,
                 'show_discount' => $showDiscount
             ]);
 
-            $htmlBody .= $this->renderView('Invoice/parts/05a-cz_invoice-summary.html.twig', [
-                'total_price' => $totalPrice,
+            $htmlBody .= $this->renderView('Invoice/parts/05b-cz_invoice-summary.html.twig', [
+                'sum_total_price_inc_margin_discount_vat' => $sumTotalPriceIncMarginDiscountVat,
+                'sum_total_price_inc_margin_vat' => $sumTotalPriceIncMarginVat,
                 'total_discount' => $totalDiscount,
-                'total_price_minus_total_discount' => $totalPrice - $totalDiscount,
-                'show_discount' => $showDiscount
+                'show_discount' => $showDiscount,
+                'vat_sum' => $vatSum,
             ]);
         }
 
 
         $htmlFooter = $this->renderView('Invoice/footer.html.twig', [
-            'invoice' => $invoice,
+            'invoice' => $invoiceFromDb,
         ]);
 
         $mpdf->WriteHTML($htmlBody);
@@ -105,6 +122,7 @@ class InvoiceController extends AbstractController
          * @link http://mpdf.github.io/reference/mpdf-functions/output.html
          */
         $mpdf->Output($filename, 'I');
+        //TODO Jun 17 09:58:34 |CRITICA| REQUES Uncaught PHP Exception Symfony\Component\HttpKernel\Exception\ControllerDoesNotReturnResponseException: "The controller must return a "Symfony\Component\HttpFoundation\Response" object but it returned null. Did you forget to add a return statement somewhere in your controller?" at /mnt/c/Users/patykmar/www/symfony/fakturacni_system/src/Controller/InvoiceController.php line 112
 
     }
 
