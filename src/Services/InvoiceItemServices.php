@@ -11,9 +11,19 @@ class InvoiceItemServices
      * @param int $margin
      * @return int
      */
-    public function calculateTotalMargin(int $price, int $margin): int
+    public function calculateMarginTotal(int $price, int $margin): int
     {
         return round((float)(($price / 100) * $margin), 0);
+    }
+
+    /**
+     * @param int $price
+     * @param int $margin
+     * @return int
+     */
+    public function calculatePriceIncMargin(int $price, int $margin): int
+    {
+        return $price + $margin;
     }
 
     /**
@@ -21,33 +31,59 @@ class InvoiceItemServices
      * @param int $discount
      * @return int
      */
-    public function calculateTotalDiscount(int $priceMargin, int $discount): int
+    public function calculateDiscountTotal(int $priceIncMargin, int $discount): int
     {
-        return round((float)(($priceMargin / 100) * $discount), 0);
+        return round((float)(($priceIncMargin / 100) * $discount), 0);
     }
 
     /**
-     * @param int $price
-     * @param float $unitCunt
-     * @param int $margin - in percent eg. 50%
-     * @param int $discount - in percent eg. 25%
+     * @param int $priceIncMargin
+     * @param int $discountTotal
      * @return int
      */
-    public function calculateTotalPrice(int $price, float $unitCunt, int $margin = 0, int $discount = 0): int
+    public function calculatePriceIncMarginMinusDiscount(int $priceIncMargin, int $discountTotal): int
     {
-        $marginTotal = $this->calculateTotalMargin($price, $margin);
-        $discountTotal = $this->calculateTotalDiscount(($price + $marginTotal), $discount);
-
-        return round((float)((($price + $marginTotal) - $discountTotal) * $unitCunt), 0);
+        return $priceIncMargin - $discountTotal;
     }
 
     /**
-     * @param int $priceTotal
+     * @param int $priceIncMarginDiscount
      * @param int $vatMultiplier
      * @return int
      */
-    public function calculateTotalPriceIncVat(int $priceTotal, int $vatMultiplier): int
+    public function calculatePriceIncMarginDiscountMultiVat(int $priceIncMarginDiscount, int $vatMultiplier): int
     {
-        return round((float)($priceTotal * ($vatMultiplier / 100)), 0);
+        return round((float)(($vatMultiplier / 100) * $priceIncMarginDiscount), 0);
     }
+
+    /**
+     * @param int $priceIncMargin
+     * @param int $vatMultiplier
+     * @return int
+     */
+    public function calculatePriceIncMarginMultiVat(int $priceIncMargin, int $vatMultiplier): int
+    {
+        return round((float)(($vatMultiplier / 100) * $priceIncMargin), 0);
+    }
+
+    /**
+     * @param int $priceIncDiscountMultiVat
+     * @param float $unitCount
+     * @return int
+     */
+    public function calculateTotalPriceIncMarginDiscountVat(int $priceIncDiscountMultiVat, float $unitCount): int
+    {
+        return round((float)($priceIncDiscountMultiVat * $unitCount), 0);
+    }
+
+    /**
+     * @param int $priceMultiVat
+     * @param float $unitCount
+     * @return int
+     */
+    public function calculateTotalPriceIncMarginVat(int $priceMultiVat, float $unitCount): int
+    {
+        return round((float)($priceMultiVat * $unitCount), 0);
+    }
+
 }
