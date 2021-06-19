@@ -27,10 +27,90 @@ class InvoiceItem
     private Invoice $invoice;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Vat::class, inversedBy="invoiceItems")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Vat $vat;
+
+    /**
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=255)
      */
     private string $name;
+
+    /**
+     * @ORM\Column(type="bigint",options={"unsigned":true, "default": 0})
+     */
+    private int $price;
+
+    /**
+     * @ORM\Column(
+     *     type="smallint",
+     *     nullable=false,
+     *     options={"unsigned":true, "default": 0, "comment": "in percent >= 0"})
+     */
+    private int $margin = 0;
+
+    /**
+     * @ORM\Column(
+     *     type="bigint",
+     *     nullable=false,
+     *     options={"unsigned":true, "default": 0, "comment": "price/100 * margin"})
+     */
+    private int $margin_total = 0;
+
+    /**
+     * @ORM\Column(
+     *     type="bigint",
+     *     nullable=false,
+     *     options={"unsigned":true, "default": 0, "comment": "price + margin"})
+     */
+    private int $price_inc_margin = 0;
+
+    /**
+     * @Assert\Range(
+     *     min = 0,
+     *     max = 100,
+     *     notInRangeMessage = "You must be between {{ min }}cm and {{ max }}cm tall to enter",
+     *     )
+     * @ORM\Column(
+     *     type="smallint",
+     *     nullable=false,
+     *     options={"unsigned":true, "default": 0, "comment":"percent discount >= 0"})
+     */
+    private int $discount = 0;
+
+    /**
+     * @ORM\Column(
+     *     type="bigint",
+     *     nullable=false,
+     *     options={"unsigned":true, "default": 0, "comment":"(price_inc_margin)/100 * discount"})
+     */
+    private int $discount_total = 0;
+
+    /**
+     * @ORM\Column(
+     *     type="bigint",
+     *     nullable=false,
+     *     options={"unsigned":true, "default": 0, "comment":"price_inc_margin - discount_total"})
+     */
+    private int $price_inc_margin_minus_discount = 0;
+
+    /**
+     * @ORM\Column(
+     *     type="bigint",
+     *     nullable=false,
+     *     options={"unsigned":true, "default": 0, "comment":"(price_inc_margin - discount_total)*vat"})
+     */
+    private int $price_inc_margin_discount_multi_vat = 0;
+
+    /**
+     * @ORM\Column(
+     *     type="bigint",
+     *     nullable=false,
+     *     options={"unsigned":true, "default": 0, "comment":"price_inc_margin*vat"})
+     */
+    private int $price_inc_margin_multi_vat = 0;
 
     /**
      * @Assert\Positive()
@@ -44,50 +124,20 @@ class InvoiceItem
     private float $unit_count;
 
     /**
-     * @ORM\Column(type="bigint",options={"unsigned":true, "default": 0})
+     * @ORM\Column(
+     *     type="bigint",
+     *     nullable=false,
+     *     options={"unsigned":true, "default": 0, "comment":"price_inc_discount_multi_vat*unit_count"})
      */
-    private int $price;
+    private int $total_price_inc_margin_discount_vat = 0;
 
     /**
-     * @Assert\Range(
-     *     min = 0,
-     *     max = 100,
-     *     notInRangeMessage = "You must be between {{ min }}cm and {{ max }}cm tall to enter",
-     *     )
-     * @ORM\Column(type="smallint",options={"unsigned":true, "default": 0})
+     * @ORM\Column(
+     *     type="bigint",
+     *     nullable=false,
+     *     options={"unsigned":true, "default": 0, "comment":"price_multi_vat*unit_count"})
      */
-    private int $discount = 0;
-
-    /**
-     * @ORM\Column(type="smallint", nullable=false, options={"unsigned":true, "default": 0})
-     */
-    private int $margin = 0;
-
-    /**
-     * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
-     */
-    private int $discount_total = 0;
-
-    /**
-     * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
-     */
-    private int $margin_total = 0;
-
-    /**
-     * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
-     */
-    private int $price_total = 0;
-
-    /**
-     * @ORM\Column(type="bigint", options={"unsigned":true, "default": 0})
-     */
-    private int $price_total_inc_vat = 0;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Vat::class, inversedBy="invoiceItems")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private Vat $vat;
+    private int $total_price_inc_margin_vat = 0;
 
     /**
      * @return string|null
@@ -110,7 +160,6 @@ class InvoiceItem
     public function setInvoice(invoice $invoice): self
     {
         $this->invoice = $invoice;
-
         return $this;
     }
 
@@ -122,7 +171,6 @@ class InvoiceItem
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -134,7 +182,6 @@ class InvoiceItem
     public function setUnitCount(float $unit_count): self
     {
         $this->unit_count = $unit_count;
-
         return $this;
     }
 
@@ -146,7 +193,6 @@ class InvoiceItem
     public function setPrice(int $price): self
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -158,7 +204,6 @@ class InvoiceItem
     public function setDiscount(int $discount): self
     {
         $this->discount = $discount;
-
         return $this;
     }
 
@@ -170,19 +215,6 @@ class InvoiceItem
     public function setMargin(int $margin): self
     {
         $this->margin = $margin;
-
-        return $this;
-    }
-
-    public function getDiscountTotal(): ?int
-    {
-        return $this->discount_total;
-    }
-
-    public function setDiscountTotal(int $discount_total): self
-    {
-        $this->discount_total = $discount_total;
-
         return $this;
     }
 
@@ -194,31 +226,90 @@ class InvoiceItem
     public function setMarginTotal(int $margin_total): self
     {
         $this->margin_total = $margin_total;
-
         return $this;
     }
 
-    public function getPriceTotal(): ?int
+    /**
+     * @return int
+     */
+    public function getPriceIncMargin(): int
     {
-        return $this->price_total;
+        return $this->price_inc_margin;
     }
 
-    public function setPriceTotal(int $price_total): self
+    /**
+     * @param int $price_inc_margin
+     * @return InvoiceItem
+     */
+    public function setPriceIncMargin(int $price_inc_margin): self
     {
-        $this->price_total = $price_total;
-
+        $this->price_inc_margin = $price_inc_margin;
         return $this;
     }
 
-    public function getPriceTotalIncVat(): ?int
+
+    public function getDiscountTotal(): ?int
     {
-        return $this->price_total_inc_vat;
+        return $this->discount_total;
     }
 
-    public function setPriceTotalIncVat(int $price_total_inc_vat): self
+    public function setDiscountTotal(int $discount_total): self
     {
-        $this->price_total_inc_vat = $price_total_inc_vat;
+        $this->discount_total = $discount_total;
+        return $this;
+    }
 
+    /**
+     * @return int
+     */
+    public function getPriceIncMarginMinusDiscount(): int
+    {
+        return $this->price_inc_margin_minus_discount;
+    }
+
+    /**
+     * @param int $price_inc_margin_minus_discount
+     * @return InvoiceItem
+     */
+    public function setPriceIncMarginMinusDiscount(int $price_inc_margin_minus_discount): self
+    {
+        $this->price_inc_margin_minus_discount = $price_inc_margin_minus_discount;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriceIncMarginDiscountMultiVat(): int
+    {
+        return $this->price_inc_margin_discount_multi_vat;
+    }
+
+    /**
+     * @param int $price_inc_margin_discount_multi_vat
+     * @return InvoiceItem
+     */
+    public function setPriceIncMarginDiscountMultiVat(int $price_inc_margin_discount_multi_vat): self
+    {
+        $this->price_inc_margin_discount_multi_vat = $price_inc_margin_discount_multi_vat;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriceIncMarginMultiVat(): int
+    {
+        return $this->price_inc_margin_multi_vat;
+    }
+
+    /**
+     * @param int $price_inc_margin_multi_vat
+     * @return InvoiceItem
+     */
+    public function setPriceIncMarginMultiVat(int $price_inc_margin_multi_vat): self
+    {
+        $this->price_inc_margin_multi_vat = $price_inc_margin_multi_vat;
         return $this;
     }
 
@@ -230,10 +321,49 @@ class InvoiceItem
         return $this->vat;
     }
 
+    /**
+     * @param Vat $vat
+     * @return $this
+     */
     public function setVat(Vat $vat): self
     {
         $this->vat = $vat;
+        return $this;
+    }
 
+    /**
+     * @return int
+     */
+    public function getTotalPriceIncMarginDiscountVat(): int
+    {
+        return $this->total_price_inc_margin_discount_vat;
+    }
+
+    /**
+     * @param int $total_price_inc_margin_discount_vat
+     * @return InvoiceItem
+     */
+    public function setTotalPriceIncMarginDiscountVat(int $total_price_inc_margin_discount_vat): self
+    {
+        $this->total_price_inc_margin_discount_vat = $total_price_inc_margin_discount_vat;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalPriceIncMarginVat(): int
+    {
+        return $this->total_price_inc_margin_vat;
+    }
+
+    /**
+     * @param int $total_price_inc_margin_vat
+     * @return InvoiceItem
+     */
+    public function setTotalPriceIncMarginVat(int $total_price_inc_margin_vat): self
+    {
+        $this->total_price_inc_margin_vat = $total_price_inc_margin_vat;
         return $this;
     }
 }
