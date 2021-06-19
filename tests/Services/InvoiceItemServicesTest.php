@@ -13,24 +13,24 @@ class InvoiceItemServicesTest extends TestCase
     public function testCalculateTotalDiscount()
     {
         $invoiceItemServices = new InvoiceItemServices();
-        $this->assertEquals(0,$invoiceItemServices->calculateTotalDiscount(135802370,0));
-        $this->assertEquals(1246913,$invoiceItemServices->calculateTotalDiscount(124691267, 1));
-        $this->assertEquals(8055158, $invoiceItemServices->calculateTotalDiscount(32220630, 25));
-        $this->assertEquals(750000, $invoiceItemServices->calculateTotalDiscount(1500000, 50));
-        $this->assertEquals(184259125, $invoiceItemServices->calculateTotalDiscount(245678833, 75));
-        $this->assertEquals(184259125, $invoiceItemServices->calculateTotalDiscount(245678833, 75));
-        $this->assertEquals(243222045, $invoiceItemServices->calculateTotalDiscount(245678833, 99));
-        $this->assertEquals(246913400, $invoiceItemServices->calculateTotalDiscount(246913400, 100));
+        $this->assertEquals(0,$invoiceItemServices->calculateDiscountTotal(135802370,0));
+        $this->assertEquals(1246913,$invoiceItemServices->calculateDiscountTotal(124691267, 1));
+        $this->assertEquals(8055158, $invoiceItemServices->calculateDiscountTotal(32220630, 25));
+        $this->assertEquals(750000, $invoiceItemServices->calculateDiscountTotal(1500000, 50));
+        $this->assertEquals(184259125, $invoiceItemServices->calculateDiscountTotal(245678833, 75));
+        $this->assertEquals(184259125, $invoiceItemServices->calculateDiscountTotal(245678833, 75));
+        $this->assertEquals(243222045, $invoiceItemServices->calculateDiscountTotal(245678833, 99));
+        $this->assertEquals(246913400, $invoiceItemServices->calculateDiscountTotal(246913400, 100));
     }
 
     public function testCalculateTotalMargin()
     {
         $invoiceItemServices = new InvoiceItemServices();
-        $this->assertEquals(0,$invoiceItemServices->calculateTotalMargin(123456700,0));
-        $this->assertEquals(1234567,$invoiceItemServices->calculateTotalMargin(123456700,1));
-        $this->assertEquals(61728350,$invoiceItemServices->calculateTotalMargin(123456700,50));
-        $this->assertEquals(122222133,$invoiceItemServices->calculateTotalMargin(123456700,99));
-        $this->assertEquals(123456700,$invoiceItemServices->calculateTotalMargin(123456700,100));
+        $this->assertEquals(0,$invoiceItemServices->calculateMarginTotal(123456700,0));
+        $this->assertEquals(1234567,$invoiceItemServices->calculateMarginTotal(123456700,1));
+        $this->assertEquals(61728350,$invoiceItemServices->calculateMarginTotal(123456700,50));
+        $this->assertEquals(122222133,$invoiceItemServices->calculateMarginTotal(123456700,99));
+        $this->assertEquals(123456700,$invoiceItemServices->calculateMarginTotal(123456700,100));
     }
 
     public function testCalculateTotalPriceNoMarginAndDiscount()
