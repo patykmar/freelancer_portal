@@ -43,7 +43,7 @@ class InvoiceItemServices
      */
     public function calculatePriceIncMarginMinusDiscount(int $priceIncMargin, int $discountTotal): int
     {
-        return $priceIncMargin - $discountTotal;
+        return round((float)($priceIncMargin - $discountTotal),0);
     }
 
     /**
