@@ -34,4 +34,16 @@ class SecurityController extends AbstractController
     {
         throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    /**
+     * @Route("/user/set-new-password", name="user_set-new-password")
+    */
+    public function setNewPassword(int $userId)
+    {
+        //TODO: create simple form for changing password
+        // user/admin should know his password, so three password input fields
+        // 1. old password
+        // 2. new password
+        // 3. retype new password
+    }
 }
