@@ -4,33 +4,25 @@
 <table class="table datagrid with-rounded-top ">
     <thead>
     <tr>
-        <th class="  text-" dir="ltr">Položka</th>
-        <th class="  text-" dir="ltr">Cena</th>
-        <th class="  text-" dir="ltr">DPH</th>
-        <th class="  text-" dir="ltr">Sleva</th>
-        <th class="  text-" dir="ltr">Marže</th>
-        <th class="  text-" dir="ltr">Množství</th>
-        <th class="  text-" dir="ltr">Celková cena</th>
-        <th dir="ltr">Actions</th>
+        <th style="padding-left: 20px">Item name</th>
+        <th>Price inc. margin</th>
+        <th style="width: 50px; text-align: center">VAT</th>
+        <th style="width: 65px; text-align: center">Discount</th>
+        <th style="width: 50px; text-align: center">Margin</th>
+        <th style="width: 45px; text-align: center">Count</th>
+        <th style="width: 150px; text-align: center">Total price</th>
     </tr>
     </thead>
     <tbody>
     {% for invoiceItem in field.value %}
         <tr data-id="{{ invoiceItem.id }}">
-            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.name }}">{{ invoiceItem.name }}</span></td>
-            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.price }}">{{ invoiceItem.price }}</span></td>
-            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.vat }}">{{ invoiceItem.vat }}</span></td>
-            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.discount }}">{{ invoiceItem.discount }}</span></td>
-            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.margin }}">{{ invoiceItem.margin }}</span></td>
-            <td class=" text- field-text" dir="ltr"><span title="{{ invoiceItem.unitCount }}">{{ invoiceItem.unitCount }}</span></td>
-            <td class=" text- field-text" dir="ltr"><span title="{{ (invoiceItem.priceTotalIncVat) }}">{{ (invoiceItem.priceTotalIncVat) }}</span></td>
-            <td class="actions">
-{#                <a class=" action-detail" href="#">Show</a>#}
-{#                <a class=" action-workItemsByCompany" href="#"><i class="action-icon fa fa-envelope"></i> Work items: </a>#}
-{#                https://symfony.com/doc/current/bundles/EasyAdminBundle/actions.html #}
-{#                <a class=" action-edit" href="#">Edit</a>#}
-{#                <a class=" action-delete text-danger" href="#" formaction="#" data-toggle="modal" data-target="#modal-delete">Delete</a>#}
-            </td>
+            <td >{{ invoiceItem.name }}</td>
+            <td style="text-align: right">{{ ((invoiceItem.priceIncMargin)/100)|format_currency('CZK', locale='cs' ) }}</td>
+            <td style="text-align: center">{{ invoiceItem.vat.percent }}%</td>
+            <td style="text-align: center">{{ invoiceItem.discount }}%</td>
+            <td style="text-align: center">{{ invoiceItem.margin }}%</td>
+            <td style="text-align: center">{{ invoiceItem.unitCount }}</td>
+            <td style="text-align: right">{{ (invoiceItem.priceIncMarginDiscountMultiVat)|format_currency('CZK', locale='cs' ) }}</td>
         </tr>
     {% endfor %}
     </tbody>
