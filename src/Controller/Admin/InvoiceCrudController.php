@@ -138,8 +138,8 @@ class InvoiceCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $viewInvoiceHtml = Action::new('viewInvoiceHtml', 'PDF', 'fas fa-file-pdf');
-        $viewInvoiceHtml
+        $viewInvoicePdf = Action::new('viewInvoiceHtml', 'PDF', 'fas fa-file-pdf');
+        $viewInvoicePdf
             ->linkToRoute('inventory_generate_pdf', function (Invoice $invoice): array {
                 return ['invoiceId' => $invoice->getId()];
             })
@@ -147,7 +147,7 @@ class InvoiceCrudController extends AbstractCrudController
 
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->add(Crud::PAGE_INDEX, $viewInvoiceHtml);
+            ->add(Crud::PAGE_INDEX, $viewInvoicePdf);
 
     }
 
