@@ -29,11 +29,11 @@ class InvoiceItemFormType extends AbstractType
             ])
             ->add('unit_count', NumberType::class, [
                 'label' => 'Počet jednotek',
-                'data' => 1.0,
+                'data' => InvoiceItem::UNIT_COUNT_DEFAUL_VALUE,
                 'attr' => [
-                    'min' => 0.01,
-                    'max' => 9999999999.99,
-                    'step' => 0.01,
+                    'min' => InvoiceItem::UNIT_COUNT_MIN_VALUE,
+                    'max' => InvoiceItem::UNIT_COUNT_MAX_VALUE,
+                    'step' => InvoiceItem::UNIT_COUNT_STEP,
                 ],
                 'html5' => true,
             ])
@@ -41,18 +41,18 @@ class InvoiceItemFormType extends AbstractType
                 'currency' => 'CZK',
                 'help' => 'Cena za kus',
                 'required' => true,
-                'divisor' => 100,
-                'data' => 100
+                'divisor' => InvoiceItem::DIVISOR,
+                'data' => InvoiceItem::PRICE_DEFAULT_VALUE,
             ])
             ->add('discount', PercentType::class, [
                 'label' => 'Sleva',
                 'help' => 'Vyjádřená v procentech',
                 'type' => 'integer',
-                'data' => 0,
+                'data' => InvoiceItem::DISCOUNT_DEFAUL_VALUE,
                 'attr' => [
-                    'min' => 0,
-                    'max' => 100,
-                    'step' => 1
+                    'min' => InvoiceItem::DISCOUNT_MIN_VALUE,
+                    'max' => InvoiceItem::DISCOUNT_MAX_VALUE,
+                    'step' => InvoiceItem::DISCOUNT_STEP_VALUE,
                 ],
                 'html5' => true,
             ])
@@ -60,11 +60,11 @@ class InvoiceItemFormType extends AbstractType
                 'label' => 'Marže',
                 'help' => 'Procentuální vyjádření marže',
                 'type' => 'integer',
-                'data' => 0,
+                'data' => InvoiceItem::MARGIN_DEFAUL_VALUE,
                 'attr' => [
-                    'min' => 0,
-                    'max' => 9999,
-                    'step' => 10,
+                    'min' => InvoiceItem::MARGIN_MIN_VALUE,
+                    'max' => InvoiceItem::MARGIN_MAX_VALUE,
+                    'step' => InvoiceItem::MARGIN_STEP_VALUE,
                 ],
                 'html5' => true,
             ])

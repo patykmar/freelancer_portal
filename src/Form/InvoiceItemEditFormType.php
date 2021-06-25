@@ -30,23 +30,23 @@ class InvoiceItemEditFormType extends AbstractType
             ->add('unit_count', NumberType::class, [
                 'label' => 'Počet jednotek',
                 'attr' => [
-                    'min' => 0.01,
-                    'max' => 99999.99,
+                    'min' => InvoiceItem::UNIT_COUNT_MIN_VALUE,
+                    'max' => InvoiceItem::UNIT_COUNT_MAX_VALUE,
                 ],
             ])
             ->add('price', MoneyType::class, [
                 'currency' => 'CZK',
                 'help' => 'Cena za kus',
                 'required' => true,
-                'divisor' => 100,
+                'divisor' => InvoiceItem::DIVISOR,
             ])
             ->add('discount', PercentType::class, [
                 'label' => 'Sleva',
                 'help' => 'Vyjádřená v procentech',
                 'type' => 'integer',
                 'attr' => [
-                    'min' => 0,
-                    'max' => 100,
+                    'min' => InvoiceItem::DISCOUNT_MIN_VALUE,
+                    'max' => InvoiceItem::DISCOUNT_MAX_VALUE,
                 ],
                 'html5' => true,
             ])
@@ -55,8 +55,8 @@ class InvoiceItemEditFormType extends AbstractType
                 'help' => 'Procentuální vyjádření marže',
                 'type' => 'integer',
                 'attr' => [
-                    'min' => 0,
-                    'max' => 999,
+                    'min' => InvoiceItem::MARGIN_MIN_VALUE,
+                    'max' => InvoiceItem::MARGIN_MAX_VALUE,
                 ],
                 'html5' => true,
             ])

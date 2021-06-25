@@ -13,6 +13,24 @@ use ApiPlatform\Core\Annotation\ApiResource;
  */
 class InvoiceItem
 {
+    public const DIVISOR = 100;
+    public const PRICE_DEFAULT_VALUE = 100;
+
+    public const UNIT_COUNT_MIN_VALUE = 0.01;
+    public const UNIT_COUNT_MAX_VALUE = 9999999999.99;
+    public const UNIT_COUNT_STEP = 0.01;
+    public const UNIT_COUNT_DEFAUL_VALUE = 1.0;
+
+    public const DISCOUNT_DEFAUL_VALUE = 0;
+    public const DISCOUNT_MIN_VALUE = 0;
+    public const DISCOUNT_MAX_VALUE = 100;
+    public const DISCOUNT_STEP_VALUE = 1;
+
+    public const MARGIN_DEFAUL_VALUE = 0;
+    public const MARGIN_MIN_VALUE = 0;
+    public const MARGIN_MAX_VALUE = 9999;
+    public const MARGIN_STEP_VALUE = 10;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
