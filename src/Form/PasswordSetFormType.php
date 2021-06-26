@@ -3,6 +3,7 @@
 
 namespace App\Form;
 
+use App\Form\EventListener\PasswordSetListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,7 +18,8 @@ class PasswordSetFormType extends AbstractType
             ->add('old-password', PasswordType::class)
             ->add('new-password', PasswordType::class)
             ->add('re-type-new-password', PasswordType::class)
-            ->add('save', SubmitType::class);
+            ->add('save', SubmitType::class)
+            ->addEventSubscriber(new PasswordSetListener());
     }
 
 }
