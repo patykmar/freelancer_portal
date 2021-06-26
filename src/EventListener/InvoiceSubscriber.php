@@ -59,7 +59,7 @@ class InvoiceSubscriber implements EventSubscriber
     }
 
     /**
-     * @param Invoice $invoice
+     * @param Object|Invoice $invoice
      * @throws Exception
      */
     private function calculateMissingValues(Invoice $invoice): void
