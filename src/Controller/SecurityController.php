@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Form\PasswordSetFormType;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -36,14 +38,23 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/user/set-new-password", name="user_set-new-password")
+     * @Route("/user/set-new-password", name="user_set-new-password", requirements={"invoiceId"="\d+"})
     */
-    public function setNewPassword(int $userId)
+    public function setNewPassword(int $userId, Request $request): Response
     {
         //TODO: create simple form for changing password
         // user/admin should know his password, so three password input fields
         // 1. old password
         // 2. new password
         // 3. retype new password
+
+
+        $form = $this->createForm(PasswordSetFormType::class);
+
+        return $this->render('security/passwordSet.html.twig',[
+            'form' => $form->createView(),
+            'customPageTitle' => 'Set password'
+        ]);
+
     }
 }
