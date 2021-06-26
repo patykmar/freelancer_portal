@@ -122,6 +122,7 @@ class WorkInventoryController extends AbstractController
             $this->em->persist($invoice);
 
             foreach ($workItemsByCompanyId as $item) {
+                //TODO: Rewrite it, because now we are using Doctrine Events where is calculate some fields
                 $invoiceItem = new InvoiceItem();
                 $invoiceItem->setName($item->getDescription());
                 $invoiceItem->setPrice($item->getTariff()->getPrice());
@@ -167,8 +168,8 @@ class WorkInventoryController extends AbstractController
         $unpaidWorkInventory = $em->getRepository(WorkInventory::class)
             ->getAllUnpaidWorkItemGroupByCompany();
 
-        //TODO: zjistit jak bude fungovat vice odvedene prace pod jinymi tarify pod jednou firmou.
-        // asi bude treba pridat dalsi sloupec do group by (Tariff)
+        //TODO: TEST how will be work with multiple tariffs under one company
+        // most probably will be needed another column
 
 //        dd($unpaidWorkInventory);
 
