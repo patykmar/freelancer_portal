@@ -7,6 +7,7 @@ use App\Repository\InvoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
 use DateTimeInterface;
@@ -193,6 +194,10 @@ class Invoice
         return $this->user_created;
     }
 
+    /**
+     * @param UserInterface|User $user_created
+     * @return $this
+     */
     public function setUserCreated(User $user_created): self
     {
         $this->user_created = $user_created;
@@ -290,7 +295,7 @@ class Invoice
      */
     public function __toString(): string
     {
-        return $this->getVs().'('.$this->subscriber->getName().')';
+        return $this->getVs() . '(' . $this->subscriber->getName() . ')';
     }
 
 
