@@ -87,6 +87,7 @@ class SecurityController extends AbstractController
             $formData = $form->getData();
             if (!($this->encoder->isPasswordValid($userInDb, $formData['old-password']))) {
                 $form->addError(new FormError('The old password is not valid!'));
+                //TODO: migrate it in to PasswordSetListener class, I can't raise form error at this time.
             }
 
             dump($userInDb);
