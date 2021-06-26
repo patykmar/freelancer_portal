@@ -33,7 +33,8 @@ class UserCrudController extends AbstractCrudController
             ->setRequired(true);
         if ($pageName == Crud::PAGE_NEW) {
             yield TextField::new('password')
-                ->setFormType(PasswordType::class);
+                ->setFormType(PasswordType::class)
+                ->setRequired(true);
         }
         yield DateTimeField::new('last_login')
             ->onlyOnIndex();
