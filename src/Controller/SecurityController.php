@@ -57,7 +57,7 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/user/set-new-password", name="user_set-new-password", requirements={"invoiceId"="\d+"})
-    */
+     */
     public function setNewPassword(int $userId, Request $request): Response
     {
 
@@ -67,7 +67,7 @@ class SecurityController extends AbstractController
             ->setAction(Crud::PAGE_INDEX);
 
         // check if user is in DB
-        $userInDb = $this->userRepository->find($userId);
+        $userFromDb = $this->userRepository->find($userId);
         if (is_null($userId)) {
             $this->addFlash('error', 'User with this ID is not in database!');
             return $this->redirect($destinationUrl);
@@ -81,18 +81,17 @@ class SecurityController extends AbstractController
 
             $formData = $form->getData();
 //TODO: persist data to DB
-            dump($userInDb);
+            dump($userFromDb);
             dd($formData);
 
 
-
-            $this->addFlash('error', 'User with this ID is not in database!');
+            $this->addFlash('notice', 'New password for user');
             return $this->redirectToRoute('task_success');
         }
 
         return $this->render('security/passwordSet.html.twig', [
             'form' => $form->createView(),
-            'customPageTitle' => 'Set password'
+            'customPageTitle' => 'Set new password for user: '.$userFromDb->__toString()
         ]);
 
     }
