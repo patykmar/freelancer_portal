@@ -6,7 +6,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use DateTime;
 use DateTimeInterface;
 
 /**
@@ -20,52 +19,55 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id = 0;
+    private int $id = 0;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $first_name;
+    private string $first_name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $last_name;
+    private string $last_name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $last_login;
+    private DateTimeInterface $last_login;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created;
+    private DateTimeInterface $created;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $password_changed;
+    private ?DateTimeInterface $password_changed = null;
 
-    public function __constructor()
+    /**
+     * @return string
+     */
+    public function __toString(): string
     {
-        $this->setCreated(new DateTime());
+        return $this->first_name." ".$this->last_name.' ('.$this->getEmail().')';
     }
 
     public function getId(): ?int
@@ -92,7 +94,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string)$this->email;
+        return $this->email;
     }
 
     /**
@@ -119,7 +121,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string)$this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
@@ -208,14 +210,5 @@ class User implements UserInterface
 
         return $this;
     }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->first_name." ".$this->last_name;
-    }
-
 
 }
