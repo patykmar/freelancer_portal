@@ -10,6 +10,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use DateTime;
+use Exception;
 
 class InvoiceFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -22,6 +23,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @param ObjectManager $manager
      * @return mixed
+     * @throws Exception
      */
     public function load(ObjectManager $manager): void
     {
@@ -30,9 +32,9 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
 
         /** @var Company $countryCz */
         $companyPatykMartin = $this->getReference(CompanyFixture::COMPANY_PATYK_MARTIN);
-        $companyPatykdesign = $this->getReference(CompanyFixture::COMPANY_PATYKDESIGN);
-        $companyVahyOpava = $this->getReference(CompanyFixture::COMPANY_VAHYOPAVA);
-        $companySedko = $this->getReference(CompanyFixture::COMPANY_SEDKO);
+        $companyVodafone = $this->getReference(CompanyFixture::COMPANY_VODAFONE_CZ);
+        $companyTmcz = $this->getReference(CompanyFixture::COMPANY_TMOBILE_CZ);
+        $companyO2cz = $this->getReference(CompanyFixture::COMPANY_O2_CZ);
 
         $userPatykmar = $this->getReference(UserFixture::USER_ADMIN_REFERENCE);
         $userUser = $this->getReference(UserFixture::USER_USER_REFERENCE);
@@ -40,66 +42,61 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
         $invoice1 = new Invoice();
         $invoice1->setPaymentType($paymentTypeBank)
             ->setSupplier($companyPatykMartin)
-            ->setSubscriber($companyPatykdesign)
+            ->setSubscriber($companyVodafone)
             ->setPaymentType($paymentTypeBank)
             ->setDue(14)
             ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
             ->setUserCreated($userPatykmar)
             ->setVs('2021000010')
             ->setKs('309');
-
         $this->setReference(self::INVOICE_01, $invoice1);
 
         $invoice2 = new Invoice();
         $invoice2->setPaymentType($paymentTypeBank)
             ->setSupplier($companyPatykMartin)
-            ->setSubscriber($companyVahyOpava)
+            ->setSubscriber($companyTmcz)
             ->setPaymentType($paymentTypeBank)
             ->setDue(14)
             ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
             ->setUserCreated($userPatykmar)
             ->setVs('2021000011')
             ->setKs('309');
-
         $this->setReference(self::INVOICE_02, $invoice2);
 
         $invoice3 = new Invoice();
         $invoice3->setPaymentType($paymentTypeBank)
             ->setSupplier($companyPatykMartin)
-            ->setSubscriber($companySedko)
+            ->setSubscriber($companyO2cz)
             ->setPaymentType($paymentTypeBank)
             ->setDue(14)
             ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
             ->setUserCreated($userPatykmar)
             ->setVs('2021000012')
             ->setKs('309');
-
         $this->setReference(self::INVOICE_03, $invoice3);
 
         $invoice4 = new Invoice();
         $invoice4->setPaymentType($paymentTypeBank)
             ->setSupplier($companyPatykMartin)
-            ->setSubscriber($companySedko)
+            ->setSubscriber($companyO2cz)
             ->setPaymentType($paymentTypeCache)
             ->setDue(14)
             ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
             ->setUserCreated($userUser)
             ->setVs('2021000013')
             ->setKs('309');
-
         $this->setReference(self::INVOICE_04, $invoice4);
 
         $invoice5 = new Invoice();
         $invoice5->setPaymentType($paymentTypeBank)
             ->setSupplier($companyPatykMartin)
-            ->setSubscriber($companySedko)
+            ->setSubscriber($companyO2cz)
             ->setPaymentType($paymentTypeCache)
             ->setDue(14)
             ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
             ->setUserCreated($userUser)
             ->setVs('2021000014')
             ->setKs('309');
-
         $this->setReference(self::INVOICE_05, $invoice5);
 
         $manager->persist($invoice1);
