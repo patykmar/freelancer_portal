@@ -298,4 +298,6 @@ class Company
     {
         return $this->getName();
     }
+
+    //TODO: add SWIFT
 }
