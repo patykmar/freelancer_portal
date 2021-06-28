@@ -7,15 +7,18 @@ use App\Entity\Country;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use \DateTime;
+use DateTime;
 
 class CompanyFixture extends Fixture implements DependentFixtureInterface
 {
-    public const COMPANY_PATYK_MARTIN = 'Ing. Martin Patyk';
-    public const COMPANY_PATYKDESIGN = 'PATYKDESIGN';
-    public const COMPANY_VAHYOPAVA = 'Vahy-opava';
-    public const COMPANY_SEDKO = 'sedko-sro';
+    public const COMPANY_PATYK_MARTIN = 'ing-patykmar';
+    public const COMPANY_VODAFONE_CZ = 'vf-cz';
+    public const COMPANY_TMOBILE_CZ = 'tm-cz';
+    public const COMPANY_O2_CZ = 'o2-cz';
+    public const COMPANY_RDRYMAROV = 'rd-rymarov';
+    public const COMPANY_CETIN_CZ = 'cetin-cz';
     public const COMPANY_MAXXNET = 'maxxnet-sro';
+    public const COMPANY_CEZ = 'cez-cz';
     public const INNOVATION_ADVISORS = 'innovation_advisors-sro';
     public const GAPPAY_SRO = 'gappay-sro';
     public const CGE_SRO = 'cge-sro';
@@ -29,57 +32,53 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
 
         $company1 = new Company();
         $company1->setName("Ing. Martin Patyk")
-            ->setDescription("Ing. Martin Patyk - Ratiborska")
+            ->setDescription("Ing. Martin Patyk - Cerna")
             ->setCompanyId("88230104")
             ->setVatNumber('CZ8707145876')
-            ->setStreet("Ratibořská 36")
+            ->setStreet("Černá 1416/5")
             ->setCity("Opava - Kateřinky ")
-            ->setZipCode("747 05")
+            ->setZipCode("74705")
             ->setAccountNumber("670100-2209225998/6210")
             ->setCreated(new DateTime("2014-01-13 22:17:20"))
             ->setIsSupplier(true)
             ->setCountry($countryCz);
-
         $this->addReference(self::COMPANY_PATYK_MARTIN, $company1);
 
         $company2 = new Company();
-        $company2->setName("PATYKDESIGN s.r.o.")
-            ->setDescription("PATYKDESIGN s.r.o. - Olomoucka")
-            ->setCompanyId("28648579")
-            ->setVatNumber('CZ28648579')
-            ->setStreet("Olomoucká 8")
-            ->setCity("Opava - Předměstí")
-            ->setZipCode("746 01")
+        $company2->setName("Vodafone Czech Republic a. s.")
+            ->setDescription("Vodafone Czech Republic a. s.")
+            ->setCompanyId("25788001")
+            ->setVatNumber('CZ25788001')
+            ->setStreet("náměstí Junkových 2")
+            ->setCity("Praha 5")
+            ->setZipCode("15500")
             ->setCreated(new DateTime("2014-01-13 22:24:39"))
             ->setCountry($countryCz);
-
-        $this->addReference(self::COMPANY_PATYKDESIGN, $company2);
+        $this->addReference(self::COMPANY_VODAFONE_CZ, $company2);
 
         $company3 = new Company();
-        $company3->setName("Opravna vah")
-            ->setDescription("Opravna vah - U cukrovaru")
-            ->setCompanyId("44197373")
-            ->setVatNumber('CZ5908041524')
-            ->setStreet("U cukrovaru 12")
-            ->setCity("Opava - Kateřinky")
-            ->setZipCode("747 05")
+        $company3->setName("T‑Mobile Czech Republic a.s.")
+            ->setDescription("T‑Mobile Czech Republic a.s.")
+            ->setCompanyId("64949681")
+            ->setVatNumber('CZ64949681')
+            ->setStreet("Tomíčkova 2144/1")
+            ->setCity("Praha 4")
+            ->setZipCode("14800")
             ->setCreated(new DateTime("2014-01-13 22:27:52"))
             ->setCountry($countryCz);
-
-        $this->addReference(self::COMPANY_VAHYOPAVA, $company3);
+        $this->addReference(self::COMPANY_TMOBILE_CZ, $company3);
 
         $company4 = new Company();
-        $company4->setName("SEDKO group s.r.o.")
-            ->setDescription("SEDKO group s.r.o.")
-            ->setCompanyId("25857355")
-            ->setVatNumber('CZ25857355')
-            ->setStreet("Rooseveltova 1940/33")
-            ->setCity("Opava")
-            ->setZipCode("746 01")
+        $company4->setName("O2 Czech Republic a.s.")
+            ->setDescription("O2 Czech Republic a.s.")
+            ->setCompanyId("60193336")
+            ->setVatNumber('CZ60193336')
+            ->setStreet("Za Brumlovkou 266/2")
+            ->setCity("Praha 4, Michle")
+            ->setZipCode("14022")
             ->setCreated(new DateTime("2014-01-13 22:31:07"))
             ->setCountry($countryCz);
-
-        $this->addReference(self::COMPANY_SEDKO, $company4);
+        $this->addReference(self::COMPANY_O2_CZ, $company4);
 
         $company5 = new Company();
         $company5->setName("RD Rýmařov s.r.o.")
@@ -88,21 +87,22 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setVatNumber('CZ18953581')
             ->setStreet("8. května 1191/45")
             ->setCity("Rýmařov")
-            ->setZipCode("795 01")
+            ->setZipCode("79501")
             ->setCreated(new DateTime("2014-01-13 22:32:26"))
             ->setCountry($countryCz);
+        $this->addReference(self::COMPANY_RDRYMAROV, $company5);
 
         $company6 = new Company();
-        $company6->setName("PH&PM Trading s.r.o.")
-            ->setDescription("PH&PM Trading s.r.o.")
-            ->setCompanyId("2784301")
-            ->setVatNumber('CZ02784301')
-            ->setStreet("Chudenická 1059/30")
-            ->setCity("Praha - Hostivař")
-            ->setZipCode("102 00")
+        $company6->setName("CETIN a.s.")
+            ->setDescription("CETIN a.s.")
+            ->setCompanyId("04084063")
+            ->setVatNumber('CZ04084063')
+            ->setStreet("Českomoravská 2510/19")
+            ->setCity("Praha 9")
+            ->setZipCode("19000")
             ->setCreated(new DateTime("2014-02-08 15:05:18"))
-            ->setAccountNumber("2400578126/2010")
             ->setCountry($countryCz);
+        $this->addReference(self::COMPANY_CETIN_CZ, $company6);
 
         $company7 = new Company();
         $company7->setName("Maxxnet.cz s.r.o.")
@@ -131,27 +131,29 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
         $this->addReference(self::GAPPAY_SRO, $company8);
 
         $company9 = new Company();
-        $company9->setName("Ondřej Patyk")
-            ->setDescription("Ondřej Patyk")
-            ->setCompanyId("75338360")
-            ->setStreet("Ratibořská 1148/36")
-            ->setCity("Opava - Kateřinky")
-            ->setZipCode("747 05")
+        $company9->setName("ČEZ, a. s.")
+            ->setDescription("ČEZ, a. s.")
+            ->setCompanyId("45274649")
+            ->setVatNumber("CZ45274649")
+            ->setStreet("Duhová 1444/2")
+            ->setCity("Praha - Michle")
+            ->setZipCode("14000")
             ->setCreated(new DateTime())
             ->setAccountNumber("2701577960/2010")
             ->setCountry($countryCz);
-
+        $this->addReference(self::COMPANY_CEZ, $company9);
 
         $company10 = new Company();
-        $company10->setName("Vladimír Patyk")
-            ->setDescription("Vladimír Patyk")
-            ->setCompanyId("44197373")
-            ->setVatNumber('CZ5908041524')
-            ->setStreet("Ratibořská 1148/36")
-            ->setCity("Opava - Kateřinky")
-            ->setZipCode("747 05")
+        $company10->setName("ŠKODA AUTO a.s.")
+            ->setDescription("ŠKODA AUTO a.s.")
+            ->setCompanyId("00177041")
+            ->setVatNumber('CZ00177041')
+            ->setStreet("tř. Václava Klementa 869")
+            ->setCity("Mladá Boleslav II")
+            ->setZipCode("29301")
             ->setCreated(new DateTime())
-            ->setAccountNumber("952444821/0100")
+            ->setAccountNumber("001-8336621-32")
+            ->setIban('BE90001833662132')
             ->setCountry($countryCz);
 
         $company11 = new Company();
