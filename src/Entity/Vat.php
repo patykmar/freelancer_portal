@@ -19,7 +19,7 @@ class Vat
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private int $id = 0;
+    private ?int $id = 0;
 
     /**
      * @ORM\Column(type="string", length=255)
