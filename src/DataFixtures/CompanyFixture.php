@@ -8,6 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use DateTime;
+use Exception;
 
 class CompanyFixture extends Fixture implements DependentFixtureInterface
 {
@@ -24,6 +25,9 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
     public const CGE_SRO = 'cge-sro';
 
 
+    /**
+     * @throws Exception
+     */
     public function load(ObjectManager $manager)
     {
         // get references from CountryFixtures class
@@ -52,7 +56,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setStreet("náměstí Junkových 2")
             ->setCity("Praha 5")
             ->setZipCode("15500")
-            ->setCreated(new DateTime("2014-01-13 22:24:39"))
+            ->setCreated(new DateTime("@".rand(946684800,time())))
             ->setCountry($countryCz);
         $this->addReference(self::COMPANY_VODAFONE_CZ, $company2);
 
