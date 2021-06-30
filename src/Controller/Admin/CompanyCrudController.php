@@ -21,37 +21,33 @@ class CompanyCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        #dd($pageName);
-
-        return [
-            TextField::new('name', 'Název firmy: '),
-            TextField::new('description', 'Popis: '),
-            TextField::new('company_id', 'IČO: ')
-                ->hideOnIndex(),
-            TextField::new('vat_number', 'DIČ: ')
-                ->hideOnIndex(),
-            TextField::new('street', 'Adresa: ')
-                ->hideOnIndex(),
-            TextField::new('city', 'Město: '),
-            TextField::new('zip_code', 'PSČ: ')
-                ->hideOnIndex(),
-            AssociationField::new('country', 'Stát: '),
-            TextField::new('account_number', 'Bankovní účet: ')
-                ->hideOnIndex(),
-            TextField::new('iban', 'IBAN: ')
-                ->hideOnIndex(),
-            CollectionField::new('workInventories')
-                ->onlyOnDetail(),
-        ];
+            yield TextField::new('name', 'Company name: ');
+            yield TextField::new('description', 'Company description: ');
+            yield TextField::new('company_id', 'Company ID: ')
+                ->hideOnIndex();
+            yield TextField::new('vat_number', 'VAT ID: ')
+                ->hideOnIndex();
+            yield TextField::new('street', 'Address: ')
+                ->hideOnIndex();
+            yield TextField::new('city', 'City: ');
+            yield TextField::new('zip_code', 'ZIP code: ')
+                ->hideOnIndex();
+            yield AssociationField::new('country', 'County: ');
+            yield TextField::new('account_number', 'Bank account: ')
+                ->hideOnIndex();
+            yield TextField::new('iban', 'IBAN: ')
+                ->hideOnIndex();
+            yield CollectionField::new('workInventories');
+//                ->onlyOnDetail();
     }
 
     public function configureActions(Actions $actions): Actions
     {
         // if the method is not defined in a CRUD controller, link to its route
-        $sendInvoice = Action::new('workItemsByCompany', 'Work items: ', 'fa fa-envelope')
+        $sendInvoice = Action::new('workItemsByCompany', 'Gen. invoice', 'fas fa-file-invoice')
             // 2) using a callable (useful if parameters depend on the entity instance)
             // (the type-hint of the function argument is optional but useful)
-            ->linkToRoute('work_inventory_by_company', function (Company $company): array {
+            ->linkToRoute('work_inventory_generate_invoice_by_company', function (Company $company): array {
                 return [
                     'companyId' => $company->getId(),
                 ];
