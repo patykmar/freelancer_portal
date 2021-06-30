@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Admin\CompanyCrudController;
 use App\Controller\Admin\InvoiceCrudController;
 use App\Entity\Company;
 use App\Entity\Invoice;
@@ -16,8 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security as UserSecurity;
-use DateTime;
-use Exception;
 
 
 /**
@@ -66,94 +65,75 @@ class WorkInventoryController extends AbstractController
     }
 
     /**
-     * @Route("/work-inventory/generate-invoice-by-company/{companyId}", name="work_inventory_generate_invoice_by_company")
+     * @Route("/work-inventory/generate-invoice-by-company/{companyId}", name="work_inventory_generate_invoice_by_company", requirements={"invoiceId"="\d+"})
      */
     public function showAllWorkInventoryByCompany(int $companyId): Response
     {
+        $companyUrl = $this->adminUrlGenerator
+            ->setController(CompanyCrudController::class)
+            ->setAction(Crud::PAGE_INDEX);
         // generate URL to EasyAdmin controller
         $destinationUrl = $this->adminUrlGenerator
             ->setController(InvoiceCrudController::class)
             ->setAction(Crud::PAGE_INDEX);
-        try {
-            // get all unpaid work
-            $workItemsByCompanyId = $this->em->getRepository(WorkInventory::class)
-                ->getAllUnpaidWorkItemByCompanyId($companyId);
 
-            if (!(count($workItemsByCompanyId) > 1))
-                throw new Exception("No work inventory items which could be transformer to invoice");
+        // get all unpaid work
+        $workItemsByCompanyId = $this->em->getRepository(WorkInventory::class)
+            ->getAllUnpaidWorkItemByCompanyId($companyId);
 
-            // get company by ID
-            $company = $this->em->getRepository(Company::class)
-                ->find($companyId);
-
-            $lastIdOfInvoice = $this->em->getRepository(Invoice::class)
-                ->getLastId();
-
-            $supplier = $this->em->getRepository(Company::class)
-                ->getSupplier();
-
-            $paymentType = $this->em->getRepository(PaymentType::class)
-                ->getDefaultEntity();
-
-
-//            dump("Last id: ");
-//            dd($lastIdOfInvoice[0]['id']);
-//
-//            dump("supplier: ");
-//            dump($supplier);
-
-
-            // how many days will be have invoice due date
-            $dueDays = $this->getParameter('invoiceDueDaysDefault');
-
-            $invoice = new Invoice();
-
-            $invoice->setInvoiceCreated(new DateTime());
-            $invoice->setDueDate(new DateTime("+" . $dueDays . " days"));
-            $invoice->setDue($dueDays);
-            $invoice->setUserCreated($this->security->getUser());
-            $invoice->setSubscriber($company);
-            $invoice->setSupplier($supplier);
-            $invoice->setPaymentType($paymentType);
-            $invoice->setVs($this->calculateVs($lastIdOfInvoice[0]['id']));
-            $invoice->setKs($this->getParameter('invoiceKsDefault'));
-
-
-            $this->em->persist($invoice);
-
-            foreach ($workItemsByCompanyId as $item) {
-                //TODO: Rewrite it, because now we are using Doctrine Events where is calculate some fields
-                $invoiceItem = new InvoiceItem();
-                $invoiceItem->setName($item->getDescription());
-                $invoiceItem->setPrice($item->getTariff()->getPrice());
-                $invoiceItem->setUnitCount($item->getWorkDuration());
-                $invoiceItem->setPriceTotal($item->getTariff()->getPrice()*$item->getWorkDuration());
-                $invoiceItem->setVat($item->getTariff()->getVat());
-                $invoiceItem->setPriceTotalIncVat($this->calculateTotalPriceIncVat($invoiceItem->getPriceTotal()));
-
-                // relates InvoiceItem with the new Invoice
-                $invoiceItem->setInvoice($invoice);
-
-                // relates WorkInventory with the new Invoice
-                $item->setInvoice($invoice);
-
-                $invoice->addWorkInventory($item);
-                $this->em->persist($invoiceItem);
-                unset($invoiceItem);
-            }
-
-
-
-            $this->em->flush();
-
-            #dd($invoice);
-
-
-            return $this->redirect($destinationUrl);
-        } catch (Exception $exception) {
-            $this->addFlash('danger', $exception->getMessage());
-            return $this->redirect($destinationUrl);
+        if (!(count($workItemsByCompanyId) > 1)) {
+            $this->addFlash('error', "No work inventory items which could be transformer to invoice");
+            $this->redirect($companyUrl);
         }
+
+        /** @var Company $company get company by ID */
+        $company = $this->em->getRepository(Company::class)
+            ->find($companyId);
+
+        /** @var Company $supplier who is supplier of services on new invoice */
+        $supplier = $this->em->getRepository(Company::class)
+            ->getSupplier();
+
+        /** @var PaymentType $paymentType */
+        $paymentType = $this->em->getRepository(PaymentType::class)
+            ->getDefaultEntity();
+
+        $invoice = new Invoice();
+
+        // how many days will be have invoice due date
+        $invoice->setDue($this->getParameter('invoiceDueDaysDefault'));
+        $invoice->setUserCreated($this->security->getUser());
+        $invoice->setSubscriber($company);
+        $invoice->setSupplier($supplier);
+        $invoice->setPaymentType($paymentType);
+        $invoice->setKs($this->getParameter('invoiceKsDefault'));
+
+        $this->em->persist($invoice);
+
+        foreach ($workItemsByCompanyId as $item) {
+            /** @var InvoiceItem $invoiceItem */
+            $invoiceItem = new InvoiceItem();
+            $invoiceItem->setName($item->getDescription());
+            $invoiceItem->setPrice($item->getTariff()->getPrice());
+            $invoiceItem->setUnitCount($item->getWorkDuration());
+            $invoiceItem->setVat($item->getTariff()->getVat());
+
+            // relates InvoiceItem with the new Invoice
+            $invoiceItem->setInvoice($invoice);
+
+            // relates WorkInventory with the new Invoice
+            $item->setInvoice($invoice);
+
+            $invoice->addWorkInventory($item);
+            $this->em->persist($invoiceItem);
+            unset($invoiceItem);
+        }
+
+
+        $this->em->flush();
+
+        $this->addFlash('notice', 'New invoice for company ' . $company->getName() . ' has been created');
+        return $this->redirect($destinationUrl);
 
 
     }
@@ -178,16 +158,4 @@ class WorkInventoryController extends AbstractController
         ]);
     }
 
-    private function calculateTotalPriceIncVat($priceTotal): float
-    {
-        $vatPercent = $this->getParameter('defaultVatPercent');
-        return $priceTotal*(($vatPercent/100) + 1);
-    }
-
-    private function calculateVs(int $lastInvoiceId): string
-    {
-        $date = new DateTime();
-        $year = $date->format("Y");
-        return $year.str_pad(++$lastInvoiceId,6,"0",STR_PAD_LEFT);
-    }
 }
