@@ -13,7 +13,7 @@ class InvoiceItemServices
      */
     public function calculateMarginTotal(int $price, int $margin): int
     {
-        return round((float)(($price / 100) * $margin));
+        return round((float)(($price / 100) * $margin), 0);
     }
 
     /**
@@ -27,13 +27,13 @@ class InvoiceItemServices
     }
 
     /**
-     * @param int $priceIncMargin
+     * @param int $priceMargin price + margin
      * @param int $discount
      * @return int
      */
     public function calculateDiscountTotal(int $priceIncMargin, int $discount): int
     {
-        return round((float)(($priceIncMargin / 100) * $discount));
+        return round((float)(($priceIncMargin / 100) * $discount), 0);
     }
 
     /**
@@ -43,7 +43,7 @@ class InvoiceItemServices
      */
     public function calculatePriceIncMarginMinusDiscount(int $priceIncMargin, int $discountTotal): int
     {
-        return round((float)($priceIncMargin - $discountTotal));
+        return round((float)($priceIncMargin - $discountTotal),0);
     }
 
     /**
@@ -53,7 +53,7 @@ class InvoiceItemServices
      */
     public function calculatePriceIncMarginDiscountMultiVat(int $priceIncMarginDiscount, int $vatMultiplier): int
     {
-        return round((float)(($vatMultiplier / 100) * $priceIncMarginDiscount));
+        return round((float)(($vatMultiplier / 100) * $priceIncMarginDiscount), 0);
     }
 
     /**
@@ -63,7 +63,7 @@ class InvoiceItemServices
      */
     public function calculatePriceIncMarginMultiVat(int $priceIncMargin, int $vatMultiplier): int
     {
-        return round((float)(($vatMultiplier / 100) * $priceIncMargin));
+        return round((float)(($vatMultiplier / 100) * $priceIncMargin), 0);
     }
 
     /**
@@ -73,7 +73,7 @@ class InvoiceItemServices
      */
     public function calculateTotalPriceIncMarginDiscountVat(int $priceIncDiscountMultiVat, float $unitCount): int
     {
-        return round((float)($priceIncDiscountMultiVat * $unitCount));
+        return round((float)($priceIncDiscountMultiVat * $unitCount), 0);
     }
 
     /**
@@ -83,7 +83,7 @@ class InvoiceItemServices
      */
     public function calculateTotalPriceIncMarginVat(int $priceMultiVat, float $unitCount): int
     {
-        return round((float)($priceMultiVat * $unitCount));
+        return round((float)($priceMultiVat * $unitCount), 0);
     }
 
 }
