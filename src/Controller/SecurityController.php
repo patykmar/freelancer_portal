@@ -12,22 +12,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use DateTime;
 
 class SecurityController extends AbstractController
 {
     private AdminUrlGenerator $adminUrlGenerator;
     private UserRepository $userRepository;
+    private UserPasswordEncoderInterface $encoder;
 
     /**
      * SecurityController constructor.
      * @param AdminUrlGenerator $adminUrlGenerator
      * @param UserRepository $userRepository
      */
-    public function __construct(AdminUrlGenerator $adminUrlGenerator, UserRepository $userRepository)
+    public function __construct(AdminUrlGenerator $adminUrlGenerator, UserRepository $userRepository, UserPasswordEncoderInterface $encoder)
     {
         $this->adminUrlGenerator = $adminUrlGenerator;
         $this->userRepository = $userRepository;
+        $this->encoder = $encoder;
     }
 
     /**
@@ -80,13 +84,16 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $formData = $form->getData();
-//TODO: persist data to DB
-            dump($userFromDb);
-            dd($formData);
 
+            $newEncodedPassword = $this->encoder->encodePassword(
+                $userFromDb,
+                $formData['new-password']
+            );
+            $userFromDb->setPasswordChanged(new DateTime());
+            $this->userRepository->upgradePassword($userFromDb, $newEncodedPassword);
 
-            $this->addFlash('notice', 'New password for user');
-            return $this->redirectToRoute('task_success');
+            $this->addFlash('notice', 'New password for user '.$userFromDb->getUsername().' has been changed.');
+            return $this->redirect($destinationUrl);
         }
 
         return $this->render('security/passwordSet.html.twig', [
