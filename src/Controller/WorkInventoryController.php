@@ -111,7 +111,6 @@ class WorkInventoryController extends AbstractController
         $this->em->persist($invoice);
 
         foreach ($workItemsByCompanyId as $item) {
-            /** @var InvoiceItem $invoiceItem */
             $invoiceItem = new InvoiceItem();
             $invoiceItem->setName($item->getDescription());
             $invoiceItem->setPrice($item->getTariff()->getPrice());
