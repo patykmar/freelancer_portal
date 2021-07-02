@@ -13,6 +13,7 @@ use Exception;
 
 class InvoiceServices
 {
+    /** @const int INVOICE_VS_LEN how many numbers will have VS */
     public const INVOICE_VS_LEN = 6;
 
     private InvoiceRepository $invoiceRepository;
@@ -45,8 +46,14 @@ class InvoiceServices
             if ($linear) {
                 /** @var Invoice $lastInvoice */
                 $lastInvoice = $this->invoiceRepository->getLastInvoice();
-                $nextInvoiceId += $lastInvoice->getId() + 1;
-                $returnVs = $this->nextInvoiceVsLinear($year, $nextInvoiceId);
+
+                // if last Invoice doesn't exist use random generator
+                if (is_null($lastInvoice)) {
+                    $returnVs = $this->nextInvoiceVsRandom($year);
+                } else {
+                    $nextInvoiceId += $lastInvoice->getId() + 1;
+                    $returnVs = $this->nextInvoiceVsLinear($year, $nextInvoiceId);
+                }
             } else {
                 $returnVs = $this->nextInvoiceVsRandom($year);
             }
@@ -77,8 +84,8 @@ class InvoiceServices
      */
     private function nextInvoiceVsRandom(string $year): string
     {
-        if (self::INVOICE_VS_LEN < 100) {
-            throw new Exception("Const INVOICE_VS_LEN must be greater than 100");
+        if (!(self::INVOICE_VS_LEN < 10)) {
+            throw new Exception("Const INVOICE_VS_LEN must be greater than 10");
         }
         $randomMaxValue = str_pad('9', self::INVOICE_VS_LEN, '9', STR_PAD_LEFT);
         return $year . str_pad(rand(100, (int)$randomMaxValue), self::INVOICE_VS_LEN, "0", STR_PAD_LEFT);
