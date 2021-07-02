@@ -6,6 +6,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Company;
 use App\Entity\Invoice;
+use App\Entity\PaymentType;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -27,16 +29,23 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager): void
     {
+        /** @var PaymentType $paymentTypeCache */
         $paymentTypeCache = $this->getReference(PaymentTypeFixture::PT_HOTOVE);
+        /** @var PaymentType $paymentTypeBank */
         $paymentTypeBank = $this->getReference(PaymentTypeFixture::PT_PREVOD);
 
-        /** @var Company $countryCz */
+        /** @var Company $companyPatykMartin */
         $companyPatykMartin = $this->getReference(CompanyFixture::COMPANY_PATYK_MARTIN);
+        /** @var Company $companyVodafone */
         $companyVodafone = $this->getReference(CompanyFixture::COMPANY_VODAFONE_CZ);
+        /** @var Company $companyTmcz */
         $companyTmcz = $this->getReference(CompanyFixture::COMPANY_TMOBILE_CZ);
+        /** @var Company $companyO2cz */
         $companyO2cz = $this->getReference(CompanyFixture::COMPANY_O2_CZ);
 
+        /** @var User $userPatykmar */
         $userPatykmar = $this->getReference(UserFixture::USER_ADMIN_REFERENCE);
+        /** @var User $userUser */
         $userUser = $this->getReference(UserFixture::USER_USER_REFERENCE);
 
         $invoice1 = new Invoice();
@@ -46,10 +55,9 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             ->setPaymentType($paymentTypeBank)
             ->setDue(14)
             ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
-            ->setUserCreated($userPatykmar)
-            ->setVs('2021000010')
-            ->setKs('309');
+            ->setUserCreated($userPatykmar);
         $this->setReference(self::INVOICE_01, $invoice1);
+        $manager->persist($invoice1);
 
         $invoice2 = new Invoice();
         $invoice2->setPaymentType($paymentTypeBank)
@@ -58,10 +66,9 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             ->setPaymentType($paymentTypeBank)
             ->setDue(14)
             ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
-            ->setUserCreated($userPatykmar)
-            ->setVs('2021000011')
-            ->setKs('309');
+            ->setUserCreated($userPatykmar);
         $this->setReference(self::INVOICE_02, $invoice2);
+        $manager->persist($invoice2);
 
         $invoice3 = new Invoice();
         $invoice3->setPaymentType($paymentTypeBank)
@@ -70,10 +77,9 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             ->setPaymentType($paymentTypeBank)
             ->setDue(14)
             ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
-            ->setUserCreated($userPatykmar)
-            ->setVs('2021000012')
-            ->setKs('309');
+            ->setUserCreated($userPatykmar);
         $this->setReference(self::INVOICE_03, $invoice3);
+        $manager->persist($invoice3);
 
         $invoice4 = new Invoice();
         $invoice4->setPaymentType($paymentTypeBank)
@@ -82,10 +88,9 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             ->setPaymentType($paymentTypeCache)
             ->setDue(14)
             ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
-            ->setUserCreated($userUser)
-            ->setVs('2021000013')
-            ->setKs('309');
+            ->setUserCreated($userUser);
         $this->setReference(self::INVOICE_04, $invoice4);
+        $manager->persist($invoice4);
 
         $invoice5 = new Invoice();
         $invoice5->setPaymentType($paymentTypeBank)
@@ -94,16 +99,10 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             ->setPaymentType($paymentTypeCache)
             ->setDue(14)
             ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
-            ->setUserCreated($userUser)
-            ->setVs('2021000014')
-            ->setKs('309');
+            ->setUserCreated($userUser);
         $this->setReference(self::INVOICE_05, $invoice5);
-
-        $manager->persist($invoice1);
-        $manager->persist($invoice2);
-        $manager->persist($invoice3);
-        $manager->persist($invoice4);
         $manager->persist($invoice5);
+
 
         $manager->flush();
     }
