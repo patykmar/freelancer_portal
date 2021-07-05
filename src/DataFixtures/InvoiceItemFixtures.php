@@ -29,31 +29,31 @@ class InvoiceItemFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $invoices = [
-            $this->getReference(InvoiceFixtures::INVOICE_01),
-            $this->getReference(InvoiceFixtures::INVOICE_02),
-            $this->getReference(InvoiceFixtures::INVOICE_03),
-            $this->getReference(InvoiceFixtures::INVOICE_04),
-            $this->getReference(InvoiceFixtures::INVOICE_05),
-            $this->getReference(InvoiceFixtures::INVOICE_06),
-            $this->getReference(InvoiceFixtures::INVOICE_07),
-            $this->getReference(InvoiceFixtures::INVOICE_08),
-            $this->getReference(InvoiceFixtures::INVOICE_09),
-            $this->getReference(InvoiceFixtures::INVOICE_10),
-            $this->getReference(InvoiceFixtures::INVOICE_11),
-            $this->getReference(InvoiceFixtures::INVOICE_12),
-            $this->getReference(InvoiceFixtures::INVOICE_13),
-            $this->getReference(InvoiceFixtures::INVOICE_14),
-            $this->getReference(InvoiceFixtures::INVOICE_15),
-            $this->getReference(InvoiceFixtures::INVOICE_16),
-            $this->getReference(InvoiceFixtures::INVOICE_17),
-            $this->getReference(InvoiceFixtures::INVOICE_18),
-            $this->getReference(InvoiceFixtures::INVOICE_19),
-            $this->getReference(InvoiceFixtures::INVOICE_20),
+            $this->getReference(InvoiceFixtures::INVOICE_01), $this->getReference(InvoiceFixtures::INVOICE_02),
+            $this->getReference(InvoiceFixtures::INVOICE_03), $this->getReference(InvoiceFixtures::INVOICE_04),
+            $this->getReference(InvoiceFixtures::INVOICE_05), $this->getReference(InvoiceFixtures::INVOICE_06),
+            $this->getReference(InvoiceFixtures::INVOICE_07), $this->getReference(InvoiceFixtures::INVOICE_08),
+            $this->getReference(InvoiceFixtures::INVOICE_09), $this->getReference(InvoiceFixtures::INVOICE_10),
+            $this->getReference(InvoiceFixtures::INVOICE_11), $this->getReference(InvoiceFixtures::INVOICE_12),
+            $this->getReference(InvoiceFixtures::INVOICE_13), $this->getReference(InvoiceFixtures::INVOICE_14),
+            $this->getReference(InvoiceFixtures::INVOICE_15), $this->getReference(InvoiceFixtures::INVOICE_16),
+            $this->getReference(InvoiceFixtures::INVOICE_17), $this->getReference(InvoiceFixtures::INVOICE_18),
+            $this->getReference(InvoiceFixtures::INVOICE_19), $this->getReference(InvoiceFixtures::INVOICE_20),
+            $this->getReference(InvoiceFixtures::INVOICE_21), $this->getReference(InvoiceFixtures::INVOICE_22),
+            $this->getReference(InvoiceFixtures::INVOICE_23), $this->getReference(InvoiceFixtures::INVOICE_24),
+            $this->getReference(InvoiceFixtures::INVOICE_25), $this->getReference(InvoiceFixtures::INVOICE_26),
+            $this->getReference(InvoiceFixtures::INVOICE_27), $this->getReference(InvoiceFixtures::INVOICE_28),
+            $this->getReference(InvoiceFixtures::INVOICE_29), $this->getReference(InvoiceFixtures::INVOICE_30),
         ];
 
         $vats = [
             $this->getReference(VatFixture::NO_VAT),
-            $this->getReference(VatFixture::VAT_21)
+            $this->getReference(VatFixture::VAT_05),
+            $this->getReference(VatFixture::VAT_10),
+            $this->getReference(VatFixture::VAT_15),
+            $this->getReference(VatFixture::VAT_20),
+            $this->getReference(VatFixture::VAT_21),
+            $this->getReference(VatFixture::VAT_22),
         ];
 
         $sentences = [
@@ -71,11 +71,11 @@ class InvoiceItemFixtures extends Fixture implements DependentFixtureInterface
             'Etiam vel urna ullamcorper, dignissim urna non, consequat ex.', 'Duis tempor nibh sapien.',
             'Donec pellentesque arcu quis feugiat dapibus.', 'Sed consequat enim et neque iaculis elementum.',
             'Nulla massa metus, vestibulum ut eros a, feugiat vehicula tortor.', 'Pellentesque tristique molestie tortor posuere rutrum.',
-            'Praesent porttitor magna id ligula congue, a scelerisque ligula fringilla.', 'Proin non suscipit sapien.'
+            'Praesent porttitor magna id ligula congue, a scelerisque ligula fringilla.', 'Proin non suscipit sapien.',
         ];
 
 
-        for ($i = 0; $i < rand(50, 500); $i++) {
+        for ($i = 0; $i < 500; $i++) {
             $iif = new InvoiceItem();
             $iif->setInvoice($invoices[rand(0, count($invoices) - 1)])
                 ->setVat($vats[rand(0, count($vats) - 1)])
