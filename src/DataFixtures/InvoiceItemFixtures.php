@@ -33,7 +33,22 @@ class InvoiceItemFixtures extends Fixture implements DependentFixtureInterface
             $this->getReference(InvoiceFixtures::INVOICE_02),
             $this->getReference(InvoiceFixtures::INVOICE_03),
             $this->getReference(InvoiceFixtures::INVOICE_04),
-            $this->getReference(InvoiceFixtures::INVOICE_05)
+            $this->getReference(InvoiceFixtures::INVOICE_05),
+            $this->getReference(InvoiceFixtures::INVOICE_06),
+            $this->getReference(InvoiceFixtures::INVOICE_07),
+            $this->getReference(InvoiceFixtures::INVOICE_08),
+            $this->getReference(InvoiceFixtures::INVOICE_09),
+            $this->getReference(InvoiceFixtures::INVOICE_10),
+            $this->getReference(InvoiceFixtures::INVOICE_11),
+            $this->getReference(InvoiceFixtures::INVOICE_12),
+            $this->getReference(InvoiceFixtures::INVOICE_13),
+            $this->getReference(InvoiceFixtures::INVOICE_14),
+            $this->getReference(InvoiceFixtures::INVOICE_15),
+            $this->getReference(InvoiceFixtures::INVOICE_16),
+            $this->getReference(InvoiceFixtures::INVOICE_17),
+            $this->getReference(InvoiceFixtures::INVOICE_18),
+            $this->getReference(InvoiceFixtures::INVOICE_19),
+            $this->getReference(InvoiceFixtures::INVOICE_20),
         ];
 
         $vats = [
