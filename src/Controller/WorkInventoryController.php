@@ -9,6 +9,7 @@ use App\Entity\Invoice;
 use App\Entity\InvoiceItem;
 use App\Entity\PaymentType;
 use App\Entity\WorkInventory;
+use App\Repository\WorkInventoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
@@ -39,17 +40,27 @@ class WorkInventoryController extends AbstractController
      */
     private UserSecurity $security;
 
+
+    private WorkInventoryRepository $workInventoryRepository;
+
     /**
      * WorkInventoryController constructor.
      * @param AdminUrlGenerator $adminUrlGenerator
      * @param EntityManagerInterface $em
      * @param UserSecurity $security
+     * @param WorkInventoryRepository $workInventoryRepository
      */
-    public function __construct(AdminUrlGenerator $adminUrlGenerator, EntityManagerInterface $em, UserSecurity $security)
+    public function __construct(
+        AdminUrlGenerator $adminUrlGenerator,
+        EntityManagerInterface $em,
+        UserSecurity $security,
+        WorkInventoryRepository $workInventoryRepository
+    )
     {
         $this->adminUrlGenerator = $adminUrlGenerator;
         $this->em = $em;
         $this->security = $security;
+        $this->workInventoryRepository = $workInventoryRepository;
     }
 
     /**
@@ -65,9 +76,9 @@ class WorkInventoryController extends AbstractController
     }
 
     /**
-     * @Route("/work-inventory/generate-invoice-by-company/{companyId}", name="work_inventory_generate_invoice_by_company", requirements={"invoiceId"="\d+"})
+     * @Route("/work-inventory/generate-invoice-by-company/{companyId}", name="work_inventory_generate_invoice_by_company", requirements={"companyId"="\d+"})
      */
-    public function showAllWorkInventoryByCompany(int $companyId): Response
+    public function generateInvoiceByCompany(int $companyId): Response
     {
         $companyUrl = $this->adminUrlGenerator
             ->setController(CompanyCrudController::class)
@@ -78,8 +89,7 @@ class WorkInventoryController extends AbstractController
             ->setAction(Crud::PAGE_INDEX);
 
         // get all unpaid work
-        $workItemsByCompanyId = $this->em->getRepository(WorkInventory::class)
-            ->getAllUnpaidWorkItemByCompanyId($companyId);
+        $workItemsByCompanyId = $this->workInventoryRepository->getAllUnpaidWorkItemByCompanyId($companyId);
 
         if (!(count($workItemsByCompanyId) > 1)) {
             $this->addFlash('error', "No work inventory items which could be transformer to invoice");
@@ -139,13 +149,12 @@ class WorkInventoryController extends AbstractController
 
     /**
      * @Route("/work-inventory/unpaid", name="work_inventory_unpaid")
-     * @param EntityManagerInterface $em
      * @return Response
      */
-    public function unpaidWorkInventory(EntityManagerInterface $em): Response
+    public function unpaidWorkInventory(): Response
     {
-        $unpaidWorkInventory = $em->getRepository(WorkInventory::class)
-            ->getAllUnpaidWorkItemGroupByCompany();
+        $unpaidWorkInventory = $this->workInventoryRepository->getAllUnpaidWorkItemGroupByCompany();
+
 
         //TODO: TEST how will be work with multiple tariffs under one company
         // most probably will be needed another column
