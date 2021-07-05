@@ -47,6 +47,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setIsSupplier(true)
             ->setCountry($countryCz);
         $this->addReference(self::COMPANY_PATYK_MARTIN, $company1);
+        $manager->persist($company1);
 
         $company2 = new Company();
         $company2->setName("Vodafone Czech Republic a. s.")
@@ -59,6 +60,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCreated(new DateTime("@".rand(946684800,time())))
             ->setCountry($countryCz);
         $this->addReference(self::COMPANY_VODAFONE_CZ, $company2);
+        $manager->persist($company2);
 
         $company3 = new Company();
         $company3->setName("T‑Mobile Czech Republic a.s.")
@@ -71,6 +73,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCreated(new DateTime("2014-01-13 22:27:52"))
             ->setCountry($countryCz);
         $this->addReference(self::COMPANY_TMOBILE_CZ, $company3);
+        $manager->persist($company3);
 
         $company4 = new Company();
         $company4->setName("O2 Czech Republic a.s.")
@@ -83,6 +86,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCreated(new DateTime("2014-01-13 22:31:07"))
             ->setCountry($countryCz);
         $this->addReference(self::COMPANY_O2_CZ, $company4);
+        $manager->persist($company4);
 
         $company5 = new Company();
         $company5->setName("RD Rýmařov s.r.o.")
@@ -95,6 +99,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCreated(new DateTime("2014-01-13 22:32:26"))
             ->setCountry($countryCz);
         $this->addReference(self::COMPANY_RDRYMAROV, $company5);
+        $manager->persist($company5);
 
         $company6 = new Company();
         $company6->setName("CETIN a.s.")
@@ -107,6 +112,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCreated(new DateTime("2014-02-08 15:05:18"))
             ->setCountry($countryCz);
         $this->addReference(self::COMPANY_CETIN_CZ, $company6);
+        $manager->persist($company6);
 
         $company7 = new Company();
         $company7->setName("Maxxnet.cz s.r.o.")
@@ -120,6 +126,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setAccountNumber("256256296/0300")
             ->setCountry($countryCz);
         $this->addReference(self::COMPANY_MAXXNET, $company7);
+        $manager->persist($company7);
 
         $company8 = new Company();
         $company8->setName("GAPPAY s.r.o.")
@@ -133,6 +140,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setAccountNumber("825242821/0100")
             ->setCountry($countryCz);
         $this->addReference(self::GAPPAY_SRO, $company8);
+        $manager->persist($company8);
 
         $company9 = new Company();
         $company9->setName("ČEZ, a. s.")
@@ -146,6 +154,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setAccountNumber("2701577960/2010")
             ->setCountry($countryCz);
         $this->addReference(self::COMPANY_CEZ, $company9);
+        $manager->persist($company9);
 
         $company10 = new Company();
         $company10->setName("ŠKODA AUTO a.s.")
@@ -159,6 +168,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setAccountNumber("001-8336621-32")
             ->setIban('BE90001833662132')
             ->setCountry($countryCz);
+        $manager->persist($company10);
 
         $company11 = new Company();
         $company11->setName("Innovation Advisors s.r.o.")
@@ -171,6 +181,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCreated(new DateTime())
             ->setCountry($countryCz);
         $this->addReference(self::INNOVATION_ADVISORS, $company11);
+        $manager->persist($company11);
 
         $company12 = new Company();
         $company12->setName("Czech Green Energy s.r.o.")
@@ -183,19 +194,6 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
             ->setCreated(new DateTime())
             ->setCountry($countryCz);
         $this->addReference(self::CGE_SRO, $company12);
-
-
-        $manager->persist($company1);
-        $manager->persist($company2);
-        $manager->persist($company3);
-        $manager->persist($company4);
-        $manager->persist($company5);
-        $manager->persist($company6);
-        $manager->persist($company7);
-        $manager->persist($company8);
-        $manager->persist($company9);
-        $manager->persist($company10);
-        $manager->persist($company11);
         $manager->persist($company12);
 
         $manager->flush();
