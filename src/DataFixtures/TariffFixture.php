@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 
 
 use App\Entity\Tariff;
-use App\Entity\Vat;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -33,61 +32,39 @@ class TariffFixture extends Fixture implements DependentFixtureInterface
 
     /**
      * @param ObjectManager $manager
-     * @return void
      */
     public function load(ObjectManager $manager): void
     {
-        /** @var Vat $vatZero */
-        $vatZero = $this->getReference(VatFixture::NO_VAT);
+        $vats = [
+            $this->getReference(VatFixture::NO_VAT),
+            $this->getReference(VatFixture::VAT_05),
+            $this->getReference(VatFixture::VAT_10),
+            $this->getReference(VatFixture::VAT_15),
+            $this->getReference(VatFixture::VAT_20),
+            $this->getReference(VatFixture::VAT_21),
+            $this->getReference(VatFixture::VAT_21),
+        ];
 
-        $tariff299 = new Tariff();
-        $tariff299->setPrice(29900)
-            ->setName('299 CZK per hour')
-            ->setVat($vatZero);
-        $manager->persist($tariff299);
-        $this->setReference(self::CZK_299, $tariff299);
+        $tariffs = [
+            ['name' => '299 CZK per hour', 'price' => 29900, 'ref' => self::CZK_299],
+            ['name' => '399 CZK per hour', 'price' => 39900, 'ref' => self::CZK_399],
+            ['name' => '450 CZK per hour', 'price' => 45000, 'ref' => self::CZK_450],
+            ['name' => '499 CZK per hour', 'price' => 49900, 'ref' => self::CZK_499],
+            ['name' => '600 CZK per hour', 'price' => 60000, 'ref' => self::CZK_600],
+            ['name' => '699 CZK per hour', 'price' => 69900, 'ref' => self::CZK_699],
+            ['name' => '999 CZK per hour', 'price' => 99900, 'ref' => self::CZK_999],
+        ];
 
-        $tariff399 = new Tariff();
-        $tariff399->setPrice(39900)
-            ->setName('399 CZK per hour')
-            ->setVat($vatZero);
-        $manager->persist($tariff399);
-        $this->setReference(self::CZK_399, $tariff399);
-
-        $tariff450 = new Tariff();
-        $tariff450->setPrice(45000)
-            ->setName('450 CZK per hour')
-            ->setVat($vatZero);
-        $manager->persist($tariff450);
-        $this->setReference(self::CZK_450, $tariff450);
-
-        $tariff499 = new Tariff();
-        $tariff499->setPrice(49900)
-            ->setName('499 CZK per hour')
-            ->setVat($vatZero);
-        $manager->persist($tariff499);
-        $this->setReference(self::CZK_499, $tariff499);
-
-        $tariff600 = new Tariff();
-        $tariff600->setPrice(60000)
-            ->setName('600 CZK per hour')
-            ->setVat($vatZero);
-        $manager->persist($tariff600);
-        $this->setReference(self::CZK_600, $tariff600);
-
-        $tariff699 = new Tariff();
-        $tariff699->setPrice(69900)
-            ->setName('699 CZK per hour')
-            ->setVat($vatZero);
-        $manager->persist($tariff699);
-        $this->setReference(self::CZK_699, $tariff699);
-
-        $tariff999 = new Tariff();
-        $tariff999->setPrice(99900)
-            ->setName('999 CZK per hour')
-            ->setVat($vatZero);
-        $manager->persist($tariff999);
-        $this->setReference(self::CZK_999, $tariff999);
+        for ($i = 0; $i < count($tariffs); $i++) {
+            $tariff = new Tariff();
+            $tariff
+                ->setName($tariffs[$i]['name'])
+                ->setPrice($tariffs[$i]['price'])
+                ->setVat($vats[rand(0, count($vats) - 1)]);
+            $this->setReference($tariffs[$i]['ref'], $tariff);
+            $manager->persist($tariff);
+            unset($tariff);
+        }
 
         $manager->flush();
     }

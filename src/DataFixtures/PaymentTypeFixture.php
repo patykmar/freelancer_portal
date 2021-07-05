@@ -13,23 +13,26 @@ class PaymentTypeFixture extends Fixture
     public const PT_HOTOVE = 'pt-hotove';
 
 
-    public function load(ObjectManager $manager)
+    /**
+     * @param ObjectManager $manager
+     */
+    public function load(ObjectManager $manager): void
     {
-        $prevod = new PaymentType();
-        $prevod->setName("převodním příkazem");
-        $prevod->setIsDefault(true);
+        $paymentTypes = [
+            ['name' => 'převodním příkazem', 'isDefault' => true, 'ref' => self::PT_PREVOD],
+            ['name' => 'hotově', 'isDefault' => false, 'ref' => self::PT_HOTOVE],
+        ];
 
-        $hotove = new PaymentType();
-        $hotove->setName("hotově");
-        $hotove->setIsDefault(false);
+        for ($i = 0; $i < count($paymentTypes); $i++) {
+            $paymentFixture = new PaymentType();
+            $paymentFixture
+                ->setName($paymentTypes[$i]['name'])
+                ->setIsDefault($paymentTypes[$i]['isDefault']);
+            $this->addReference($paymentTypes[$i]['ref'], $paymentFixture);
+            $manager->persist($paymentFixture);
+            unset($paymentFixture);
+        }
 
-        // díky tomuto se pak dostaneme k těmto uživatelům z jiných fixtur
-        $this->addReference(self::PT_PREVOD, $prevod);
-        $this->addReference(self::PT_HOTOVE, $hotove);
-
-
-        $manager->persist($prevod);
-        $manager->persist($hotove);
 
         $manager->flush();
     }

@@ -8,33 +8,31 @@ use Doctrine\Persistence\ObjectManager;
 
 class UserFixture extends Fixture
 {
-    public const USER_USER_REFERENCE = 'user-user';
-    public const USER_ADMIN_REFERENCE = 'user-admin';
+    public const USER_ADMIN_01 = 'user-admin';
+    public const USER_USER_01 = 'user-user';
 
 
     public function load(ObjectManager $manager): void
     {
-        $user1 = new User();
-        // password encoding is handle in EventListener/UserSubscriber
-        $user1->setPassword("7C8K8zszyuBkGDKY");
-        $user1->setEmail("patyk.m@gmail.com");
-        $user1->setFirstName("Martin");
-        $user1->setLastName("Patyk");
-        $user1->setRoles(["ROLE_ADMIN"]);
+        $users = [
+            ['email' => 'patyk.m@gmail.com', 'pass' => '7C8K8zszyuBkGDKY', 'firstName' => 'Martin',
+                'lastName' => 'Patyk', 'role' => ["ROLE_ADMIN"], 'ref' => self::USER_ADMIN_01],
+            ['email' => 'fake@user.com', 'pass' => 'gyOLHeWLuV6T4hru', 'firstName' => 'Fake',
+                'lastName' => 'User', 'role' => ["ROLE_USER"], 'ref' => self::USER_USER_01],
+        ];
 
-        $user2 = new User();
-        // password encoding is handle in EventListener/UserSubscriber
-        $user2->setPassword("gyOLHeWLuV6T4hru");
-        $user2->setEmail("martin@patyk.cz");
-        $user2->setFirstName("Fake");
-        $user2->setLastName("User");
-        $user2->setRoles(["ROLE_USER"]);
-
-        $this->addReference(self::USER_ADMIN_REFERENCE, $user1);
-        $this->addReference(self::USER_USER_REFERENCE, $user2);
-
-        $manager->persist($user1);
-        $manager->persist($user2);
+        for ($i = 0; $i < count($users); $i++) {
+            $user = new User();
+            // password encoding is handle in EventListener/UserSubscriber
+            $user->setPassword($users[$i]['pass'])
+                ->setEmail($users[$i]['email'])
+                ->setFirstName($users[$i]['firstName'])
+                ->setLastName($users[$i]['lastName'])
+                ->setRoles($users[$i]['role']);
+            $this->addReference($users[$i]['ref'], $user);
+            $manager->persist($user);
+            unset($user);
+        }
 
         $manager->flush();
     }

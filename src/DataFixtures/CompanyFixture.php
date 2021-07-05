@@ -20,6 +20,7 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
     public const COMPANY_CETIN_CZ = 'cetin-cz';
     public const COMPANY_MAXXNET = 'maxxnet-sro';
     public const COMPANY_CEZ = 'cez-cz';
+    public const COMPANY_SKODA = 'skoda-cz';
     public const INNOVATION_ADVISORS = 'innovation_advisors-sro';
     public const GAPPAY_SRO = 'gappay-sro';
     public const CGE_SRO = 'cge-sro';
@@ -32,169 +33,86 @@ class CompanyFixture extends Fixture implements DependentFixtureInterface
     {
         // get references from CountryFixtures class
         /** @var Country $countryCz */
-        $countryCz = $this->getReference(CountryFixtures::COUNTRY_CZ_REFERENCE);
+        $countries = [
+            $this->getReference(CountryFixtures::COUNTRY_CZ_REFERENCE),
+        ];
 
-        $company1 = new Company();
-        $company1->setName("Ing. Martin Patyk")
-            ->setDescription("Ing. Martin Patyk - Cerna")
-            ->setCompanyId("88230104")
-            ->setVatNumber('CZ8707145876')
-            ->setStreet("Černá 1416/5")
-            ->setCity("Opava - Kateřinky ")
-            ->setZipCode("74705")
-            ->setAccountNumber("670100-2209225998/6210")
-            ->setCreated(new DateTime("2014-01-13 22:17:20"))
-            ->setIsSupplier(true)
-            ->setCountry($countryCz);
-        $this->addReference(self::COMPANY_PATYK_MARTIN, $company1);
-        $manager->persist($company1);
+        $companies = [
+            ['name' => 'Ing. Martin Patyk', 'desc' => 'Ing. Martin Patyk - Cerna', 'compId' => '88230104',
+                'vatNumber' => 'CZ8707145876', 'street' => 'Černá 1416/5', 'city' => 'Opava - Kateřinky',
+                'zip' => '74705', 'account' => '670100-2209225998/6210', 'created' => new DateTime("2014-01-13 22:17:20"),
+                'isSupplier' => true, 'country' => $countries[0], 'ref' => self::COMPANY_PATYK_MARTIN],
+            ['name' => 'Vodafone Czech Republic a. s.', 'desc' => 'Vodafone Czech Republic a. s.', 'compId' => '25788001',
+                'vatNumber' => 'CZ25788001', 'street' => 'náměstí Junkových 2', 'city' => 'Praha 5',
+                'zip' => '15500', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::COMPANY_VODAFONE_CZ],
+            ['name' => 'T‑Mobile Czech Republic a.s.', 'desc' => 'T‑Mobile Czech Republic a.s.',
+                'compId' => '64949681', 'vatNumber' => 'CZ64949681', 'street' => 'Tomíčkova 2144/1',
+                'city' => 'Praha 4', 'zip' => '14800', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::COMPANY_TMOBILE_CZ],
+            ['name' => 'O2 Czech Republic a.s.', 'desc' => 'O2 Czech Republic a.s.',
+                'compId' => '60193336', 'vatNumber' => 'CZ60193336', 'street' => 'Za Brumlovkou 266/2',
+                'city' => 'Praha 4, Michle', 'zip' => '14022', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::COMPANY_O2_CZ],
+            ['name' => 'RD Rýmařov s.r.o.', 'desc' => 'RD Rýmařov s.r.o.',
+                'compId' => '18953581', 'vatNumber' => 'CZ18953581', 'street' => '8. května 1191/45',
+                'city' => 'Rýmařov', 'zip' => '79501', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::COMPANY_RDRYMAROV],
+            ['name' => 'CETIN a.s.', 'desc' => 'CETIN a.s.',
+                'compId' => '04084063', 'vatNumber' => 'CZ04084063', 'street' => 'Českomoravská 2510/19',
+                'city' => 'Praha 9', 'zip' => '19000', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::COMPANY_CETIN_CZ],
+            ['name' => 'Maxxnet.cz s.r.o.', 'desc' => 'Maxxnet.cz s.r.o.', 'account' => '256256296/0300',
+                'compId' => '29459711', 'vatNumber' => 'CZ29459711', 'street' => 'Nákladní 4',
+                'city' => 'Opava', 'zip' => '74601', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::COMPANY_MAXXNET],
+            ['name' => 'GAPPAY s.r.o.', 'desc' => 'GAPPAY s.r.o.', 'account' => '825242821/0100',
+                'compId' => '47151960', 'vatNumber' => 'CZ47151960', 'street' => 'Olomoucká 134',
+                'city' => 'Slavkov u Opavy', 'zip' => '74757', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::GAPPAY_SRO],
+            ['name' => 'ČEZ, a. s.', 'desc' => 'ČEZ, a. s.', 'account' => '2701577960/2010',
+                'compId' => '45274649', 'vatNumber' => 'CZ45274649', 'street' => 'Duhová 1444/2',
+                'city' => 'Praha - Michle', 'zip' => '14000', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::COMPANY_CEZ],
+            ['name' => 'ŠKODA AUTO a.s.', 'desc' => 'ŠKODA AUTO a.s.', 'account' => '001-8336621-32',
+                'compId' => '00177041', 'vatNumber' => 'CZ00177041', 'street' => 'tř. Václava Klementa 869',
+                'city' => 'Mladá Boleslav II', 'zip' => '29301', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::COMPANY_SKODA, 'iban' => 'BE90001833662132'],
+            ['name' => 'Innovation Advisors s.r.o.', 'desc' => 'Innovation Advisors s.r.o.',
+                'compId' => '40763200', 'vatNumber' => 'CZ40763200', 'street' => 'Boženy Němcové 1604/24',
+                'city' => 'Opava', 'zip' => '74601', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::INNOVATION_ADVISORS],
+            ['name' => 'Czech Green Energy s.r.o.', 'desc' => 'Czech Green Energy s.r.o.',
+                'compId' => '09703667', 'vatNumber' => 'CZ09703667', 'street' => 'Vinařská 460/3',
+                'city' => 'Brno - Pisárky', 'zip' => '60300', 'created' => new DateTime("@" . rand(946684800, time())),
+                'country' => $countries[0], 'ref' => self::CGE_SRO],
+        ];
 
-        $company2 = new Company();
-        $company2->setName("Vodafone Czech Republic a. s.")
-            ->setDescription("Vodafone Czech Republic a. s.")
-            ->setCompanyId("25788001")
-            ->setVatNumber('CZ25788001')
-            ->setStreet("náměstí Junkových 2")
-            ->setCity("Praha 5")
-            ->setZipCode("15500")
-            ->setCreated(new DateTime("@".rand(946684800,time())))
-            ->setCountry($countryCz);
-        $this->addReference(self::COMPANY_VODAFONE_CZ, $company2);
-        $manager->persist($company2);
-
-        $company3 = new Company();
-        $company3->setName("T‑Mobile Czech Republic a.s.")
-            ->setDescription("T‑Mobile Czech Republic a.s.")
-            ->setCompanyId("64949681")
-            ->setVatNumber('CZ64949681')
-            ->setStreet("Tomíčkova 2144/1")
-            ->setCity("Praha 4")
-            ->setZipCode("14800")
-            ->setCreated(new DateTime("2014-01-13 22:27:52"))
-            ->setCountry($countryCz);
-        $this->addReference(self::COMPANY_TMOBILE_CZ, $company3);
-        $manager->persist($company3);
-
-        $company4 = new Company();
-        $company4->setName("O2 Czech Republic a.s.")
-            ->setDescription("O2 Czech Republic a.s.")
-            ->setCompanyId("60193336")
-            ->setVatNumber('CZ60193336')
-            ->setStreet("Za Brumlovkou 266/2")
-            ->setCity("Praha 4, Michle")
-            ->setZipCode("14022")
-            ->setCreated(new DateTime("2014-01-13 22:31:07"))
-            ->setCountry($countryCz);
-        $this->addReference(self::COMPANY_O2_CZ, $company4);
-        $manager->persist($company4);
-
-        $company5 = new Company();
-        $company5->setName("RD Rýmařov s.r.o.")
-            ->setDescription("RD Rýmařov s.r.o.")
-            ->setCompanyId("18953581")
-            ->setVatNumber('CZ18953581')
-            ->setStreet("8. května 1191/45")
-            ->setCity("Rýmařov")
-            ->setZipCode("79501")
-            ->setCreated(new DateTime("2014-01-13 22:32:26"))
-            ->setCountry($countryCz);
-        $this->addReference(self::COMPANY_RDRYMAROV, $company5);
-        $manager->persist($company5);
-
-        $company6 = new Company();
-        $company6->setName("CETIN a.s.")
-            ->setDescription("CETIN a.s.")
-            ->setCompanyId("04084063")
-            ->setVatNumber('CZ04084063')
-            ->setStreet("Českomoravská 2510/19")
-            ->setCity("Praha 9")
-            ->setZipCode("19000")
-            ->setCreated(new DateTime("2014-02-08 15:05:18"))
-            ->setCountry($countryCz);
-        $this->addReference(self::COMPANY_CETIN_CZ, $company6);
-        $manager->persist($company6);
-
-        $company7 = new Company();
-        $company7->setName("Maxxnet.cz s.r.o.")
-            ->setDescription("Maxxnet.cz s.r.o.")
-            ->setCompanyId("29459711")
-            ->setVatNumber('CZ29459711')
-            ->setStreet("Nákladní 4")
-            ->setCity("Opava")
-            ->setZipCode("746 01")
-            ->setCreated(new DateTime())
-            ->setAccountNumber("256256296/0300")
-            ->setCountry($countryCz);
-        $this->addReference(self::COMPANY_MAXXNET, $company7);
-        $manager->persist($company7);
-
-        $company8 = new Company();
-        $company8->setName("GAPPAY s.r.o.")
-            ->setDescription("GAPPAY s.r.o.")
-            ->setCompanyId("47151960")
-            ->setVatNumber('CZ47151960')
-            ->setStreet("Olomoucká 134")
-            ->setCity("Slavkov u Opavy")
-            ->setZipCode("747 57")
-            ->setCreated(new DateTime())
-            ->setAccountNumber("825242821/0100")
-            ->setCountry($countryCz);
-        $this->addReference(self::GAPPAY_SRO, $company8);
-        $manager->persist($company8);
-
-        $company9 = new Company();
-        $company9->setName("ČEZ, a. s.")
-            ->setDescription("ČEZ, a. s.")
-            ->setCompanyId("45274649")
-            ->setVatNumber("CZ45274649")
-            ->setStreet("Duhová 1444/2")
-            ->setCity("Praha - Michle")
-            ->setZipCode("14000")
-            ->setCreated(new DateTime())
-            ->setAccountNumber("2701577960/2010")
-            ->setCountry($countryCz);
-        $this->addReference(self::COMPANY_CEZ, $company9);
-        $manager->persist($company9);
-
-        $company10 = new Company();
-        $company10->setName("ŠKODA AUTO a.s.")
-            ->setDescription("ŠKODA AUTO a.s.")
-            ->setCompanyId("00177041")
-            ->setVatNumber('CZ00177041')
-            ->setStreet("tř. Václava Klementa 869")
-            ->setCity("Mladá Boleslav II")
-            ->setZipCode("29301")
-            ->setCreated(new DateTime())
-            ->setAccountNumber("001-8336621-32")
-            ->setIban('BE90001833662132')
-            ->setCountry($countryCz);
-        $manager->persist($company10);
-
-        $company11 = new Company();
-        $company11->setName("Innovation Advisors s.r.o.")
-            ->setDescription("Innovation Advisors s.r.o.")
-            ->setCompanyId("40763200")
-            ->setVatNumber('CZ40763200')
-            ->setStreet("Boženy Němcové 1604/24")
-            ->setCity("Opava")
-            ->setZipCode("74601")
-            ->setCreated(new DateTime())
-            ->setCountry($countryCz);
-        $this->addReference(self::INNOVATION_ADVISORS, $company11);
-        $manager->persist($company11);
-
-        $company12 = new Company();
-        $company12->setName("Czech Green Energy s.r.o.")
-            ->setDescription("Czech Green Energy s.r.o.")
-            ->setCompanyId("09703667")
-            ->setVatNumber('CZ09703667')
-            ->setStreet("Vinařská 460/3")
-            ->setCity("Brno - Pisárky")
-            ->setZipCode("603 00")
-            ->setCreated(new DateTime())
-            ->setCountry($countryCz);
-        $this->addReference(self::CGE_SRO, $company12);
-        $manager->persist($company12);
+        for ($i = 0; $i < count($companies); $i++) {
+            $companyFixture = new Company();
+            $companyFixture
+                ->setName($companies[$i]['name'])
+                ->setDescription($companies[$i]['desc'])
+                ->setCompanyId($companies[$i]['compId'])
+                ->setVatNumber($companies[$i]['vatNumber'])
+                ->setStreet($companies[$i]['street'])
+                ->setCity($companies[$i]['city'])
+                ->setZipCode($companies[$i]['zip'])
+                ->setCreated($companies[$i]['created'])
+                ->setCountry($companies[$i]['country']);
+            if (isset($companies[$i]['account'])) {
+                $companyFixture->setAccountNumber($companies[$i]['account']);
+            }
+            if (isset($companies[$i]['isSupplier'])) {
+                $companyFixture->setIsSupplier($companies[$i]['isSupplier']);
+            }
+            if (isset($companies[$i]['iban'])) {
+                $companyFixture->setIban($companies[$i]['iban']);
+            }
+            $this->addReference($companies[$i]['ref'], $companyFixture);
+            $manager->persist($companyFixture);
+            unset($companyFixture);
+        }
 
         $manager->flush();
     }

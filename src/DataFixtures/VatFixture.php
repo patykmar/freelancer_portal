@@ -9,60 +9,34 @@ use Doctrine\Persistence\ObjectManager;
 class VatFixture extends Fixture
 {
     public const NO_VAT = 'no-vat';
+    public const VAT_05 = 'vat-05';
+    public const VAT_10 = 'vat-10';
+    public const VAT_15 = 'vat-15';
+    public const VAT_20 = 'vat-20';
     public const VAT_21 = 'vat-21';
+    public const VAT_22 = 'vat-22';
 
     public function load(ObjectManager $manager): void
     {
-        $vatNo = new Vat();
-        $vatNo->setName("Bez DPH")
-            ->setMultiplier(100)
-            ->setPercent(0)
-            ->setIsDefault(TRUE);
-        $manager->persist($vatNo);
-        $this->addReference(self::NO_VAT, $vatNo);
+        $vats = [
+            ['name' => 'Bez DPH', 'multiplier' => 100, 'percent' => 0, 'is-disable' => true, 'ref' => self::NO_VAT],
+            ['name' => 'DPH 5%', 'multiplier' => 105, 'percent' => 5, 'is-disable' => false, 'ref' => self::VAT_05],
+            ['name' => 'DPH 10%', 'multiplier' => 110, 'percent' => 10, 'is-disable' => false, 'ref' => self::VAT_10],
+            ['name' => 'DPH 15%', 'multiplier' => 115, 'percent' => 15, 'is-disable' => false, 'ref' => self::VAT_15],
+            ['name' => 'DPH 20%', 'multiplier' => 120, 'percent' => 20, 'is-disable' => false, 'ref' => self::VAT_20],
+            ['name' => 'DPH 21%', 'multiplier' => 121, 'percent' => 21, 'is-disable' => false, 'ref' => self::VAT_21],
+            ['name' => 'DPH 22%', 'multiplier' => 122, 'percent' => 22, 'is-disable' => false, 'ref' => self::VAT_22],
+        ];
 
-        $vat5 = new Vat();
-        $vat5->setName("DPH 5%")
-            ->setMultiplier(105)
-            ->setPercent(5)
-            ->setIsDefault(FALSE);
-        $manager->persist($vat5);
-
-        $vat10 = new Vat();
-        $vat10->setName("DPH 10%")
-            ->setMultiplier(110)
-            ->setPercent(10)
-            ->setIsDefault(FALSE);
-        $manager->persist($vat10);
-
-        $vat15 = new Vat();
-        $vat15->setName("DPH 15%")
-            ->setMultiplier(115)
-            ->setPercent(15)
-            ->setIsDefault(FALSE);
-        $manager->persist($vat15);
-
-        $vat20 = new Vat();
-        $vat20->setName("DPH 20%")
-            ->setMultiplier(120)
-            ->setPercent(20)
-            ->setIsDefault(FALSE);
-        $manager->persist($vat20);
-
-        $vat21 = new Vat();
-        $vat21->setName("DPH 21%")
-            ->setMultiplier(121)
-            ->setPercent(21)
-            ->setIsDefault(FALSE);
-        $manager->persist($vat21);
-        $this->addReference(self::VAT_21, $vat21);
-
-        $vat22 = new Vat();
-        $vat22->setName("DPH 22%")
-            ->setMultiplier(122)
-            ->setPercent(22)
-            ->setIsDefault(FALSE);
-        $manager->persist($vat22);
+        for ($i = 0; $i < count($vats); $i++) {
+            $vatFixture = new Vat();
+            $vatFixture->setName($vats[$i]['name'])
+                ->setMultiplier($vats[$i]['multiplier'])
+                ->setPercent($vats[$i]['percent'])
+                ->setIsDefault($vats[$i]['is-disable']);
+            $this->addReference($vats[$i]['ref'], $vatFixture);
+            $manager->persist($vatFixture);
+        }
 
         $manager->flush();
     }

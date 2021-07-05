@@ -13,39 +13,28 @@ class CountryFixtures extends Fixture
     public const COUNTRY_SK_REFERENCE = 'country-sk';
     public const COUNTRY_A_REFERENCE = 'country-a';
     public const COUNTRY_D_REFERENCE = 'country-d';
+    public const COUNTRY_PL_REFERENCE = 'country-pl';
 
     public function load(ObjectManager $manager)
     {
-        $cz = new Country();
-        $cz->setName("Česká republika");
-        $cz->setIso3166Alpha3("CZE");
+        $countries = [
+            ['name' => 'Česká republika', 'Iso3166Alpha3' => 'CZE', 'ref' => self::COUNTRY_CZ_REFERENCE],
+            ['name' => 'Slovenská republika', 'Iso3166Alpha3' => 'SVK', 'ref' => self::COUNTRY_SK_REFERENCE],
+            ['name' => 'Polská republika', 'Iso3166Alpha3' => 'POL', 'ref' => self::COUNTRY_PL_REFERENCE],
+            ['name' => 'Republika Rakousko', 'Iso3166Alpha3' => 'AUT', 'ref' => self::COUNTRY_A_REFERENCE],
+            ['name' => 'Spolková republika Německo', 'Iso3166Alpha3' => 'DEU', 'ref' => self::COUNTRY_D_REFERENCE],
+        ];
 
-        $sk = new Country();
-        $sk->setName("Slovenská republika");
-        $sk->setIso3166Alpha3('SVK');
+        for ($i = 0; $i < count($countries); $i++) {
+            $country = new Country();
+            $country
+                ->setName($countries[$i]['name'])
+                ->setIso3166Alpha3($countries[$i]['Iso3166Alpha3']);
 
-        $pl = new Country();
-        $pl->setName('Polská republika');
-        $pl->setIso3166Alpha3('POL');
-
-        $a = new Country();
-        $a->setName('Republika Rakousko');
-        $a->setIso3166Alpha3('AUT');
-
-        $d = new Country();
-        $d->setName('Spolková republika Německo');
-        $d->setIso3166Alpha3('DEU');
-
-        // díky tomuto se pak dostaneme k těmto uživatelům z jiných fixtur
-        $this->addReference(self::COUNTRY_CZ_REFERENCE, $cz);
-        $this->addReference(self::COUNTRY_SK_REFERENCE, $sk);
-        $this->addReference(self::COUNTRY_A_REFERENCE, $a);
-        $this->addReference(self::COUNTRY_D_REFERENCE, $d);
-
-        $manager->persist($cz);
-        $manager->persist($sk);
-        $manager->persist($a);
-        $manager->persist($d);
+            $manager->persist($country);
+            $this->addReference($countries[$i]['ref'], $country);
+            unset($country);
+        }
 
         $manager->flush();
     }
