@@ -45,7 +45,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             ->setSubscriber($companyVodafone)
             ->setPaymentType($paymentTypeBank)
             ->setDue(14)
-            ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
+            ->setPaymentDay(new DateTime("+" . rand(5, 20) . " days"))
             ->setUserCreated($userPatykmar)
             ->setVs('2021000010')
             ->setKs('309');
@@ -57,7 +57,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             ->setSubscriber($companyTmcz)
             ->setPaymentType($paymentTypeBank)
             ->setDue(14)
-            ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
+            ->setPaymentDay(new DateTime("+" . rand(5, 20) . " days"))
             ->setUserCreated($userPatykmar)
             ->setVs('2021000011')
             ->setKs('309');
@@ -69,7 +69,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             ->setSubscriber($companyO2cz)
             ->setPaymentType($paymentTypeBank)
             ->setDue(14)
-            ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
+            ->setPaymentDay(new DateTime("+" . rand(5, 20) . " days"))
             ->setUserCreated($userPatykmar)
             ->setVs('2021000012')
             ->setKs('309');
@@ -81,7 +81,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             ->setSubscriber($companyO2cz)
             ->setPaymentType($paymentTypeCache)
             ->setDue(14)
-            ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
+            ->setPaymentDay(new DateTime("+" . rand(5, 20) . " days"))
             ->setUserCreated($userUser)
             ->setVs('2021000013')
             ->setKs('309');
@@ -93,7 +93,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             ->setSubscriber($companyO2cz)
             ->setPaymentType($paymentTypeCache)
             ->setDue(14)
-            ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
+            ->setPaymentDay(new DateTime("+" . rand(5, 20) . " days"))
             ->setUserCreated($userUser)
             ->setVs('2021000014')
             ->setKs('309');
