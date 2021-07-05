@@ -72,7 +72,7 @@ class SecurityController extends AbstractController
 
         // check if user is in DB
         $userFromDb = $this->userRepository->find($userId);
-        if (is_null($userId)) {
+        if (is_null($userFromDb)) {
             $this->addFlash('error', 'User with this ID is not in database!');
             return $this->redirect($destinationUrl);
         }
@@ -92,13 +92,13 @@ class SecurityController extends AbstractController
             $userFromDb->setPasswordChanged(new DateTime());
             $this->userRepository->upgradePassword($userFromDb, $newEncodedPassword);
 
-            $this->addFlash('notice', 'New password for user '.$userFromDb->getUsername().' has been changed.');
+            $this->addFlash('notice', 'New password for user ' . $userFromDb->getUsername() . ' has been changed.');
             return $this->redirect($destinationUrl);
         }
 
         return $this->render('security/passwordSet.html.twig', [
             'form' => $form->createView(),
-            'customPageTitle' => 'Set new password for user: '.$userFromDb->__toString()
+            'customPageTitle' => 'Set new password for user: ' . $userFromDb->__toString()
         ]);
 
     }
