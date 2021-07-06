@@ -8,7 +8,6 @@ use App\Entity\Company;
 use App\Entity\Invoice;
 use App\Entity\InvoiceItem;
 use App\Entity\PaymentType;
-use App\Entity\WorkInventory;
 use App\Repository\WorkInventoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -163,6 +162,7 @@ class WorkInventoryController extends AbstractController
 
         return $this->render('work_inventory/unpaid.html.twig', [
             'unpaidWorkInventory' => $unpaidWorkInventory,
+            'customPageTitle' => 'Unpaid work',
         ]);
     }
 
