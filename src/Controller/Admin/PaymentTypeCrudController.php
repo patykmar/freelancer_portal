@@ -17,17 +17,19 @@ class PaymentTypeCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new('id')
-                ->onlyOnIndex(),
-            TextField::new('name', 'Jméno: ')
-                ->onlyOnForms(),
-            TextField::new('name', 'Jméno')
-                ->onlyOnIndex(),
-            BooleanField::new('isDefault', 'Bude výchozí ?')
-                ->onlyOnForms(),
-            BooleanField::new('isDefault', 'Výchozí')
-                ->onlyOnIndex()
-        ];
+        // index section
+        yield IdField::new('id')
+            ->onlyOnIndex();
+        yield TextField::new('name', 'Payment method name')
+            ->onlyOnIndex();
+        yield BooleanField::new('isDefault', 'Is default?')
+            ->onlyOnIndex();
+
+        // forms section
+        yield TextField::new('name', 'Payment method name: ')
+            ->onlyOnForms();
+        yield BooleanField::new('isDefault', 'Will be default ?')
+            ->onlyOnForms();
+
     }
 }
