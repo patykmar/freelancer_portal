@@ -19,13 +19,13 @@ class VatFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
         $vats = [
-            ['name' => 'Bez DPH', 'multiplier' => 100, 'percent' => 0, 'is-disable' => true, 'ref' => self::NO_VAT],
-            ['name' => 'DPH 5%', 'multiplier' => 105, 'percent' => 5, 'is-disable' => false, 'ref' => self::VAT_05],
-            ['name' => 'DPH 10%', 'multiplier' => 110, 'percent' => 10, 'is-disable' => false, 'ref' => self::VAT_10],
-            ['name' => 'DPH 15%', 'multiplier' => 115, 'percent' => 15, 'is-disable' => false, 'ref' => self::VAT_15],
-            ['name' => 'DPH 20%', 'multiplier' => 120, 'percent' => 20, 'is-disable' => false, 'ref' => self::VAT_20],
-            ['name' => 'DPH 21%', 'multiplier' => 121, 'percent' => 21, 'is-disable' => false, 'ref' => self::VAT_21],
-            ['name' => 'DPH 22%', 'multiplier' => 122, 'percent' => 22, 'is-disable' => false, 'ref' => self::VAT_22],
+            ['name' => 'No VAT', 'multiplier' => 100, 'percent' => 0, 'is-disable' => true, 'ref' => self::NO_VAT],
+            ['name' => 'VAT 5%', 'multiplier' => 105, 'percent' => 5, 'is-disable' => false, 'ref' => self::VAT_05],
+            ['name' => 'VAT 10%', 'multiplier' => 110, 'percent' => 10, 'is-disable' => false, 'ref' => self::VAT_10],
+            ['name' => 'VAT 15%', 'multiplier' => 115, 'percent' => 15, 'is-disable' => false, 'ref' => self::VAT_15],
+            ['name' => 'VAT 20%', 'multiplier' => 120, 'percent' => 20, 'is-disable' => false, 'ref' => self::VAT_20],
+            ['name' => 'VAT 21%', 'multiplier' => 121, 'percent' => 21, 'is-disable' => false, 'ref' => self::VAT_21],
+            ['name' => 'VAT 22%', 'multiplier' => 122, 'percent' => 22, 'is-disable' => false, 'ref' => self::VAT_22],
         ];
 
         for ($i = 0; $i < count($vats); $i++) {

@@ -40,27 +40,27 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Fakturační Systém');
+            ->setTitle('Freelancer\'s portal');
     }
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
 
-        yield MenuItem::section("Aplikace", 'fas fa-rocket');
-        yield MenuItem::linkToCrud("Faktury", 'fas fa-file-invoice-dollar', Invoice::class);
+        yield MenuItem::section("Application", 'fas fa-rocket');
+        yield MenuItem::linkToCrud("Invoices", 'fas fa-file-invoice-dollar', Invoice::class);
 
 
-        yield MenuItem::section('Hodinová sazba za práci');
-        yield MenuItem::linkToCrud('Pracovní výkaz', 'fas fa-clipboard-list', WorkInventory::class);
-        yield MenuItem::linkToRoute("Nevyfakturovaná práce", 'fab fa-creative-commons-nc-eu', 'work_inventory_unpaid');
-        yield MenuItem::linkToCrud('Tarif', 'fas fa-receipt', Tariff::class);
+        yield MenuItem::section('Work payed per hour');
+        yield MenuItem::linkToCrud('Work inventory', 'fas fa-clipboard-list', WorkInventory::class);
+        yield MenuItem::linkToRoute("Unpaid work", 'fab fa-creative-commons-nc-eu', 'work_inventory_unpaid');
+        yield MenuItem::linkToCrud('Tariffs', 'fas fa-receipt', Tariff::class);
 
-        yield MenuItem::section("Číselníky", 'fas fa-list-ol');
-        yield MenuItem::linkToCrud("Firmy", 'fas fa-building', Company::class);
-        yield MenuItem::linkToCrud("Platební metody", 'fas fa-wallet', PaymentType::class);
-        yield MenuItem::linkToCrud("Země", 'fas fa-globe-europe', Country::class);
-        yield MenuItem::linkToCrud('DPH', 'fas fa-hand-holding-usd', Vat::class);
+        yield MenuItem::section("Lists", 'fas fa-list-ol');
+        yield MenuItem::linkToCrud("Companies", 'fas fa-building', Company::class);
+        yield MenuItem::linkToCrud("Countries", 'fas fa-globe-europe', Country::class);
+        yield MenuItem::linkToCrud("Payment methods", 'fas fa-wallet', PaymentType::class);
+        yield MenuItem::linkToCrud('VAT', 'fas fa-hand-holding-usd', Vat::class);
 
 
 
