@@ -50,26 +50,25 @@ class WorkInventoryCrudController extends AbstractCrudController
             ]);
         }
 
-        return [
-            $idField,
-            $descriptionTextField,
-            $tariffAssociationField,
-            $companyAssociationField,
-            $workStartDateTimeField,
-            $workEndDateTimeField,
-            $workDurationNumberField,
-        ];
+        yield $idField;
+        yield $descriptionTextField;
+        yield $tariffAssociationField;
+        yield $companyAssociationField;
+        yield $workStartDateTimeField;
+        yield $workEndDateTimeField;
+        yield $workDurationNumberField;
     }
 
 
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud
-            // ->showEntityActionsAsDropdown()// ...
-            ->setPageTitle(Crud::PAGE_INDEX, 'Work inventory')
-            ->setPageTitle(Crud::PAGE_NEW, 'Create work inventory')
-            ->setPageTitle(Crud::PAGE_EDIT, 'Edit work inventory')
-            ->setDefaultSort(['id' => 'DESC']);
+        return parent::configureCrud(
+            $crud
+                ->setPageTitle(Crud::PAGE_INDEX, 'Work inventory')
+                ->setPageTitle(Crud::PAGE_NEW, 'Create work inventory')
+                ->setPageTitle(Crud::PAGE_EDIT, 'Edit work inventory')
+                ->setDefaultSort(['id' => 'DESC'])
+        );
     }
 
 }

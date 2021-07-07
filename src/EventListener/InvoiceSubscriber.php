@@ -10,6 +10,7 @@ use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use DateTime;
 use Exception;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 
 class InvoiceSubscriber implements EventSubscriber
@@ -17,13 +18,18 @@ class InvoiceSubscriber implements EventSubscriber
     /** @var InvoiceServices $invoiceServices */
     private InvoiceServices $invoiceServices;
 
+    /** @var ParameterBagInterface $parameterBag */
+    private ParameterBagInterface $parameterBag;
+
     /**
      * InvoiceSubscriber constructor.
      * @param InvoiceServices $invoiceServices
+     * @param ParameterBagInterface $parameterBag
      */
-    public function __construct(InvoiceServices $invoiceServices)
+    public function __construct(InvoiceServices $invoiceServices, ParameterBagInterface $parameterBag)
     {
         $this->invoiceServices = $invoiceServices;
+        $this->parameterBag = $parameterBag;
     }
 
 
@@ -72,6 +78,12 @@ class InvoiceSubscriber implements EventSubscriber
         if (is_null($invoice->getVs())) {
             $invoice->setVs($this->invoiceServices->calculateInvoiceVs());
         }
+
+        // if user not defined KS load from services.yaml
+        if (is_null($invoice->getKs())) {
+            $this->parameterBag->get('invoiceKsDefault');
+        }
+
     }
 
 

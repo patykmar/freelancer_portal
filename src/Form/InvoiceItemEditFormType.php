@@ -25,10 +25,10 @@ class InvoiceItemEditFormType extends AbstractType
                     'class' => 'form-control',
                     'maxlength' => 255
                 ),
-                'label' => 'Název položky',
+                'label' => 'Item name: ',
             ])
             ->add('unit_count', NumberType::class, [
-                'label' => 'Počet jednotek',
+                'label' => 'Unit count:',
                 'attr' => [
                     'min' => InvoiceItem::UNIT_COUNT_MIN_VALUE,
                     'max' => InvoiceItem::UNIT_COUNT_MAX_VALUE,
@@ -36,13 +36,13 @@ class InvoiceItemEditFormType extends AbstractType
             ])
             ->add('price', MoneyType::class, [
                 'currency' => 'CZK',
-                'help' => 'Cena za kus',
+                'help' => 'Price per unit',
                 'required' => true,
                 'divisor' => InvoiceItem::DIVISOR,
             ])
             ->add('discount', PercentType::class, [
-                'label' => 'Sleva',
-                'help' => 'Vyjádřená v procentech',
+                'label' => 'Discount:',
+                'help' => 'in percent, allowed range '.InvoiceItem::DISCOUNT_MIN_VALUE.'% - '.InvoiceItem::DISCOUNT_MAX_VALUE.'%',
                 'type' => 'integer',
                 'attr' => [
                     'min' => InvoiceItem::DISCOUNT_MIN_VALUE,
@@ -51,8 +51,8 @@ class InvoiceItemEditFormType extends AbstractType
                 'html5' => true,
             ])
             ->add('margin', PercentType::class, [
-                'label' => 'Marže',
-                'help' => 'Procentuální vyjádření marže',
+                'label' => 'Margin:',
+                'help' => 'in percent, allowed range '.InvoiceItem::MARGIN_MIN_VALUE.'% - '.InvoiceItem::MARGIN_MAX_VALUE.'%',
                 'type' => 'integer',
                 'attr' => [
                     'min' => InvoiceItem::MARGIN_MIN_VALUE,
@@ -61,7 +61,7 @@ class InvoiceItemEditFormType extends AbstractType
                 'html5' => true,
             ])
             ->add('vat', EntityType::class, [
-                'label' => 'DPH',
+                'label' => 'VAT',
                 'class' => Vat::class
             ]);
     }

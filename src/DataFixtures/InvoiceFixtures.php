@@ -4,7 +4,6 @@
 namespace App\DataFixtures;
 
 
-use App\Entity\Company;
 use App\Entity\Invoice;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -19,6 +18,32 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
     public const INVOICE_03 = 'invoice-03';
     public const INVOICE_04 = 'invoice-04';
     public const INVOICE_05 = 'invoice-05';
+    public const INVOICE_06 = 'invoice-06';
+    public const INVOICE_07 = 'invoice-07';
+    public const INVOICE_08 = 'invoice-08';
+    public const INVOICE_09 = 'invoice-09';
+    public const INVOICE_10 = 'invoice-10';
+    public const INVOICE_11 = 'invoice-11';
+    public const INVOICE_12 = 'invoice-12';
+    public const INVOICE_13 = 'invoice-13';
+    public const INVOICE_14 = 'invoice-14';
+    public const INVOICE_15 = 'invoice-15';
+    public const INVOICE_16 = 'invoice-16';
+    public const INVOICE_17 = 'invoice-17';
+    public const INVOICE_18 = 'invoice-18';
+    public const INVOICE_19 = 'invoice-19';
+    public const INVOICE_20 = 'invoice-20';
+    public const INVOICE_21 = 'invoice-21';
+    public const INVOICE_22 = 'invoice-22';
+    public const INVOICE_23 = 'invoice-23';
+    public const INVOICE_24 = 'invoice-24';
+    public const INVOICE_25 = 'invoice-25';
+    public const INVOICE_26 = 'invoice-26';
+    public const INVOICE_27 = 'invoice-27';
+    public const INVOICE_28 = 'invoice-28';
+    public const INVOICE_29 = 'invoice-29';
+    public const INVOICE_30 = 'invoice-30';
+
 
     /**
      * @param ObjectManager $manager
@@ -27,83 +52,53 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager): void
     {
-        $paymentTypeCache = $this->getReference(PaymentTypeFixture::PT_HOTOVE);
-        $paymentTypeBank = $this->getReference(PaymentTypeFixture::PT_PREVOD);
+        $references = [
+            self::INVOICE_01, self::INVOICE_02, self::INVOICE_03, self::INVOICE_04, self::INVOICE_05,
+            self::INVOICE_06, self::INVOICE_07, self::INVOICE_08, self::INVOICE_09, self::INVOICE_10,
+            self::INVOICE_11, self::INVOICE_12, self::INVOICE_13, self::INVOICE_14, self::INVOICE_15,
+            self::INVOICE_16, self::INVOICE_17, self::INVOICE_18, self::INVOICE_19, self::INVOICE_20,
+            self::INVOICE_21, self::INVOICE_22, self::INVOICE_23, self::INVOICE_24, self::INVOICE_25,
+            self::INVOICE_26, self::INVOICE_27, self::INVOICE_28, self::INVOICE_29, self::INVOICE_30,
+        ];
 
-        /** @var Company $countryCz */
-        $companyPatykMartin = $this->getReference(CompanyFixture::COMPANY_PATYK_MARTIN);
-        $companyVodafone = $this->getReference(CompanyFixture::COMPANY_VODAFONE_CZ);
-        $companyTmcz = $this->getReference(CompanyFixture::COMPANY_TMOBILE_CZ);
-        $companyO2cz = $this->getReference(CompanyFixture::COMPANY_O2_CZ);
+        $paymentTypes = [
+            $this->getReference(PaymentTypeFixture::PT_HOTOVE),
+            $this->getReference(PaymentTypeFixture::PT_PREVOD),
+        ];
 
-        $userPatykmar = $this->getReference(UserFixture::USER_ADMIN_REFERENCE);
-        $userUser = $this->getReference(UserFixture::USER_USER_REFERENCE);
+        $companies = [
+            $this->getReference(CompanyFixture::COMPANY_PATYK_MARTIN),
+            $this->getReference(CompanyFixture::COMPANY_VODAFONE_CZ),
+            $this->getReference(CompanyFixture::COMPANY_TMOBILE_CZ),
+            $this->getReference(CompanyFixture::COMPANY_O2_CZ),
+            $this->getReference(CompanyFixture::COMPANY_RDRYMAROV),
+            $this->getReference(CompanyFixture::COMPANY_CETIN_CZ),
+            $this->getReference(CompanyFixture::COMPANY_MAXXNET),
+            $this->getReference(CompanyFixture::COMPANY_CEZ),
+            $this->getReference(CompanyFixture::INNOVATION_ADVISORS),
+            $this->getReference(CompanyFixture::GAPPAY_SRO),
+            $this->getReference(CompanyFixture::CGE_SRO),
+            $this->getReference(CompanyFixture::COMPANY_SKODA),
+        ];
 
-        $invoice1 = new Invoice();
-        $invoice1->setPaymentType($paymentTypeBank)
-            ->setSupplier($companyPatykMartin)
-            ->setSubscriber($companyVodafone)
-            ->setPaymentType($paymentTypeBank)
-            ->setDue(14)
-            ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
-            ->setUserCreated($userPatykmar)
-            ->setVs('2021000010')
-            ->setKs('309');
-        $this->setReference(self::INVOICE_01, $invoice1);
+        $users = [
+            $this->getReference(UserFixture::USER_ADMIN_01),
+            $this->getReference(UserFixture::USER_USER_01),
+        ];
 
-        $invoice2 = new Invoice();
-        $invoice2->setPaymentType($paymentTypeBank)
-            ->setSupplier($companyPatykMartin)
-            ->setSubscriber($companyTmcz)
-            ->setPaymentType($paymentTypeBank)
-            ->setDue(14)
-            ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
-            ->setUserCreated($userPatykmar)
-            ->setVs('2021000011')
-            ->setKs('309');
-        $this->setReference(self::INVOICE_02, $invoice2);
-
-        $invoice3 = new Invoice();
-        $invoice3->setPaymentType($paymentTypeBank)
-            ->setSupplier($companyPatykMartin)
-            ->setSubscriber($companyO2cz)
-            ->setPaymentType($paymentTypeBank)
-            ->setDue(14)
-            ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
-            ->setUserCreated($userPatykmar)
-            ->setVs('2021000012')
-            ->setKs('309');
-        $this->setReference(self::INVOICE_03, $invoice3);
-
-        $invoice4 = new Invoice();
-        $invoice4->setPaymentType($paymentTypeBank)
-            ->setSupplier($companyPatykMartin)
-            ->setSubscriber($companyO2cz)
-            ->setPaymentType($paymentTypeCache)
-            ->setDue(14)
-            ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
-            ->setUserCreated($userUser)
-            ->setVs('2021000013')
-            ->setKs('309');
-        $this->setReference(self::INVOICE_04, $invoice4);
-
-        $invoice5 = new Invoice();
-        $invoice5->setPaymentType($paymentTypeBank)
-            ->setSupplier($companyPatykMartin)
-            ->setSubscriber($companyO2cz)
-            ->setPaymentType($paymentTypeCache)
-            ->setDue(14)
-            ->setPaymentDay(new DateTime("+".rand(5,20)." days"))
-            ->setUserCreated($userUser)
-            ->setVs('2021000014')
-            ->setKs('309');
-        $this->setReference(self::INVOICE_05, $invoice5);
-
-        $manager->persist($invoice1);
-        $manager->persist($invoice2);
-        $manager->persist($invoice3);
-        $manager->persist($invoice4);
-        $manager->persist($invoice5);
+        for ($i = 0; $i < count($references); $i++) {
+            $invoiceFixtures = new Invoice();
+            $invoiceFixtures
+                ->setPaymentType($paymentTypes[rand(0, count($paymentTypes) - 1)])
+                ->setSupplier($companies[0])
+                ->setSubscriber($companies[rand(1, count($companies) - 1)])
+                ->setDue(14)
+                ->setPaymentDay(new DateTime("+" . rand(5, 20) . " days"))
+                ->setUserCreated($users[rand(0, count($users) - 1)]);
+            $this->setReference($references[$i], $invoiceFixtures);
+            $manager->persist($invoiceFixtures);
+            unset($invoiceFixtures);
+        }
 
         $manager->flush();
     }

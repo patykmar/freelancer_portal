@@ -5,7 +5,6 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WorkInventoryRepository;
 use Doctrine\ORM\Mapping as ORM;
-use DateTime;
 use DateTimeInterface;
 
 /**
@@ -30,39 +29,39 @@ class WorkInventory
      * @ORM\ManyToOne(targetEntity=Tariff::class, inversedBy="workInventories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private Tariff $tariff;
+    private ?Tariff $tariff;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private DateTime $work_start;
+    private DateTimeInterface $work_start;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private DateTime $work_end;
+    private ?DateTimeInterface $work_end = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private User $user;
+    private ?User $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Invoice::class, inversedBy="workInventories")
      */
-    private Invoice $invoice;
+    private ?Invoice $invoice;
 
     /**
      * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="workInventories")
      * @ORM\JoinColumn(nullable=false)
      */
-    private Company $company;
+    private ?Company $company;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private float $work_duration;
+    private ?float $work_duration;
 
     public function getId(): ?int
     {
@@ -86,6 +85,10 @@ class WorkInventory
         return $this->tariff;
     }
 
+    /**
+     * @param Object|Tariff|null $tariff
+     * @return $this
+     */
     public function setTariff(?Tariff $tariff): self
     {
         $this->tariff = $tariff;
@@ -122,6 +125,10 @@ class WorkInventory
         return $this->user;
     }
 
+    /**
+     * @param Object|User|null $user
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -134,6 +141,10 @@ class WorkInventory
         return $this->invoice;
     }
 
+    /**
+     * @param Object|Invoice|null $invoice
+     * @return $this
+     */
     public function setInvoice(?Invoice $invoice): self
     {
         $this->invoice = $invoice;
@@ -146,6 +157,10 @@ class WorkInventory
         return $this->company;
     }
 
+    /**
+     * @param Object|Company|null $company
+     * @return $this
+     */
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
@@ -158,6 +173,10 @@ class WorkInventory
         return $this->work_duration;
     }
 
+    /**
+     * @param float|null $work_duration
+     * @return $this
+     */
     public function setWorkDuration(?float $work_duration): self
     {
         $this->work_duration = $work_duration;

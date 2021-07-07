@@ -22,10 +22,8 @@ class TariffCrudController extends AbstractCrudController
         return [
             IdField::new('id')
                 ->onlyOnIndex(),
-            TextField::new('name', 'Název tarifu: '),
-//            NumberField::new('price', 'Cena za jednotku: ')
-//            ->setNumDecimals(0),
-            MoneyField::new('price', 'Cena za jednotku: ')
+            TextField::new('name', 'Tariff name: '),
+            MoneyField::new('price', 'Price per unit: ')
                 ->setCurrency('CZK')
                 ->setNumDecimals(0)
         ];

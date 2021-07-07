@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Doctrine\ORM\NonUniqueResultException;
@@ -45,14 +46,15 @@ class InvoiceCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         // prepare fields which want to show
+        $returnArray[] = IdField::new('id')->onlyOnIndex();
         $returnArray[] =
-            AssociationField::new('supplier', 'Dodavatel: ')
+            AssociationField::new('supplier', 'Supplier: ')
                 ->setRequired(true);
         $returnArray[] =
-            AssociationField::new('subscriber', 'Odběratel: ')
+            AssociationField::new('subscriber', 'Subscriber: ')
                 ->setRequired(true);
         $returnArray[] =
-            AssociationField::new('payment_type', 'Forma úhrady: ')
+            AssociationField::new('payment_type', 'Payment type: ')
                 ->setRequired(true);
         $userCreatedAssociationField = AssociationField::new('user_created', 'Created by: ');
 
@@ -126,7 +128,7 @@ class InvoiceCrudController extends AbstractCrudController
                 $returnArray[] = $dueDateDateTimeField;
                 $returnArray[] = $invoiceItemsCollectionField
                     ->setTemplatePath('admin/invoice/detail.html.twig');
-                unset($userCreatedAssociationField,$invoiceCreatedDateTimeField,$vsTextField,$dueIntegerField,$invoiceItemsCollectionField);
+                unset($userCreatedAssociationField, $invoiceCreatedDateTimeField, $vsTextField, $dueIntegerField, $invoiceItemsCollectionField);
                 return $returnArray;
             default:
                 // Crud::PAGE_INDEX
@@ -150,5 +152,14 @@ class InvoiceCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $viewInvoicePdf);
 
     }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return parent::configureCrud(
+            $crud
+                ->setDefaultSort(['id' => 'DESC'])
+        );
+    }
+
 
 }

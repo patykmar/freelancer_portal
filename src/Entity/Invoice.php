@@ -122,6 +122,10 @@ class Invoice
         return $this->subscriber;
     }
 
+    /**
+     * @param Object|Company $subscriber
+     * @return $this
+     */
     public function setSubscriber(Company $subscriber): self
     {
         $this->subscriber = $subscriber;
