@@ -50,6 +50,9 @@ class WorkInventorySubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * @param Object|WorkInventory $workInventory
+     */
     private function calculateDuration(WorkInventory $workInventory)
     {
         // If I know, when work ended I can calculate duration
