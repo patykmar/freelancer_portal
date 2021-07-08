@@ -7,6 +7,7 @@ use App\Repository\VatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VatRepository::class)
@@ -14,6 +15,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Vat
 {
+    /** @const int PERCENT_MIN minimum value of percent */
+    const PERCENT_MIN = 0;
+    /** @const int PERCENT_MAX maximum value of percent */
+    const PERCENT_MAX = 99;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -33,6 +39,11 @@ class Vat
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned":true, "default": 0})
+     * @Assert\Range(
+     *     min = self::PERCENT_MIN,
+     *     max = self::PERCENT_MAX,
+     *     notInRangeMessage = "You must be between {{ min }}cm and {{ max }}cm tall to enter",
+     * )
      */
     private int $percent;
 
