@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Invoice;
 use App\Entity\Vat;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -44,14 +43,15 @@ class VatCrudController extends AbstractCrudController
 
         // form section
         yield TextField::new('name', 'Name: ')
+            ->setHelp('Describe your VAT value: eg. VAT 20%')
             ->onlyOnForms();
         yield IntegerField::new('percent', 'Tax in percent: ')
             ->onlyOnForms()
-            ->setHelp('například 20% bude 20')
+            ->setHelp('Please fill the number in range from '.Vat::PERCENT_MIN.' to '.Vat::PERCENT_MAX)
             ->setFormTypeOptions([
                 'attr' => [
-                    'min' => 0,
-                    'max' => 99,
+                    'min' => Vat::PERCENT_MIN,
+                    'max' => Vat::PERCENT_MAX,
                 ],
             ]);
         yield BooleanField::new('isDefault', 'Is default?')
