@@ -41,7 +41,6 @@ class User implements UserInterface
     private string $password;
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Length(min=8, max=4096)
      */
     private string $plainTextPassword;
@@ -55,7 +54,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlan()
+     * @Assert\NotBlank()
      * @Assert\Length(min=2)
      */
     private string $last_name;
