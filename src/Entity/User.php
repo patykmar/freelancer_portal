@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use DateTimeInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -23,6 +24,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email(message="Provided email is not in valid format")
      */
     private string $email;
 
@@ -38,12 +41,22 @@ class User implements UserInterface
     private string $password;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(min=8, max=4096)
+     */
+    private string $plainTextPassword;
+
+    /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=2)
      */
     private string $first_name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlan()
+     * @Assert\Length(min=2)
      */
     private string $last_name;
 
@@ -67,7 +80,7 @@ class User implements UserInterface
      */
     public function __toString(): string
     {
-        return $this->first_name." ".$this->last_name.' ('.$this->getEmail().')';
+        return $this->first_name . " " . $this->last_name . ' (' . $this->getEmail() . ')';
     }
 
     public function getId(): ?int
@@ -210,5 +223,24 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getPlainTextPassword(): string
+    {
+        return $this->plainTextPassword;
+    }
+
+    /**
+     * @param string $plainTextPassword
+     * @return User
+     */
+    public function setPlainTextPassword(string $plainTextPassword): self
+    {
+        $this->plainTextPassword = $plainTextPassword;
+        return $this;
+    }
+
 
 }
