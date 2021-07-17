@@ -4,9 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class UserFixture extends Fixture
+class UserFixture extends Fixture implements DependentFixtureInterface
 {
     public const USER_ADMIN_01 = 'user-admin';
     public const USER_USER_01 = 'user-user';
@@ -35,12 +36,22 @@ class UserFixture extends Fixture
                 ->setFirstName($users[$i]['firstName'])
                 ->setLastName($users[$i]['lastName'])
                 ->setRoles($users[$i]['role'])
-                ->setCompany($user[$i]['company']);
+                ->setCompany($users[$i]['company']);
             $this->addReference($users[$i]['ref'], $user);
             $manager->persist($user);
             unset($user);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDependencies(): array
+    {
+        return [
+            CompanyFixture::class
+        ];
     }
 }
