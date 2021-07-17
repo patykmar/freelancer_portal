@@ -77,6 +77,7 @@ class User implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private Company $company;
 
