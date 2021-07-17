@@ -75,6 +75,12 @@ class User implements UserInterface
     private ?DateTimeInterface $password_changed = null;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Company $company;
+
+    /**
      * @return string
      */
     public function __toString(): string
@@ -238,6 +244,25 @@ class User implements UserInterface
     public function setPlainTextPassword(string $plainTextPassword): self
     {
         $this->plainTextPassword = $plainTextPassword;
+        return $this;
+    }
+
+    /**
+     * @return Company
+     */
+    public function getCompany(): Company
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param Company $company
+     * @return $this
+     */
+    public function setCompany(Company $company): self
+    {
+        $this->company = $company;
+
         return $this;
     }
 
