@@ -54,7 +54,7 @@ class UserSubscriber implements EventSubscriber
         $user->setPassword(
             $this->encoder->encodePassword(
                 $user,
-                $user->getPassword()
+                $user->getPlainTextPassword()
             ));
 
         $user->setCreated($today);
