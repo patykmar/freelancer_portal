@@ -15,17 +15,12 @@ class UserFixture extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $reference = [
-            $this->getReference(CompanyFixture::COMPANY_PATYK_MARTIN)
-        ];
 
         $users = [
             ['email' => 'patyk.m@gmail.com', 'pass' => '7C8K8zszyuBkGDKY', 'firstName' => 'Martin',
-                'lastName' => 'Patyk', 'role' => ["ROLE_ADMIN"], 'ref' => self::USER_ADMIN_01,
-                'company' => $reference[0]],
+                'lastName' => 'Patyk', 'role' => ["ROLE_ADMIN"], 'ref' => self::USER_ADMIN_01],
             ['email' => 'fake@user.com', 'pass' => 'gyOLHeWLuV6T4hru', 'firstName' => 'Fake',
-                'lastName' => 'User', 'role' => ["ROLE_USER"], 'ref' => self::USER_USER_01,
-                'company' => $reference[0]],
+                'lastName' => 'User', 'role' => ["ROLE_USER"], 'ref' => self::USER_USER_01],
         ];
 
         for ($i = 0; $i < count($users); $i++) {
@@ -35,8 +30,7 @@ class UserFixture extends Fixture implements DependentFixtureInterface
                 ->setEmail($users[$i]['email'])
                 ->setFirstName($users[$i]['firstName'])
                 ->setLastName($users[$i]['lastName'])
-                ->setRoles($users[$i]['role'])
-                ->setCompany($users[$i]['company']);
+                ->setRoles($users[$i]['role']);
             $this->addReference($users[$i]['ref'], $user);
             $manager->persist($user);
             unset($user);
