@@ -39,13 +39,13 @@ class Company
     private string $description;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true, options="{"default": null}")
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default": null})
      * @Assert\Length(max=50)
      */
     private ?string $company_id = null;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true, options="{"default": null}")
+     * @ORM\Column(type="string", length=50, nullable=true, options={"default": null})
      * @Assert\Length(max=50)
      */
     private ?string $vat_number = null;
@@ -58,25 +58,25 @@ class Company
 
     //options={"unsigned":true, "default": 0}
     /**
-     * @ORM\Column(type="datetime", nullable=true, options="{"default": null}")
+     * @ORM\Column(type="datetime", nullable=true, options={"default": null})
      * @Assert\DateTime()
      */
     private ?DateTimeInterface $modify = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true, options="{"default": null}")
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default": null})
      * @Assert\Length(max=255)
      */
     private ?string $street = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true, options="{"default": null}")
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default": null})
      * @Assert\Length(max=255)
      */
     private ?string $city = null;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true, options="{"default": null}")
+     * @ORM\Column(type="string", length=20, nullable=true, options={"default": null})
      * @Assert\Length(max=20)
      */
     private ?string $zip_code = null;
@@ -88,13 +88,13 @@ class Company
     private Country $country;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true, options="{"default": null}")
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default": null})
      * @Assert\Length(max=255)
      */
     private ?string $account_number = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true, options="{"default": null}")
+     * @ORM\Column(type="string", length=255, nullable=true, options={"default": null})
      * @Assert\Iban(message="This is not a valid International Bank Account Number (IBAN).")
      * @Assert\Length(max=255)
      */
