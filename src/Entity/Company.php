@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use DateTimeInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CompanyRepository::class)
@@ -25,46 +26,58 @@ class Company
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=255)
      */
     private string $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=255)
      */
-    private ?string $description = null;
+    private string $description;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true, options="{"default": null}")
+     * @Assert\Length(max=50)
      */
     private ?string $company_id = null;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true, options="{"default": null}")
+     * @Assert\Length(max=50)
      */
     private ?string $vat_number = null;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private DateTimeInterface $created;
 
+    //options={"unsigned":true, "default": 0}
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, options="{"default": null}")
+     * @Assert\DateTime()
      */
     private ?DateTimeInterface $modify = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, options="{"default": null}")
+     * @Assert\Length(max=255)
      */
     private ?string $street = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, options="{"default": null}")
+     * @Assert\Length(max=255)
      */
     private ?string $city = null;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="string", length=20, nullable=true, options="{"default": null}")
+     * @Assert\Length(max=20)
      */
     private ?string $zip_code = null;
 
@@ -72,15 +85,18 @@ class Company
      * @ORM\ManyToOne(targetEntity=Country::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Country $country = null;
+    private Country $country;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, options="{"default": null}")
+     * @Assert\Length(max=255)
      */
     private ?string $account_number = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, options="{"default": null}")
+     * @Assert\Iban(message="This is not a valid International Bank Account Number (IBAN).")
+     * @Assert\Length(max=255)
      */
     private ?string $iban = null;
 
@@ -122,7 +138,7 @@ class Company
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 

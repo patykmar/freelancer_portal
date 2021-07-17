@@ -24,7 +24,7 @@ class UserFixture extends Fixture
         for ($i = 0; $i < count($users); $i++) {
             $user = new User();
             // password encoding is handle in EventListener/UserSubscriber
-            $user->setPassword($users[$i]['pass'])
+            $user->setPlainTextPassword($users[$i]['pass'])
                 ->setEmail($users[$i]['email'])
                 ->setFirstName($users[$i]['firstName'])
                 ->setLastName($users[$i]['lastName'])
