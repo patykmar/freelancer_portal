@@ -110,10 +110,16 @@ class Company
      */
     private bool $isSupplier;
 
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="company")
+     */
+    private Collection $users;
+
     public function __construct()
     {
         $this->setCreated(new DateTime());
         $this->workInventories = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -316,4 +322,34 @@ class Company
     }
 
     //TODO: add SWIFT
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getCompany() === $this) {
+                $user->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
 }
