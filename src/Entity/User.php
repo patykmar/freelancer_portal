@@ -76,9 +76,9 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity=Company::class)
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
-    private ?Company $employeeOf = null;
+    private Company $employeeOf;
 
     /**
      * @return string
@@ -271,12 +271,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEmployeeOf(): ?Company
+    public function getEmployeeOf(): Company
     {
         return $this->employeeOf;
     }
 
-    public function setEmployeeOf(?Company $employeeOf): self
+    public function setEmployeeOf(Company $employeeOf): self
     {
         $this->employeeOf = $employeeOf;
 
