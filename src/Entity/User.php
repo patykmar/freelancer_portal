@@ -75,12 +75,42 @@ class User implements UserInterface
     private ?DateTimeInterface $password_changed = null;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Company::class)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Company $employeeOf = null;
+
+    /**
      * @return string
      */
     public function __toString(): string
     {
         return $this->first_name . " " . $this->last_name . ' (' . $this->getEmail() . ')';
     }
+    /**
+     * @link https://github.com/symfony/symfony/issues/35660#issuecomment-585787119
+     * @note Symfony issue #35660
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'password' => $this->getPassword(),
+            'email' => $this->getEmail(),
+        ];
+    }
+
+    /**
+     * @param array $data
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+        $this->password = $data['password'];
+        $this->email = $data['email'];
+    }
+
 
     public function getId(): ?int
     {
@@ -238,6 +268,18 @@ class User implements UserInterface
     public function setPlainTextPassword(string $plainTextPassword): self
     {
         $this->plainTextPassword = $plainTextPassword;
+        return $this;
+    }
+
+    public function getEmployeeOf(): ?Company
+    {
+        return $this->employeeOf;
+    }
+
+    public function setEmployeeOf(?Company $employeeOf): self
+    {
+        $this->employeeOf = $employeeOf;
+
         return $this;
     }
 
