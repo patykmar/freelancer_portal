@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -11,7 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource
  */
 class User implements UserInterface
 {
@@ -88,8 +86,8 @@ class User implements UserInterface
         return $this->first_name . " " . $this->last_name . ' (' . $this->getEmail() . ')';
     }
     /**
+     * Symfony issue #35660
      * @link https://github.com/symfony/symfony/issues/35660#issuecomment-585787119
-     * @note Symfony issue #35660
      * @return array
      */
     public function __serialize(): array
