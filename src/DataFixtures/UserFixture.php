@@ -9,8 +9,10 @@ use Doctrine\Persistence\ObjectManager;
 
 class UserFixture extends Fixture implements DependentFixtureInterface
 {
-    public const USER_ADMIN_01 = 'user-admin';
-    public const USER_USER_01 = 'user-user';
+    public const USER_FIXTURE_01 = 'user_fixture_01';
+    public const USER_FIXTURE_02 = 'user_fixture_02';
+    public const USER_FIXTURE_03 = 'user_fixture_03';
+    public const USER_FIXTURE_04 = 'user_fixture_04';
 
 
     public function load(ObjectManager $manager): void
@@ -21,9 +23,13 @@ class UserFixture extends Fixture implements DependentFixtureInterface
 
         $users = [
             ['email' => 'patyk.m@gmail.com', 'pass' => '7C8K8zszyuBkGDKY', 'firstName' => 'Martin',
-                'lastName' => 'Patyk', 'role' => ["ROLE_ADMIN"], 'ref' => self::USER_ADMIN_01],
+                'lastName' => 'Patyk', 'role' => ["ROLE_ADMIN"], 'ref' => self::USER_FIXTURE_01],
             ['email' => 'fake@user.com', 'pass' => 'gyOLHeWLuV6T4hru', 'firstName' => 'Fake',
-                'lastName' => 'User', 'role' => ["ROLE_USER"], 'ref' => self::USER_USER_01],
+                'lastName' => 'User', 'role' => ["ROLE_USER"], 'ref' => self::USER_FIXTURE_02],
+            ['email' => 'sd24h@patyk.cz', 'pass' => 'gWLuV6yOLHeWLuhrV6T4u', 'firstName' => 'Service',
+                'lastName' => 'Desk', 'role' => ["ROLE_ADMIN"], 'ref' => self::USER_FIXTURE_03],
+            ['email' => 'ss@patyk.cz', 'pass' => 'gWLuV6yOLHeT4hrWLuu', 'firstName' => 'Shift',
+                'lastName' => 'Supervisor', 'role' => ["ROLE_ADMIN"], 'ref' => self::USER_FIXTURE_04],
         ];
 
         for ($i = 0; $i < count($users); $i++) {

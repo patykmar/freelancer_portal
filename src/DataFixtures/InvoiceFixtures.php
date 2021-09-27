@@ -82,8 +82,8 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
         ];
 
         $users = [
-            $this->getReference(UserFixture::USER_ADMIN_01),
-            $this->getReference(UserFixture::USER_USER_01),
+            $this->getReference(UserFixture::USER_FIXTURE_01),
+            $this->getReference(UserFixture::USER_FIXTURE_02),
         ];
 
         for ($i = 0; $i < count($references); $i++) {
