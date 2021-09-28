@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Impact;
+use App\Entity\InfluencingTicket;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Impact|null find($id, $lockMode = null, $lockVersion = null)
- * @method Impact|null findOneBy(array $criteria, array $orderBy = null)
- * @method Impact[]    findAll()
- * @method Impact[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method InfluencingTicket|null find($id, $lockMode = null, $lockVersion = null)
+ * @method InfluencingTicket|null findOneBy(array $criteria, array $orderBy = null)
+ * @method InfluencingTicket[]    findAll()
+ * @method InfluencingTicket[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ImpactRepository extends ServiceEntityRepository
+class InfluencingTicketRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Impact::class);
+        parent::__construct($registry, InfluencingTicket::class);
     }
 
     // /**
-    //  * @return Impact[] Returns an array of Impact objects
+    //  * @return InfluencingTicket[] Returns an array of InfluencingTicket objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ImpactRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Impact
+    public function findOneBySomeField($value): ?InfluencingTicket
     {
         return $this->createQueryBuilder('i')
             ->andWhere('i.exampleField = :val')

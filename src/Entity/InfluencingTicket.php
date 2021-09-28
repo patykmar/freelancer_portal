@@ -2,18 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\ImpactRepository;
+use App\Repository\InfluencingTicketRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ImpactRepository::class)
+ * @ORM\Entity(repositoryClass=InfluencingTicketRepository::class)
  */
-class Impact
+class InfluencingTicket
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer", options={"unsigned":true})
+     * @ORM\Column(type="integer")
      */
     private int $id = 0;
 
@@ -31,6 +31,16 @@ class Impact
      * @ORM\Column(type="float")
      */
     private float $coefficientTime;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private bool $isForPriority;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private bool $isForImpact;
 
     public function getId(): ?int
     {
@@ -69,6 +79,30 @@ class Impact
     public function setCoefficientTime(float $coefficientTime): self
     {
         $this->coefficientTime = $coefficientTime;
+
+        return $this;
+    }
+
+    public function getIsForPriority(): ?bool
+    {
+        return $this->isForPriority;
+    }
+
+    public function setIsForPriority(?bool $isForPriority): self
+    {
+        $this->isForPriority = $isForPriority;
+
+        return $this;
+    }
+
+    public function getIsForImpact(): ?bool
+    {
+        return $this->isForImpact;
+    }
+
+    public function setIsForImpact(?bool $isForImpact): self
+    {
+        $this->isForImpact = $isForImpact;
 
         return $this;
     }
