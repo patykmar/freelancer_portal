@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\TicketCloseState;
+use App\Entity\GeneralState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method TicketCloseState|null find($id, $lockMode = null, $lockVersion = null)
- * @method TicketCloseState|null findOneBy(array $criteria, array $orderBy = null)
- * @method TicketCloseState[]    findAll()
- * @method TicketCloseState[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method GeneralState|null find($id, $lockMode = null, $lockVersion = null)
+ * @method GeneralState|null findOneBy(array $criteria, array $orderBy = null)
+ * @method GeneralState[]    findAll()
+ * @method GeneralState[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TicketCloseStateRepository extends ServiceEntityRepository
+class GeneralStateRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TicketCloseState::class);
+        parent::__construct($registry, GeneralState::class);
     }
 
     // /**
-    //  * @return TicketCloseState[] Returns an array of TicketCloseState objects
+    //  * @return GeneralState[] Returns an array of GeneralState objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TicketCloseStateRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TicketCloseState
+    public function findOneBySomeField($value): ?GeneralState
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')
