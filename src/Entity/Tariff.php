@@ -48,7 +48,7 @@ class Tariff
     /**
      * @ORM\OneToMany(targetEntity=Sla::class, mappedBy="tariff", orphanRemoval=true)
      */
-    private ArrayCollection $slas;
+    private Collection $slas;
 
 
     public function __construct()
