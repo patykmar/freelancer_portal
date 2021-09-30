@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ServiceCatalogRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -52,6 +54,16 @@ class ServiceCatalog
      * @ORM\Column(type="boolean", nullable=true, options={"default":false})
      */
     private bool $isDisable;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="serviceCatalog")
+     */
+    private $tickets;
+
+    public function __construct()
+    {
+        $this->tickets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -138,6 +150,36 @@ class ServiceCatalog
     public function setIsDisable(?bool $isDisable): self
     {
         $this->isDisable = $isDisable;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ticket[]
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): self
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets[] = $ticket;
+            $ticket->setServiceCatalog($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): self
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getServiceCatalog() === $this) {
+                $ticket->setServiceCatalog(null);
+            }
+        }
 
         return $this;
     }
