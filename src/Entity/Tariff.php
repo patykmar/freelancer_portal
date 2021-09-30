@@ -45,10 +45,16 @@ class Tariff
      */
     private Vat $vat;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Sla::class, mappedBy="tariff", orphanRemoval=true)
+     */
+    private ArrayCollection $slas;
+
 
     public function __construct()
     {
         $this->workInventories = new ArrayCollection();
+        $this->slas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,7 +98,7 @@ class Tariff
     {
         if (!$this->workInventories->contains($workInventory)) {
             $this->workInventories[] = $workInventory;
-            $workInventory->setTarif($this);
+            $workInventory->setTariff($this);
         }
 
         return $this;
@@ -102,8 +108,8 @@ class Tariff
     {
         if ($this->workInventories->removeElement($workInventory)) {
             // set the owning side to null (unless already changed)
-            if ($workInventory->getTarif() === $this) {
-                $workInventory->setTarif(null);
+            if ($workInventory->getTariff() === $this) {
+                $workInventory->setTariff(null);
             }
         }
 
@@ -131,6 +137,36 @@ class Tariff
     public function setVat(?Vat $vat): self
     {
         $this->vat = $vat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sla[]
+     */
+    public function getSlas(): Collection
+    {
+        return $this->slas;
+    }
+
+    public function addSla(Sla $sla): self
+    {
+        if (!$this->slas->contains($sla)) {
+            $this->slas[] = $sla;
+            $sla->setTariff($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSla(Sla $sla): self
+    {
+        if ($this->slas->removeElement($sla)) {
+            // set the owning side to null (unless already changed)
+            if ($sla->getTariff() === $this) {
+                $sla->setTariff(null);
+            }
+        }
 
         return $this;
     }
