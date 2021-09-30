@@ -12,6 +12,23 @@ use Doctrine\Persistence\ObjectManager;
 class InvoiceItemFixtures extends Fixture implements DependentFixtureInterface
 {
 
+    public static array $sentences = array(
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Nam at congue nulla.',
+        'Sed a sodales leo, fermentum lobortis tellus.', 'Morbi et risus sed enim consequat auctor id convallis massa.',
+        'Duis lacus enim, accumsan eget tristique sed, viverra et augue.', 'Curabitur ut sodales ante.',
+        'Sed vestibulum, erat eget tincidunt egestas, sem metus eleifend erat, vel suscipit est ante id arcu.',
+        'Nunc laoreet, quam sit amet pretium ultricies, justo nisi placerat libero, a molestie dolor odio vel nisl.',
+        'In hac habitasse platea dictumst.', 'Suspendisse massa arcu, laoreet eget cursus non, vulputate eget diam.',
+        'Vestibulum nisl sapien, pellentesque non consectetur et, finibus eget elit.',
+        'Phasellus quis tincidunt arcu.', 'Suspendisse sed lectus dui.', 'In laoreet libero orci, sed tincidunt sapien viverra eget.',
+        'Nam erat mauris, hendrerit sed varius id, aliquet id arcu.',
+        'Quisque elementum, nulla id sollicitudin volutpat, metus nunc pretium nisi, in varius massa lectus vitae sapien.',
+        'Nulla facilisi.', 'Suspendisse ac nisi laoreet, vulputate augue eget, porttitor arcu.',
+        'Etiam vel urna ullamcorper, dignissim urna non, consequat ex.', 'Duis tempor nibh sapien.',
+        'Donec pellentesque arcu quis feugiat dapibus.', 'Sed consequat enim et neque iaculis elementum.',
+        'Nulla massa metus, vestibulum ut eros a, feugiat vehicula tortor.', 'Pellentesque tristique molestie tortor posuere rutrum.',
+        'Praesent porttitor magna id ligula congue, a scelerisque ligula fringilla.', 'Proin non suscipit sapien.');
+
     /**
      * @return mixed
      */
@@ -56,30 +73,13 @@ class InvoiceItemFixtures extends Fixture implements DependentFixtureInterface
             $this->getReference(VatFixture::VAT_22),
         ];
 
-        $sentences = [
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Nam at congue nulla.',
-            'Sed a sodales leo, fermentum lobortis tellus.', 'Morbi et risus sed enim consequat auctor id convallis massa.',
-            'Duis lacus enim, accumsan eget tristique sed, viverra et augue.', 'Curabitur ut sodales ante.',
-            'Sed vestibulum, erat eget tincidunt egestas, sem metus eleifend erat, vel suscipit est ante id arcu.',
-            'Nunc laoreet, quam sit amet pretium ultricies, justo nisi placerat libero, a molestie dolor odio vel nisl.',
-            'In hac habitasse platea dictumst.', 'Suspendisse massa arcu, laoreet eget cursus non, vulputate eget diam.',
-            'Vestibulum nisl sapien, pellentesque non consectetur et, finibus eget elit.',
-            'Phasellus quis tincidunt arcu.', 'Suspendisse sed lectus dui.', 'In laoreet libero orci, sed tincidunt sapien viverra eget.',
-            'Nam erat mauris, hendrerit sed varius id, aliquet id arcu.',
-            'Quisque elementum, nulla id sollicitudin volutpat, metus nunc pretium nisi, in varius massa lectus vitae sapien.',
-            'Nulla facilisi.', 'Suspendisse ac nisi laoreet, vulputate augue eget, porttitor arcu.',
-            'Etiam vel urna ullamcorper, dignissim urna non, consequat ex.', 'Duis tempor nibh sapien.',
-            'Donec pellentesque arcu quis feugiat dapibus.', 'Sed consequat enim et neque iaculis elementum.',
-            'Nulla massa metus, vestibulum ut eros a, feugiat vehicula tortor.', 'Pellentesque tristique molestie tortor posuere rutrum.',
-            'Praesent porttitor magna id ligula congue, a scelerisque ligula fringilla.', 'Proin non suscipit sapien.',
-        ];
 
 
         for ($i = 0; $i < 500; $i++) {
             $iif = new InvoiceItem();
             $iif->setInvoice($invoices[rand(0, count($invoices) - 1)])
                 ->setVat($vats[rand(0, count($vats) - 1)])
-                ->setName($sentences[rand(0, count($sentences) - 1)])
+                ->setName(InvoiceItemFixtures::$sentences[rand(0, count(InvoiceItemFixtures::$sentences) - 1)])
                 ->setPrice(rand(100, 999999))
                 ->setUnitCount(rand(1, 99999) * (rand(1, 10) / 10))
                 ->setDiscount(rand(0, 100))
