@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WorkInventoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeInterface;
 
@@ -62,6 +64,16 @@ class WorkInventory
      * @ORM\Column(type="float", nullable=true)
      */
     private ?float $work_duration;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="workInventory")
+     */
+    private Collection $tickets;
+
+    public function __construct()
+    {
+        $this->tickets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -180,6 +192,36 @@ class WorkInventory
     public function setWorkDuration(?float $work_duration): self
     {
         $this->work_duration = $work_duration;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ticket[]
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): self
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets[] = $ticket;
+            $ticket->setWorkInventory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): self
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getWorkInventory() === $this) {
+                $ticket->setWorkInventory(null);
+            }
+        }
 
         return $this;
     }
