@@ -34,18 +34,18 @@ class QueueUserFixtures extends Fixture implements DependentFixtureInterface
         ];
 
         $fixturesData = [
-            ['user' => $users[0], 'queue' => $queues[2], 'ref' => self::QU_FIXTURES_01],
-            ['user' => $users[0], 'queue' => $queues[3], 'ref' => self::QU_FIXTURES_02],
-            ['user' => $users[1], 'queue' => $queues[1], 'ref' => self::QU_FIXTURES_03],
-            ['user' => $users[1], 'queue' => $queues[2], 'ref' => self::QU_FIXTURES_04],
-            ['user' => $users[2], 'queue' => $queues[1], 'ref' => self::QU_FIXTURES_05],
-            ['user' => $users[2], 'queue' => $queues[2], 'ref' => self::QU_FIXTURES_06],
+            ['user' => $users[0], 'queue' => $queues[1], 'ref' => self::QU_FIXTURES_01],
+            ['user' => $users[0], 'queue' => $queues[2], 'ref' => self::QU_FIXTURES_02],
+            ['user' => $users[1], 'queue' => $queues[0], 'ref' => self::QU_FIXTURES_03],
+            ['user' => $users[1], 'queue' => $queues[1], 'ref' => self::QU_FIXTURES_04],
+            ['user' => $users[2], 'queue' => $queues[0], 'ref' => self::QU_FIXTURES_05],
+            ['user' => $users[2], 'queue' => $queues[1], 'ref' => self::QU_FIXTURES_06],
         ];
 
         foreach ($fixturesData as $item) {
             $fixtureItem = new QueueUser();
             $fixtureItem
-                ->setUser($item['name'])
+                ->setUser($item['user'])
                 ->setQueue($item['queue']);
             $this->addReference($item['ref'], $fixtureItem);
             $manager->persist($fixtureItem);
