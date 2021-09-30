@@ -110,10 +110,16 @@ class Company
      */
     private bool $isSupplier;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ci::class, mappedBy="company")
+     */
+    private Collection $cis;
+
     public function __construct()
     {
         $this->setCreated(new DateTime());
         $this->workInventories = new ArrayCollection();
+        $this->cis = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -316,4 +322,34 @@ class Company
     }
 
     //TODO: add SWIFT
+
+    /**
+     * @return Collection|Ci[]
+     */
+    public function getCis(): Collection
+    {
+        return $this->cis;
+    }
+
+    public function addCi(Ci $ci): self
+    {
+        if (!$this->cis->contains($ci)) {
+            $this->cis[] = $ci;
+            $ci->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCi(Ci $ci): self
+    {
+        if ($this->cis->removeElement($ci)) {
+            // set the owning side to null (unless already changed)
+            if ($ci->getCompany() === $this) {
+                $ci->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
 }
