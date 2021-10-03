@@ -34,7 +34,7 @@ class CiFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $this->initFixtureData();
+        $this->initFixturesData();
 
         foreach ($this->fixturesData as $item) {
             $fixtureItem = new Ci();
@@ -69,7 +69,7 @@ class CiFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 
-    private function initFixtureData(): void
+    private function initFixturesData(): void
     {
         $this->setUsers();
         $this->setQueues();
