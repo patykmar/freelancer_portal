@@ -13,6 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Ticket
 {
+
+    public const MINUTE = 60;
+    public const HOUR = 60 * self::MINUTE;
+    public const DAY = 24 * self::HOUR;
+    public const WEEK = 7 * self::DAY;
+    public const WEEKEND = 2 * self::DAY;
+    public const MONTH = 30 * self::DAY;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -120,7 +128,7 @@ class Ticket
     /**
      * @ORM\Column(type="datetime")
      */
-    private DateTimeInterface $resolveDatetime;
+    private DateTimeInterface $deliveryDatetime;
 
     /**
      * @ORM\Column(type="datetime")
@@ -377,14 +385,14 @@ class Ticket
         return $this;
     }
 
-    public function getResolveDatetime(): ?DateTimeInterface
+    public function getDeliveryDatetime(): ?DateTimeInterface
     {
-        return $this->resolveDatetime;
+        return $this->deliveryDatetime;
     }
 
-    public function setResolveDatetime(DateTimeInterface $resolveDatetime): self
+    public function setDeliveryDatetime(DateTimeInterface $deliveryDatetime): self
     {
-        $this->resolveDatetime = $resolveDatetime;
+        $this->deliveryDatetime = $deliveryDatetime;
 
         return $this;
     }
