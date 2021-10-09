@@ -111,15 +111,14 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
     public const TICKET_100 = 'ticket-100';
 
     public array $ticket_references;
+    public array $cis;
 
     private array $serviceCatalogs;
     private array $ticketTypes;
 
-    private array $influencingTickets;
     private array $priorities;
     private array $impact;
 
-    private array $generalStates;
     private array $ticketState;
 
     private array $users;
@@ -153,6 +152,7 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
             TicketTypeFixtures::class,
             InfluencingTicketFixtures::class,
             UserFixture::class,
+            CiFixtures::class,
         ];
     }
 
@@ -168,6 +168,7 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
         $this->initTicketTypes();
         $this->initUsers();
         $this->initQueueUsers();
+        $this->initCi();
 
         for ($i = 0; $i < 100; $i++) {
             $ticket = new Ticket();
@@ -179,7 +180,8 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
                 ->setImpact($this->impact[rand(0, count($this->impact) - 1)])
                 ->setQueueUser($this->queueUsers[rand(0, count($this->queueUsers) - 1)])
                 ->setDescriptionTitle(InvoiceItemFixtures::$sentences[rand(0, count(InvoiceItemFixtures::$sentences) - 1)])
-                ->setDescriptionBody(InvoiceItemFixtures::$sentences[rand(0, count(InvoiceItemFixtures::$sentences) - 1)]);
+                ->setDescriptionBody(InvoiceItemFixtures::$sentences[rand(0, count(InvoiceItemFixtures::$sentences) - 1)])
+                ->setCi($this->cis[rand(0, count($this->cis) - 1)]);
             $this->addReference($this->references[$i], $ticket);
             $manager->persist($ticket);
             unset($ticket);
@@ -187,9 +189,27 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
+    private function initCi(): void
+    {
+        $this->cis = [
+            $this->getReference(CiFixtures::CI_FIX_01),
+            $this->getReference(CiFixtures::CI_FIX_02),
+            $this->getReference(CiFixtures::CI_FIX_03),
+            $this->getReference(CiFixtures::CI_FIX_04),
+            $this->getReference(CiFixtures::CI_FIX_05),
+            $this->getReference(CiFixtures::CI_FIX_06),
+            $this->getReference(CiFixtures::CI_FIX_07),
+            $this->getReference(CiFixtures::CI_FIX_08),
+            $this->getReference(CiFixtures::CI_FIX_09),
+            $this->getReference(CiFixtures::CI_FIX_10),
+            $this->getReference(CiFixtures::CI_FIX_11),
+            $this->getReference(CiFixtures::CI_FIX_12),
+        ];
+    }
+
     private function initServiceCatalogs(): void
     {
-        $this->serviceCatalogs = array(
+        $this->serviceCatalogs = [
             $this->getReference(ServiceCatalogFixtures::SRVCTL_01), $this->getReference(ServiceCatalogFixtures::SRVCTL_02),
             $this->getReference(ServiceCatalogFixtures::SRVCTL_03), $this->getReference(ServiceCatalogFixtures::SRVCTL_04),
             $this->getReference(ServiceCatalogFixtures::SRVCTL_05), $this->getReference(ServiceCatalogFixtures::SRVCTL_06),
@@ -203,21 +223,21 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
             $this->getReference(ServiceCatalogFixtures::SRVCTL_21), $this->getReference(ServiceCatalogFixtures::SRVCTL_22),
             $this->getReference(ServiceCatalogFixtures::SRVCTL_23), $this->getReference(ServiceCatalogFixtures::SRVCTL_24),
             $this->getReference(ServiceCatalogFixtures::SRVCTL_25),
-        );
+        ];
     }
 
     private function initTicketTypes(): void
     {
-        $this->ticketTypes = array(
+        $this->ticketTypes = [
             $this->getReference(TicketTypeFixtures::TTF_01),
             $this->getReference(TicketTypeFixtures::TTF_02),
             $this->getReference(TicketTypeFixtures::TTF_03),
-        );
+        ];
     }
 
     private function initInfluencingTicket(): void
     {
-        $this->influencingTickets[] = array(
+        $influencingTickets = [
             $this->getReference(InfluencingTicketFixtures::INF_TIC_FIXTURES_01),
             $this->getReference(InfluencingTicketFixtures::INF_TIC_FIXTURES_02),
             $this->getReference(InfluencingTicketFixtures::INF_TIC_FIXTURES_03),
@@ -225,21 +245,21 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
             $this->getReference(InfluencingTicketFixtures::INF_TIC_FIXTURES_05),
             $this->getReference(InfluencingTicketFixtures::INF_TIC_FIXTURES_06),
             $this->getReference(InfluencingTicketFixtures::INF_TIC_FIXTURES_07),
-        );
+        ];
 
         // grab priority and impact
-        foreach ($this->influencingTickets as $influencingTicket) {
-            if ($influencingTicket['isForPriority'])
+        foreach ($influencingTickets as $influencingTicket) {
+            if ($influencingTicket->getIsForPriority())
                 $this->priorities[] = $influencingTicket;
 
-            if ($influencingTicket['isForImpact'])
+            if ($influencingTicket->getIsForImpact())
                 $this->impact[] = $influencingTicket;
         }
     }
 
     private function initGeneralSTate(): void
     {
-        $this->generalStates[] = array(
+        $generalStates = [
             $this->getReference(GeneralStateFixtures::GS_STATE_01),
             $this->getReference(GeneralStateFixtures::GS_STATE_02),
             $this->getReference(GeneralStateFixtures::GS_STATE_03),
@@ -254,34 +274,34 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
             $this->getReference(GeneralStateFixtures::GS_STATE_12),
             $this->getReference(GeneralStateFixtures::GS_STATE_13),
             $this->getReference(GeneralStateFixtures::GS_STATE_14),
-        );
+        ];
 
-        foreach ($this->generalStates as $generalStateItem) {
-            if ($generalStateItem['isForTicket'])
+        foreach ($generalStates as $generalStateItem) {
+            if ($generalStateItem->getIsForTicket())
                 $this->ticketState[] = $generalStateItem;
         }
     }
 
     private function initUsers(): void
     {
-        $this->users = array(
+        $this->users = [
             $this->getReference(UserFixture::USER_FIXTURE_01),
             $this->getReference(UserFixture::USER_FIXTURE_02),
             $this->getReference(UserFixture::USER_FIXTURE_03),
             $this->getReference(UserFixture::USER_FIXTURE_04),
-        );
+        ];
     }
 
     private function initQueueUsers(): void
     {
-        $this->queueUsers = array(
+        $this->queueUsers = [
             $this->getReference(QueueUserFixtures::QU_FIXTURES_01),
             $this->getReference(QueueUserFixtures::QU_FIXTURES_02),
             $this->getReference(QueueUserFixtures::QU_FIXTURES_03),
             $this->getReference(QueueUserFixtures::QU_FIXTURES_04),
             $this->getReference(QueueUserFixtures::QU_FIXTURES_05),
             $this->getReference(QueueUserFixtures::QU_FIXTURES_06),
-        );
+        ];
     }
 
 
