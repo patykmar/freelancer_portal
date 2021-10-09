@@ -6,6 +6,7 @@ use App\Entity\Company;
 use App\Entity\Country;
 use App\Entity\Invoice;
 use App\Entity\PaymentType;
+use App\Entity\ServiceCatalog;
 use App\Entity\Tariff;
 use App\Entity\User;
 use App\Entity\Vat;
@@ -60,7 +61,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Work payed per hour');
         yield MenuItem::linkToCrud('Work inventory', 'fas fa-clipboard-list', WorkInventory::class);
         yield MenuItem::linkToRoute("Unpaid work", 'fab fa-creative-commons-nc-eu', 'work_inventory_unpaid');
-        yield MenuItem::linkToCrud('Tariffs', 'fas fa-receipt', Tariff::class);
 
         yield MenuItem::section("Lists", 'fas fa-list-ol');
         yield MenuItem::linkToCrud("Companies", 'fas fa-building', Company::class);
@@ -68,6 +68,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud("Payment methods", 'fas fa-wallet', PaymentType::class);
         yield MenuItem::linkToCrud('VAT', 'fas fa-hand-holding-usd', Vat::class);
 
+        yield MenuItem::section("Payment");
+        yield MenuItem::linkToCrud('Tariffs', 'fas fa-receipt', Tariff::class);
+        yield MenuItem::linkToCrud('Service catalog', 'fas fa-warehouse', ServiceCatalog::class);
 
         yield MenuItem::section('Users');
         yield MenuItem::linkToCrud('Users', 'fa fa-user', User::class);
