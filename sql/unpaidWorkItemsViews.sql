@@ -1,12 +1,13 @@
 DROP VIEW IF EXISTS v_unpaid_work_items;
 CREATE VIEW v_unpaid_work_items AS
-SELECT c.name                           as companyName,
-       t.name                           as tariffName,
-       sum(w.work_duration)             as workDurationTotal,
-       t.price                          as pricePerUnit,
-       (sum(w.work_duration) * t.price) as totalPrice
-FROM work_inventory as w
-         INNER JOIN tariff t on t.id = w.tariff_id
-         left join company c on w.company_id = c.id
-WHERE w.invoice_id is null
+SELECT w.id                             AS id,
+       c.name                           AS company_name,
+       t.name                           AS tariff_name,
+       sum(w.work_duration)             AS work_duration_total,
+       t.price                          AS price_per_unit,
+       (sum(w.work_duration) * t.price) AS total_price
+FROM work_inventory AS w
+         INNER JOIN tariff t ON t.id = w.tariff_id
+         LEFT JOIN company c ON w.company_id = c.id
+WHERE w.invoice_id IS NULL
 GROUP BY w.company_id, w.tariff_id;
