@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Sla;
+use App\Entity\Ticket;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -51,18 +52,17 @@ class SlaFixtures extends Fixture implements DependentFixtureInterface
             $this->getReference(TicketTypeFixtures::TTF_03),
         ];
 
-        foreach ($tariffs as $tariff){
-            foreach ($priorities as $priority){
-                foreach ($ticketTypes as $ticketType){
+        foreach ($tariffs as $tariff) {
+            foreach ($priorities as $priority) {
+                foreach ($ticketTypes as $ticketType) {
                     $fixtureItem = new Sla();
                     $fixtureItem
                         ->setTariff($tariff)
                         ->setPriority($priority)
                         ->setTicketType($ticketType)
-                        ->setReactionTime(7776000) // 3 months
-                        ->setResolvedTime(15552000) // 6 months
-                        ->setPriceMultiplier(100)
-                    ;
+                        ->setReactionTime(3 * Ticket::MONTH)
+                        ->setResolvedTime(6 * Ticket::MONTH)
+                        ->setPriceMultiplier(100);
                     $manager->persist($fixtureItem);
                     unset($fixtureItem);
                 }
