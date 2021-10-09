@@ -26,7 +26,7 @@ class Ci
     private Ci $parentCi;
 
     /**
-     * @ORM\OneToMany(targetEntity=Ci::class, mappedBy="parrentCi")
+     * @ORM\OneToMany(targetEntity=Ci::class, mappedBy="parentCi")
      */
     private Collection $childCis;
 
