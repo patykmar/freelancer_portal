@@ -95,7 +95,7 @@ class ServiceCatalogFixtures extends Fixture implements DependentFixtureInterfac
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             VatFixture::class,
