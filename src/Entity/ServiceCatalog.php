@@ -35,7 +35,7 @@ class ServiceCatalog
     private int $price;
 
     /**
-     * @ORM\ManyToOne(targetEntity=vat::class)
+     * @ORM\ManyToOne(targetEntity=Vat::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private ?Vat $vat;
