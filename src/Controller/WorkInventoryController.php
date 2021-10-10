@@ -136,34 +136,9 @@ class WorkInventoryController extends AbstractController
             $this->em->persist($invoiceItem);
             unset($invoiceItem);
         }
-
-
         $this->em->flush();
 
         $this->addFlash('notice', 'New invoice for company ' . $company->getName() . ' has been created');
         return $this->redirect($destinationUrl);
-
-
     }
-
-    /**
-     * @Route("/work-inventory/unpaid", name="work_inventory_unpaid")
-     * @return Response
-     */
-    public function unpaidWorkInventory(): Response
-    {
-        $unpaidWorkInventory = $this->workInventoryRepository->getAllUnpaidWorkItemGroupByCompany();
-
-
-        //TODO: TEST how will be work with multiple tariffs under one company
-        // most probably will be needed another column
-
-//        dd($unpaidWorkInventory);
-
-        return $this->render('work_inventory/unpaid.html.twig', [
-            'unpaidWorkInventory' => $unpaidWorkInventory,
-            'customPageTitle' => 'Unpaid work',
-        ]);
-    }
-
 }

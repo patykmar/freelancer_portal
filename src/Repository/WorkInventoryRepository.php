@@ -2,10 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Tariff;
 use App\Entity\WorkInventory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -30,23 +28,6 @@ class WorkInventoryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('w')
             ->where('w.company = :compId')
             ->setParameter('compId', $companyId)
-            ->getQuery()
-            ->execute();
-    }
-
-    /**
-     * Return unpaid work items
-     * @return array
-     */
-    public function getAllUnpaidWorkItemGroupByCompany(): array
-    {
-        return $this->createQueryBuilder('w')
-            ->addSelect('sum(w.work_duration) as workDurationTotal')
-            ->addSelect('t.price as tariffPrice')
-            ->addSelect('(sum(w.work_duration) * t.price) as totalPrice')
-            ->where('w.invoice is null')
-            ->innerJoin(Tariff::class,'t',Join::WITH,'w.tariff = t.id')
-            ->groupBy('w.company, w.tariff')
             ->getQuery()
             ->execute();
     }

@@ -39,7 +39,6 @@ class DashboardController extends AbstractDashboardController
         $this->adminUrlGenerator = $adminUrlGenerator;
     }
 
-
     /**
      * @Route("/admin", name="admin")
      */
@@ -67,8 +66,7 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Work payed per hour');
         yield MenuItem::linkToCrud('Work inventory', 'fas fa-clipboard-list', WorkInventory::class);
-        yield MenuItem::linkToRoute("Unpaid work", 'fab fa-creative-commons-nc-eu', 'work_inventory_unpaid');
-        yield MenuItem::linkToCrud("Unpaid work - view", 'fab fa-creative-commons-nc-eu', UnpaidWorkItems::class);
+        yield MenuItem::linkToCrud("Unpaid work", 'fab fa-creative-commons-nc-eu', UnpaidWorkItems::class);
 
         yield MenuItem::section("Catalogs", 'fas fa-list-ol');
         yield MenuItem::linkToCrud('Catalog items', 'fab fa-servicestack', Ci::class);
@@ -107,6 +105,5 @@ class DashboardController extends AbstractDashboardController
                 ->setFormat('Y-MM-dd HH:mm')
                 ->renderAsNativeWidget(),
         ];
-
     }
 }
