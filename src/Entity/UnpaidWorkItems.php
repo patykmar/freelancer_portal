@@ -14,32 +14,37 @@ class UnpaidWorkItems
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private int $id = 0;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private string $companyName;
+    private int $companyId = 0;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $tariffName;
+    private string $companyName = '';
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $tariffName = '';
 
     /**
      * @ORM\Column(type="float")
      */
-    private float $workDurationTotal;
+    private float $workDurationTotal = 0.0;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private int $pricePerUnit;
+    private int $pricePerUnit = 0;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"unsigned":true})
      */
     private int $totalPrice;
 
@@ -48,16 +53,17 @@ class UnpaidWorkItems
         return $this->id;
     }
 
+    /**
+     * @return int
+     */
+    public function getCompanyId(): int
+    {
+        return $this->companyId;
+    }
+
     public function getCompanyName(): string
     {
         return $this->companyName;
-    }
-
-    public function setCompanyName(string $companyName): self
-    {
-        $this->companyName = $companyName;
-
-        return $this;
     }
 
     public function getTariffName(): string
@@ -65,35 +71,14 @@ class UnpaidWorkItems
         return $this->tariffName;
     }
 
-    public function setTariffName(string $tariffName): self
-    {
-        $this->tariffName = $tariffName;
-
-        return $this;
-    }
-
     public function getWorkDurationTotal(): float
     {
         return $this->workDurationTotal;
     }
 
-    public function setWorkDurationTotal(float $workDurationTotal): self
-    {
-        $this->workDurationTotal = $workDurationTotal;
-
-        return $this;
-    }
-
     public function getPricePerUnit(): int
     {
         return $this->pricePerUnit;
-    }
-
-    public function setPricePerUnit(int $pricePerUnit): self
-    {
-        $this->pricePerUnit = $pricePerUnit;
-
-        return $this;
     }
 
     public function getTotalPrice(): int
