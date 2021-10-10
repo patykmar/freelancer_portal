@@ -1,6 +1,8 @@
+DROP TABLE IF EXISTS v_unpaid_work_items;
 DROP VIEW IF EXISTS v_unpaid_work_items;
 CREATE VIEW v_unpaid_work_items AS
 SELECT w.id                             AS id,
+       c.id                             AS company_id,
        c.name                           AS company_name,
        t.name                           AS tariff_name,
        sum(w.work_duration)             AS work_duration_total,
