@@ -40,7 +40,7 @@ class UserFixture extends Fixture implements DependentFixtureInterface
                 ->setFirstName($users[$i]['firstName'])
                 ->setLastName($users[$i]['lastName'])
                 ->setRoles($users[$i]['role'])
-                ->setEmployeeOf($companies[0]);
+                ->setEmployeeOfCompanyId($companies[0]);
             $this->addReference($users[$i]['ref'], $user);
             $manager->persist($user);
             unset($user);
