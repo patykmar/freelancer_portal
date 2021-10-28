@@ -303,6 +303,4 @@ class TicketFixtures extends Fixture implements DependentFixtureInterface
             $this->getReference(QueueUserFixtures::QU_FIXTURES_06),
         ];
     }
-
-
 }
