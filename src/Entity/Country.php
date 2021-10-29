@@ -27,7 +27,7 @@ class Country
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private string $iso3166Alpha3;
+    private string $iso3166alpha3;
 
     public function getId(): int
     {
@@ -59,15 +59,15 @@ class Country
      */
     public function getIso3166Alpha3(): string
     {
-        return $this->iso3166Alpha3;
+        return $this->iso3166alpha3;
     }
 
     /**
-     * @param string $iso3166Alpha3
+     * @param string $iso3166alpha3
      */
-    public function setIso3166Alpha3(string $iso3166Alpha3): self
+    public function setIso3166Alpha3(string $iso3166alpha3): self
     {
-        $this->iso3166Alpha3 = $iso3166Alpha3;
+        $this->iso3166alpha3 = $iso3166alpha3;
         return $this;
     }
 
