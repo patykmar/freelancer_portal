@@ -93,7 +93,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
                 ->setSupplier($companies[0])
                 ->setSubscriber($companies[rand(1, count($companies) - 1)])
                 ->setDue(14)
-                ->setPaymentDay(new DateTime("+" . rand(5, 20) . " days"))
+                ->setPaymentDate(new DateTime("+" . rand(5, 20) . " days"))
                 ->setUserCreated($users[rand(0, count($users) - 1)]);
             $this->setReference($references[$i], $invoiceFixtures);
             $manager->persist($invoiceFixtures);
@@ -112,5 +112,4 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             UserFixture::class,
         );
     }
-
 }
