@@ -45,7 +45,7 @@ class Invoice
      * @ORM\ManyToOne(targetEntity=PaymentType::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private PaymentType $payment_type;
+    private PaymentType $paymentType;
 
     /**
      * @Assert\NotBlank
@@ -56,23 +56,23 @@ class Invoice
     /**
      * @ORM\Column(type="datetime")
      */
-    private DateTimeInterface $invoice_created;
+    private DateTimeInterface $invoiceCreated;
 
     /**
      * @ORM\Column(type="date")
      */
-    private DateTimeInterface $due_date;
+    private DateTimeInterface $dueDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private ?DateTime $payment_day = null;
+    private ?DateTime $paymentDate = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private User $user_created;
+    private User $userCreated;
 
     /**
      * @ORM\Column(type="string", length=20, unique=true, nullable=true)
@@ -93,6 +93,11 @@ class Invoice
      * @ORM\OneToMany(targetEntity=WorkInventory::class, mappedBy="invoice")
      */
     private Collection $workInventories;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $name;
 
     public function __construct()
     {
@@ -135,12 +140,12 @@ class Invoice
 
     public function getPaymentType(): paymentType
     {
-        return $this->payment_type;
+        return $this->paymentType;
     }
 
-    public function setPaymentType(paymentType $payment_type): self
+    public function setPaymentType(paymentType $paymentType): self
     {
-        $this->payment_type = $payment_type;
+        $this->paymentType = $paymentType;
 
         return $this;
     }
@@ -159,52 +164,52 @@ class Invoice
 
     public function getInvoiceCreated(): ?DateTimeInterface
     {
-        return $this->invoice_created;
+        return $this->invoiceCreated;
     }
 
-    public function setInvoiceCreated(DateTimeInterface $invoice_created): self
+    public function setInvoiceCreated(DateTimeInterface $invoiceCreated): self
     {
-        $this->invoice_created = $invoice_created;
+        $this->invoiceCreated = $invoiceCreated;
 
         return $this;
     }
 
     public function getDueDate(): ?DateTimeInterface
     {
-        return $this->due_date;
+        return $this->dueDate;
     }
 
-    public function setDueDate(DateTimeInterface $due_date): self
+    public function setDueDate(DateTimeInterface $dueDate): self
     {
-        $this->due_date = $due_date;
+        $this->dueDate = $dueDate;
 
         return $this;
     }
 
-    public function getPaymentDay(): ?DateTimeInterface
+    public function getPaymentDate(): ?DateTimeInterface
     {
-        return $this->payment_day;
+        return $this->paymentDate;
     }
 
-    public function setPaymentDay(?DateTimeInterface $payment_day): self
+    public function setPaymentDate(?DateTimeInterface $paymentDate): self
     {
-        $this->payment_day = $payment_day;
+        $this->paymentDate = $paymentDate;
 
         return $this;
     }
 
     public function getUserCreated(): User
     {
-        return $this->user_created;
+        return $this->userCreated;
     }
 
     /**
-     * @param UserInterface|User $user_created
+     * @param UserInterface|User $userCreated
      * @return $this
      */
-    public function setUserCreated(User $user_created): self
+    public function setUserCreated(User $userCreated): self
     {
-        $this->user_created = $user_created;
+        $this->userCreated = $userCreated;
 
         return $this;
     }
@@ -300,6 +305,18 @@ class Invoice
     public function __toString(): string
     {
         return $this->getVs() . '(' . $this->subscriber->getName() . ')';
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
 
