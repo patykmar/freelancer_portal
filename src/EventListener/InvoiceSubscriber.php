@@ -41,6 +41,7 @@ class InvoiceSubscriber implements EventSubscriber
         return [
             Events::prePersist,
             Events::preUpdate,
+            Events::postPersist,
         ];
     }
 
@@ -61,6 +62,13 @@ class InvoiceSubscriber implements EventSubscriber
     {
         if ($args->getObject() instanceof Invoice) {
             $this->calculateMissingValues($args->getObject());
+        }
+    }
+
+    public function postPersist(LifecycleEventArgs $args): void
+    {
+        if ($args->getObject() instanceof Invoice) {
+            $this->setMissingName($args->getObject());
         }
     }
 
@@ -86,5 +94,16 @@ class InvoiceSubscriber implements EventSubscriber
 
     }
 
-
+    /**
+     * @param Invoice|Object $invoice
+     */
+    private function setMissingName(Invoice $invoice): void
+    {
+        $invoice->setName(
+            $invoice->getVs() . ", " .
+            $invoice->getSupplier() . " -> " .
+            $invoice->getSubscriber() . " - " .
+            $invoice->getDueDate()->format("d.m.Y")
+        );
+    }
 }
