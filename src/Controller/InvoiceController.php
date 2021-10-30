@@ -7,9 +7,14 @@ use App\Repository\InvoiceRepository;
 use Mpdf\Mpdf;
 use Mpdf\MpdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use DateTime;
 
+/**
+ * @Route("/invoice", name="invoice_")
+ */
 class InvoiceController extends AbstractController
 {
     private InvoiceRepository $invoiceRepository;
@@ -26,7 +31,7 @@ class InvoiceController extends AbstractController
 
 
     /**
-     * @Route("/invoice/generate-pdf/{invoiceId}", name="inventory_generate_pdf", requirements={"invoiceId"="\d+"})
+     * @Route("/generate-pdf/{invoiceId}", name="inventory_generate_pdf", requirements={"invoiceId"="\d+"})
      * @throws MpdfException
      */
     public function generatePdfInvoice(int $invoiceId): void
@@ -126,67 +131,48 @@ class InvoiceController extends AbstractController
 
     }
 
-//    /**
-//     * @Route("/invoice/generate-html/{invoiceId}", name="inventory_generate_html", requirements={"invoiceId"="\d+"})
-//     */
-//    public function generateHtmlInvoice(int $invoiceId): Response
-//    {
-//        $invoice = $this->invoiceRepository->find($invoiceId);
-//        $totalPrice = 0;
-//        $totalDiscount = 0;
-//        $showDiscount = false;
-//        $showVat = false;
-//
-//        foreach ($invoice->getInvoiceItems() as $item) {
-//            $totalPrice += $item->getPriceTotal();
-//            $totalDiscount += $item->getDiscountTotal();
-//            if ($item->getDiscount() > 0) {
-//                $showDiscount = true;
-//            }
-//            if ($item->getVat()->getPercent() > 0) {
-//                $showVat = true;
-//            }
-//        }
-//
-//
-//        $htmlBody = $this->renderView('Invoice/parts/01-cz_header.html.twig',[
-//            'invoice' => $invoice,
-//        ]);
-//
-//        $htmlBody .= $this->renderView('Invoice/parts/02-cz_supplier-and-subscriber-details.html.twig', [
-//            'invoice' => $invoice,
-//        ]);
-//
-//        $htmlBody .= $this->renderView('Invoice/parts/03-cz_invoice-details.html.twig', [
-//            'invoice' => $invoice,
-//        ]);
-//
-//        if (!$showVat){
-//            $htmlBody .= $this->renderView('Invoice/parts/04a-cz_invoice-items-table.html.twig', [
-//                'invoice' => $invoice,
-//                'show_discount' => $showDiscount
-//            ]);
-//
-//            $htmlBody .= $this->renderView('Invoice/parts/05a-cz_invoice-summary.html.twig', [
-//                'total_price' => $totalPrice,
-//                'total_discount' => $totalDiscount,
-//                'total_price_minus_total_discount' => $totalPrice - $totalDiscount,
-//                'show_discount' => $showDiscount
-//            ]);
-//        }else{
-//            $htmlBody .= $this->renderView('Invoice/parts/04b-cz_invoice-items-table.html.twig', [
-//                'invoice' => $invoice,
-//                'show_discount' => $showDiscount
-//            ]);
-//
-//            $htmlBody .= $this->renderView('Invoice/parts/05a-cz_invoice-summary.html.twig', [
-//                'total_price' => $totalPrice,
-//                'total_discount' => $totalDiscount,
-//                'total_price_minus_total_discount' => $totalPrice - $totalDiscount,
-//                'show_discount' => $showDiscount
-//            ]);
-//        }
-//
-//        return $this->($htmlBody);
-//    }
+    /**
+     * @Route("/", name="all", methods={"GET"})
+     */
+    public function getInvoices(): Response
+    {
+        $response = new JsonResponse();
+
+        $returnArray = array();
+        foreach ($this->invoiceRepository->findAll() as $invoice) {
+            $returnArray[] = array(
+                'id' => $invoice->getId(),
+                'due' => $invoice->getDue(),
+                'dueDate' => $invoice->getDueDate(),
+                'invoiceCreated' => $invoice->getInvoiceCreated(),
+                'ks' => $invoice->getKs(),
+                'paymentDate' => $invoice->getPaymentDate(),
+                'paymentType' => [
+                    'id' => $invoice->getPaymentType()->getId(),
+                    'name' => $invoice->getPaymentType()->getName(),
+                ],
+                'name' => $invoice->getName(),
+                'subscriber' => [
+                    'id' => $invoice->getSubscriber()->getId(),
+                    'name' => $invoice->getSubscriber()->getName(),
+                ],
+                'supplier' => [
+                    'id' => $invoice->getSupplier()->getId(),
+                    'name' => $invoice->getSupplier()->getName(),
+                ],
+                'userCreated' => [
+                    'id' => $invoice->getUserCreated()->getId(),
+                    'firstName' => $invoice->getUserCreated()->getFirstName(),
+                    'lastName' => $invoice->getUserCreated()->getLastName(),
+                    'fullName' => $invoice->getUserCreated()->getFirstName()." ".$invoice->getUserCreated()->getLastName(),
+                ],
+                'vs' => $invoice->getVs(),
+            );
+        }
+
+
+        $response->setData($returnArray);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 }
