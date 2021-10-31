@@ -41,7 +41,7 @@ class User implements UserInterface
     /**
      * @Assert\Length(min=8, max=4096)
      */
-    private string $plainTextPassword;
+    private ?string $plainTextPassword = '';
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -280,5 +280,4 @@ class User implements UserInterface
 
         return $this;
     }
-
 }
