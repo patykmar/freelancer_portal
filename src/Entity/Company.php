@@ -108,7 +108,7 @@ class Company
     /**
      * @ORM\Column(type="boolean", nullable=true, options={"default": false})
      */
-    private bool $isSupplier;
+    private ?bool $isSupplier = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Ci::class, mappedBy="company")
@@ -301,7 +301,7 @@ class Company
         return $this;
     }
 
-    public function getIsSupplier(): bool
+    public function getIsSupplier(): ?bool
     {
         return $this->isSupplier;
     }
