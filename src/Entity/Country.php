@@ -57,7 +57,7 @@ class Country
     /**
      * @return string
      */
-    public function getIso3166Alpha3(): string
+    public function getIso3166alpha3(): string
     {
         return $this->iso3166alpha3;
     }
@@ -65,7 +65,7 @@ class Country
     /**
      * @param string $iso3166alpha3
      */
-    public function setIso3166Alpha3(string $iso3166alpha3): self
+    public function setIso3166alpha3(string $iso3166alpha3): self
     {
         $this->iso3166alpha3 = $iso3166alpha3;
         return $this;
