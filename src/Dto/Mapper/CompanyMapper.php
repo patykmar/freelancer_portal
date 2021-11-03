@@ -2,37 +2,32 @@
 
 namespace App\Dto\Mapper;
 
-use App\Entity\Company;
 use App\Dto\CompanyDto;
-use Exception;
 
-class CompanyMapper
+class CompanyMapper implements MapperInterface
 {
-    /**
-     * @throws Exception
-     */
-    public function toEntity()
+    public function toEntity($dto)
     {
-        throw new Exception("Please implement me");
+        // TODO: Implement toEntity() method.
     }
 
-    public function toDto(Company $company): ?CompanyDto
+    public function toDto($entity)
     {
         $companyDto = new CompanyDto();
         return $companyDto
-            ->setId($company->getId())
-            ->setName($company->getName())
-            ->setDescription($company->getDescription())
-            ->setCompanyId($company->getCompanyId())
-            ->setVatNumber($company->getVatNumber())
-            ->setCreated($company->getCreated())
-            ->setModify($company->getModify())
-            ->setStreet($company->getStreet())
-            ->setCity($company->getCity())
-            ->setZipCode($company->getZipCode())
-            ->setCountry($company->getCountry()->getId())
-            ->setAccountNumber($company->getAccountNumber())
-            ->setIban($company->getIban())
-            ->setIsSupplier($company->getIsSupplier());
+            ->setId($entity->getId())
+            ->setName($entity->getName())
+            ->setDescription($entity->getDescription())
+            ->setCompanyId($entity->getCompanyId())
+            ->setVatNumber($entity->getVatNumber())
+            ->setCreated($entity->getCreated())
+            ->setModify($entity->getModify())
+            ->setStreet($entity->getStreet())
+            ->setCity($entity->getCity())
+            ->setZipCode($entity->getZipCode())
+            ->setCountry($entity->getCountry()->getId())
+            ->setAccountNumber($entity->getAccountNumber())
+            ->setIban($entity->getIban())
+            ->setIsSupplier($entity->getIsSupplier());
     }
 }
