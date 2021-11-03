@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TariffRepository;
+use App\Dto\TariffDto;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TariffRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *     input=TariffDto::class,
+ *     output=TariffDto::class
+ * )
  */
 class Tariff
 {
@@ -70,7 +74,6 @@ class Tariff
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -82,7 +85,6 @@ class Tariff
     public function setPrice(string $price): self
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -100,7 +102,6 @@ class Tariff
             $this->workInventories[] = $workInventory;
             $workInventory->setTariff($this);
         }
-
         return $this;
     }
 
@@ -112,7 +113,6 @@ class Tariff
                 $workInventory->setTariff(null);
             }
         }
-
         return $this;
     }
 
@@ -137,7 +137,6 @@ class Tariff
     public function setVat(?Vat $vat): self
     {
         $this->vat = $vat;
-
         return $this;
     }
 
@@ -155,7 +154,6 @@ class Tariff
             $this->slas[] = $sla;
             $sla->setTariff($this);
         }
-
         return $this;
     }
 
@@ -167,7 +165,6 @@ class Tariff
                 $sla->setTariff(null);
             }
         }
-
         return $this;
     }
 }
