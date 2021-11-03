@@ -9,7 +9,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=InvoiceItemRepository::class)
- * @ApiResource
  */
 class InvoiceItem
 {
