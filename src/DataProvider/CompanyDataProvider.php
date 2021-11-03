@@ -6,6 +6,7 @@ use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\Company;
+use App\Dto\CompanyDto;
 use App\Services\CompanyServices;
 
 final class CompanyDataProvider implements RestrictedDataProviderInterface, ContextAwareCollectionDataProviderInterface, ItemDataProviderInterface
@@ -30,7 +31,7 @@ final class CompanyDataProvider implements RestrictedDataProviderInterface, Cont
         return $this->companyServices->findAllForApi();
     }
 
-    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?Company
+    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?CompanyDto
     {
         return $this->companyServices->findForApi($id);
     }
