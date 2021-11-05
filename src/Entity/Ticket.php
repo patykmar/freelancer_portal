@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TicketRepository::class)
@@ -31,23 +32,31 @@ class Ticket
     /**
      * @ORM\ManyToOne(targetEntity=ServiceCatalog::class, inversedBy="tickets")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Choice()
+     * @Assert\NotBlank()
      */
     private ServiceCatalog $serviceCatalog;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ci::class, inversedBy="tickets")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Choice()
+     * @Assert\NotBlank()
      */
     private Ci $ci;
 
     /**
      * @ORM\ManyToOne(targetEntity=QueueUser::class)
+     * @Assert\Choice()
+     * @Assert\NotBlank()
      */
     private QueueUser $queueUser;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Choice()
+     * @Assert\NotBlank()
      */
     private User $userCreated;
 
@@ -79,29 +88,38 @@ class Ticket
     /**
      * @ORM\ManyToOne(targetEntity=GeneralState::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Choice()
+     * @Assert\NotBlank()
      */
     private GeneralState $ticketState;
 
     /**
      * @ORM\ManyToOne(targetEntity=TicketType::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Choice()
+     * @Assert\NotBlank()
      */
     private TicketType $ticketType;
 
     /**
      * @ORM\ManyToOne(targetEntity=InfluencingTicket::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Choice()
+     * @Assert\NotBlank()
      */
     private InfluencingTicket $priority;
 
     /**
      * @ORM\ManyToOne(targetEntity=InfluencingTicket::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Choice()
+     * @Assert\NotBlank()
      */
     private InfluencingTicket $impact;
 
     /**
      * @ORM\Column(type="string", length=200)
+     * @Assert\NotBlank()
      */
     private string $descriptionTitle;
 
