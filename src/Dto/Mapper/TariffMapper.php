@@ -24,8 +24,8 @@ class TariffMapper implements MapperInterface
         $tariffDto->id = $entity->getId();
         $tariffDto->name = $entity->getName();
         $tariffDto->price = $entity->getPrice();
-        $tariffDto->vat = $entity->getVat()->getId();
-        $tariffDto->vatName = $entity->getVat()->getName();
+        $tariffDto->vat['id'] = $entity->getVat()->getId();
+        $tariffDto->vat['name'] = $entity->getVat()->getName();
         return $tariffDto;
     }
 }
