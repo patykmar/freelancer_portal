@@ -2,11 +2,12 @@
 
 namespace App\DataTransformer;
 
+use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Dto\Mapper\TariffMapper;
 use App\Dto\TariffDto;
 use App\Entity\Tariff;
 
-class TariffOutputDataTransformer implements \ApiPlatform\Core\DataTransformer\DataTransformerInterface
+class TariffOutputDataTransformer implements DataTransformerInterface
 {
     private TariffMapper $tariffMapper;
 
