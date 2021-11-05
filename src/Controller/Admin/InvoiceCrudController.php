@@ -54,9 +54,9 @@ class InvoiceCrudController extends AbstractCrudController
             AssociationField::new('subscriber', 'Subscriber: ')
                 ->setRequired(true);
         $returnArray[] =
-            AssociationField::new('payment_type', 'Payment type: ')
+            AssociationField::new('paymentType', 'Payment type: ')
                 ->setRequired(true);
-        $userCreatedAssociationField = AssociationField::new('user_created', 'Created by: ');
+        $userCreatedAssociationField = AssociationField::new('userCreated', 'Created by: ');
 
         $invoiceCreatedDateTimeField =
             DateTimeField::new('invoice_created');
@@ -142,7 +142,7 @@ class InvoiceCrudController extends AbstractCrudController
     {
         $viewInvoicePdf = Action::new('viewInvoiceHtml', 'PDF', 'fas fa-file-pdf');
         $viewInvoicePdf
-            ->linkToRoute('inventory_generate_pdf', function (Invoice $invoice): array {
+            ->linkToRoute('invoice_inventory_generate_pdf', function (Invoice $invoice): array {
                 return ['invoiceId' => $invoice->getId()];
             })
             ->setHtmlAttributes(['target' => '_blank']);
