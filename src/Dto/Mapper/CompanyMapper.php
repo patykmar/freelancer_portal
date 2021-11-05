@@ -14,20 +14,21 @@ class CompanyMapper implements MapperInterface
     public function toDto($entity)
     {
         $companyDto = new CompanyDto();
-        return $companyDto
-            ->setId($entity->getId())
-            ->setName($entity->getName())
-            ->setDescription($entity->getDescription())
-            ->setCompanyId($entity->getCompanyId())
-            ->setVatNumber($entity->getVatNumber())
-            ->setCreated($entity->getCreated())
-            ->setModify($entity->getModify())
-            ->setStreet($entity->getStreet())
-            ->setCity($entity->getCity())
-            ->setZipCode($entity->getZipCode())
-            ->setCountry($entity->getCountry()->getId())
-            ->setAccountNumber($entity->getAccountNumber())
-            ->setIban($entity->getIban())
-            ->setIsSupplier($entity->getIsSupplier());
+        $companyDto->id = $entity->getId();
+        $companyDto->name = $entity->getName();
+        $companyDto->description = $entity->getDescription();
+        $companyDto->companyId = $entity->getCompanyId();
+        $companyDto->vatNumber = $entity->getVatNumber();
+        $companyDto->created = $entity->getCreated();
+        $companyDto->modify = $entity->getModify();
+        $companyDto->street = $entity->getStreet();
+        $companyDto->city = $entity->getCity();
+        $companyDto->zipCode = $entity->getZipCode();
+        $companyDto->country['id'] = $entity->getCountry()->getId();
+        $companyDto->country['name'] = $entity->getCountry()->getName();
+        $companyDto->accountNumber = $entity->getAccountNumber();
+        $companyDto->iban = $entity->getIban();
+        $companyDto->isSupplier = $entity->getIsSupplier();
+        return $companyDto;
     }
 }
