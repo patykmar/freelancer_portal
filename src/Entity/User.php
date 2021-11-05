@@ -85,6 +85,12 @@ class User implements UserInterface
     {
         return $this->first_name . " " . $this->last_name . ' (' . $this->getEmail() . ')';
     }
+
+    public function getFullName():string
+    {
+        return $this->getFirstName()." ".$this->getLastName();
+    }
+
     /**
      * Symfony issue #35660
      * @link https://github.com/symfony/symfony/issues/35660#issuecomment-585787119
