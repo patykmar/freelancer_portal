@@ -42,13 +42,13 @@ class Company
      * @ORM\Column(type="string", length=50, nullable=true, options={"default": null})
      * @Assert\Length(max=50)
      */
-    private ?string $company_id = null;
+    private ?string $companyId = null;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true, options={"default": null})
      * @Assert\Length(max=50)
      */
-    private ?string $vat_number = null;
+    private ?string $vatNumber = null;
 
     /**
      * @ORM\Column(type="datetime")
@@ -79,7 +79,7 @@ class Company
      * @ORM\Column(type="string", length=20, nullable=true, options={"default": null})
      * @Assert\Length(max=20)
      */
-    private ?string $zip_code = null;
+    private ?string $zipCode = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class)
@@ -91,7 +91,7 @@ class Company
      * @ORM\Column(type="string", length=255, nullable=true, options={"default": null})
      * @Assert\Length(max=255)
      */
-    private ?string $account_number = null;
+    private ?string $accountNumber = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, options={"default": null})
@@ -108,7 +108,7 @@ class Company
     /**
      * @ORM\Column(type="boolean", nullable=true, options={"default": false})
      */
-    private bool $isSupplier;
+    private ?bool $isSupplier = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Ci::class, mappedBy="company")
@@ -153,24 +153,24 @@ class Company
 
     public function getCompanyId(): ?string
     {
-        return $this->company_id;
+        return $this->companyId;
     }
 
-    public function setCompanyId(?string $company_id): self
+    public function setCompanyId(?string $companyId): self
     {
-        $this->company_id = $company_id;
+        $this->companyId = $companyId;
 
         return $this;
     }
 
     public function getVatNumber(): ?string
     {
-        return $this->vat_number;
+        return $this->vatNumber;
     }
 
-    public function setVatNumber(?string $vat_number): self
+    public function setVatNumber(?string $vatNumber): self
     {
-        $this->vat_number = $vat_number;
+        $this->vatNumber = $vatNumber;
 
         return $this;
     }
@@ -225,12 +225,12 @@ class Company
 
     public function getZipCode(): ?string
     {
-        return $this->zip_code;
+        return $this->zipCode;
     }
 
-    public function setZipCode(?string $zip_code): self
+    public function setZipCode(?string $zipCode): self
     {
-        $this->zip_code = $zip_code;
+        $this->zipCode = $zipCode;
 
         return $this;
     }
@@ -249,12 +249,12 @@ class Company
 
     public function getAccountNumber(): ?string
     {
-        return $this->account_number;
+        return $this->accountNumber;
     }
 
-    public function setAccountNumber(?string $account_number): self
+    public function setAccountNumber(?string $accountNumber): self
     {
-        $this->account_number = $account_number;
+        $this->accountNumber = $accountNumber;
 
         return $this;
     }
@@ -301,7 +301,7 @@ class Company
         return $this;
     }
 
-    public function getIsSupplier(): bool
+    public function getIsSupplier(): ?bool
     {
         return $this->isSupplier;
     }
