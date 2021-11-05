@@ -58,7 +58,12 @@ class ServiceCatalog
     /**
      * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="serviceCatalog")
      */
-    private $tickets;
+    private Collection $tickets;
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
 
     public function __construct()
     {

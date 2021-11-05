@@ -29,6 +29,11 @@ class QueueUser
      */
     private User $user;
 
+    public function __toString()
+    {
+        return $this->getQueue()." - ".$this->getUser()->getFullName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

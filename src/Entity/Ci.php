@@ -95,6 +95,11 @@ class Ci
      */
     private Collection $logs;
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function __construct()
     {
         $this->childCis = new ArrayCollection();
