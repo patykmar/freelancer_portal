@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -32,31 +33,25 @@ class Ticket
     /**
      * @ORM\ManyToOne(targetEntity=ServiceCatalog::class, inversedBy="tickets")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Choice()
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     private ServiceCatalog $serviceCatalog;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ci::class, inversedBy="tickets")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Choice()
      * @Assert\NotBlank()
      */
     private Ci $ci;
 
     /**
      * @ORM\ManyToOne(targetEntity=QueueUser::class)
-     * @Assert\Choice()
-     * @Assert\NotBlank()
      */
     private QueueUser $queueUser;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Choice()
-     * @Assert\NotBlank()
      */
     private User $userCreated;
 
@@ -88,15 +83,12 @@ class Ticket
     /**
      * @ORM\ManyToOne(targetEntity=GeneralState::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Choice()
-     * @Assert\NotBlank()
      */
     private GeneralState $ticketState;
 
     /**
      * @ORM\ManyToOne(targetEntity=TicketType::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Choice()
      * @Assert\NotBlank()
      */
     private TicketType $ticketType;
@@ -104,7 +96,6 @@ class Ticket
     /**
      * @ORM\ManyToOne(targetEntity=InfluencingTicket::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Choice()
      * @Assert\NotBlank()
      */
     private InfluencingTicket $priority;
@@ -112,7 +103,6 @@ class Ticket
     /**
      * @ORM\ManyToOne(targetEntity=InfluencingTicket::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Choice()
      * @Assert\NotBlank()
      */
     private InfluencingTicket $impact;
@@ -210,10 +200,13 @@ class Ticket
         return $this->userCreated;
     }
 
-    public function setUserCreated(?User $userCreated): self
+    /**
+     * @param UserInterface|User $userCreated
+     * @return $this
+     */
+    public function setUserCreated(User $userCreated): self
     {
         $this->userCreated = $userCreated;
-
         return $this;
     }
 
