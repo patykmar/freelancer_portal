@@ -43,6 +43,13 @@ class GeneralLog
      */
     private DateTimeInterface $created;
 
+    public function __toString()
+    {
+        return $this->getCreated()->format("d.m.Y H:m:s") . ' - '
+            . $this->getUser()->getFullName() . '<br />'
+            . $this->getBody();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
