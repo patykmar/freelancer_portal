@@ -3,6 +3,7 @@
 namespace App\Dto\Mapper;
 
 use App\Dto\CompanyDto;
+use App\Entity\Company;
 
 class CompanyMapper implements MapperInterface
 {
@@ -11,7 +12,11 @@ class CompanyMapper implements MapperInterface
         // TODO: Implement toEntity() method.
     }
 
-    public function toDto($entity)
+    /**
+     * @param Company|object $entity
+     * @return CompanyDto
+     */
+    public function toDto(object $entity): CompanyDto
     {
         $companyDto = new CompanyDto();
         $companyDto->id = $entity->getId();
