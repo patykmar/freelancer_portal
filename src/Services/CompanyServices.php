@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Dto\CompanyDto;
+use App\Dto\CompanyDtoOut;
 use App\Dto\Mapper\CompanyMapper;
 use App\Repository\CompanyRepository;
 
@@ -31,7 +31,7 @@ class CompanyServices
         return $returnArray;
     }
 
-    public function findForApi(int $id): ?CompanyDto
+    public function findForApi(int $id): ?CompanyDtoOut
     {
         return $this->companyMapper->toDto($this->companyRepository->find($id));
     }
