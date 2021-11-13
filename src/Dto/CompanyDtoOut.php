@@ -4,7 +4,7 @@ namespace App\Dto;
 
 use DateTimeInterface;
 
-class CompanyDto
+class CompanyDtoOut
 {
     public int $id;
     public string $name;
