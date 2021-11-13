@@ -2,17 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\InvoiceRepository;
+use App\Dto\InvoiceDto;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use DateTime;
 use DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=InvoiceRepository::class)
+ * @ApiResource(
+ *     input=InvoiceDto::class,
+ *     output=InvoiceDto::class
+ * )
  */
 class Invoice
 {
@@ -64,7 +69,7 @@ class Invoice
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private ?DateTime $paymentDate = null;
+    private ?DateTimeInterface $paymentDate = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
