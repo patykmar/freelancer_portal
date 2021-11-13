@@ -54,7 +54,7 @@ class InvoiceCrudController extends AbstractCrudController
             AssociationField::new('subscriber', 'Subscriber: ')
                 ->setRequired(true);
         $returnArray[] =
-            AssociationField::new('payment_type', 'Payment type: ')
+            AssociationField::new('paymentType', 'Payment type: ')
                 ->setRequired(true);
         $userCreatedAssociationField = AssociationField::new('user_created', 'Created by: ');
 
