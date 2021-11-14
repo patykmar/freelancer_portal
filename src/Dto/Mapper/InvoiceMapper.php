@@ -20,9 +20,9 @@ class InvoiceMapper implements MapperInterface
     /**
      * @inheritDoc
      */
-    public function toEntity(object $dto)
+    public function toEntity(object $dto): Invoice
     {
-        // TODO: Implement toEntity() method.
+        return new Invoice(); // TODO: Implement toEntity() method.
     }
 
     /**
@@ -53,5 +53,10 @@ class InvoiceMapper implements MapperInterface
         }
 
         return $invoiceDto;
+    }
+
+    public function fullFillEntity(object $existingItem, object $userData): Invoice
+    {
+        return new Invoice(); // TODO: Implement fullFillEntity() method.
     }
 }

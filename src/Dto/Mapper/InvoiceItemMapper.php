@@ -3,17 +3,22 @@
 namespace App\Dto\Mapper;
 
 use App\Dto\InvoiceItemDto;
+use App\Entity\Invoice;
 use App\Entity\InvoiceItem;
 
 class InvoiceItemMapper implements MapperInterface
 {
-
     /**
      * @inheritDoc
      */
-    public function toEntity(object $dto)
+    public function toEntity(object $dto): Invoice
     {
-        // TODO: Implement toEntity() method.
+        return new Invoice(); // TODO: Implement toEntity() method.
+    }
+
+    public function fullFillEntity(object $existingItem, object $userData): Invoice
+    {
+        return new Invoice(); // TODO: Implement fullFillEntity() method.
     }
 
     /**
