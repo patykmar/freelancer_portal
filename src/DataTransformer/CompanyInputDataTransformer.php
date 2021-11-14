@@ -5,6 +5,7 @@ namespace App\DataTransformer;
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Dto\Mapper\CompanyMapper;
 use App\Entity\Company;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class CompanyInputDataTransformer implements DataTransformerInterface
 {
@@ -26,7 +27,16 @@ class CompanyInputDataTransformer implements DataTransformerInterface
      */
     public function transform($object, string $to, array $context = [])
     {
-        return $this->companyMapper->toEntity($object);
+        if (isset($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
+            // PUT method
+            return $this->companyMapper->fullFillEntity(
+                $context[AbstractNormalizer::OBJECT_TO_POPULATE],
+                $object
+            );
+        } else {
+            // POST method
+            return $this->companyMapper->toEntity($object);
+        }
     }
 
     /**
