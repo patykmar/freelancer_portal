@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
-use DateTime;
 use DateTimeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     input=CompanyDtoIn::class,
  *     output=CompanyDtoOut::class
  * )
+ *
  */
 class Company
 {
@@ -57,13 +57,13 @@ class Company
 
     /**
      * @ORM\Column(type="datetime", nullable=true, options={"default": null})
-     * @Assert\DateTime()
+     * @Assert\Type("DateTimeInterface")
      */
     private ?DateTimeInterface $created = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true, options={"default": null})
-     * @Assert\DateTime()
+     * @Assert\Type("DateTimeInterface")
      */
     private ?DateTimeInterface $modify = null;
 
