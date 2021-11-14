@@ -23,21 +23,30 @@ class CompanyMapper implements MapperInterface
      * @param CompanyDtoIn|object $dto
      * @return Company|object
      */
-    public function toEntity($dto)
+    public function toEntity($dto): Company
     {
-        $companyEntity = new Company();
-        $companyEntity->setName($dto->name);
-        $companyEntity->setDescription($dto->description);
-        $companyEntity->setCompanyId($dto->companyId);
-        $companyEntity->setVatNumber($dto->vatNumber);
-        $companyEntity->setStreet($dto->street);
-        $companyEntity->setCity($dto->city);
-        $companyEntity->setZipCode($dto->zipCode);
-        $companyEntity->setCountry($this->countryRepository->find($dto->country));
-        $companyEntity->setAccountNumber($dto->accountNumber);
-        $companyEntity->setIban($dto->iban);
-        $companyEntity->setIsSupplier($dto->isSupplier);
-        return $companyEntity;
+        return $this->fullFillEntity(new Company(), $dto);
+    }
+
+    /**
+     * @param Company|object $existingItem
+     * @param CompanyDtoIn|object $userData
+     * @return Company|object
+     */
+    public function fullFillEntity($existingItem, $userData): Company
+    {
+        $existingItem->setName($userData->name);
+        $existingItem->setDescription($userData->description);
+        $existingItem->setCompanyId($userData->companyId);
+        $existingItem->setVatNumber($userData->vatNumber);
+        $existingItem->setStreet($userData->street);
+        $existingItem->setCity($userData->city);
+        $existingItem->setZipCode($userData->zipCode);
+        $existingItem->setCountry($this->countryRepository->find($userData->country));
+        $existingItem->setAccountNumber($userData->accountNumber);
+        $existingItem->setIban($userData->iban);
+        $existingItem->setIsSupplier($userData->isSupplier);
+        return $existingItem;
     }
 
     /**
