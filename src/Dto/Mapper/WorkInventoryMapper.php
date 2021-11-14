@@ -3,22 +3,22 @@
 namespace App\Dto\Mapper;
 
 use App\Dto\WorkInventoryDto;
+use App\Entity\WorkInventory;
 
 class WorkInventoryMapper implements MapperInterface
 {
-
     /**
      * @inheritDoc
      */
-    public function toEntity(object $dto)
+    public function toEntity(object $dto): WorkInventory
     {
-        // TODO: Implement toEntity() method.
+        return new WorkInventory(); // TODO: Implement toEntity() method.
     }
 
     /**
      * @inheritDoc
      */
-    public function toDto(object $entity)
+    public function toDto(object $entity): WorkInventoryDto
     {
         $workInventoryDto = new WorkInventoryDto();
         $workInventoryDto->id = $entity->getId();
@@ -34,5 +34,10 @@ class WorkInventoryMapper implements MapperInterface
         $workInventoryDto->company['name'] = $entity->getCompany()->getName();
         $workInventoryDto->work_duration = $entity->getWorkDuration();
         return $workInventoryDto;
+    }
+
+    public function fullFillEntity(object $existingItem, object $userData): WorkInventory
+    {
+        return new WorkInventory(); // TODO: Implement fullFillEntity() method.
     }
 }
