@@ -4,7 +4,7 @@ namespace App\DataTransformer;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Dto\Mapper\TariffMapper;
-use App\Dto\TariffDto;
+use App\Dto\TariffDtoOut;
 use App\Entity\Tariff;
 
 class TariffOutputDataTransformer implements DataTransformerInterface
@@ -32,6 +32,6 @@ class TariffOutputDataTransformer implements DataTransformerInterface
      */
     public function supportsTransformation($data, string $to, array $context = []): bool
     {
-        return TariffDto::class === $to && $data instanceof Tariff;
+        return TariffDtoOut::class === $to && $data instanceof Tariff;
     }
 }
