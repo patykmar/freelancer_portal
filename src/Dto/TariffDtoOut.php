@@ -2,7 +2,7 @@
 
 namespace App\Dto;
 
-class TariffDto
+class TariffDtoOut
 {
     public int $id;
     public string $name;
