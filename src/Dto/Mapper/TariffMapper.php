@@ -2,7 +2,8 @@
 
 namespace App\Dto\Mapper;
 
-use App\Dto\TariffDto;
+use App\Dto\TariffDtoIn;
+use App\Dto\TariffDtoOut;
 use App\Entity\Tariff;
 use App\Repository\VatRepository;
 
@@ -28,7 +29,7 @@ class TariffMapper implements MapperInterface
 
     /**
      * @param Tariff|object $existingItem
-     * @param TariffDto|object $userData
+     * @param TariffDtoIn|object $userData
      * @return Tariff|object
      */
     public function fullFillEntity(object $existingItem, object $userData): Tariff
@@ -42,9 +43,9 @@ class TariffMapper implements MapperInterface
     /**
      * @inheritDoc
      */
-    public function toDto(object $entity): TariffDto
+    public function toDto(object $entity): TariffDtoOut
     {
-        $tariffDto = new TariffDto();
+        $tariffDto = new TariffDtoOut();
         $tariffDto->id = $entity->getId();
         $tariffDto->name = $entity->getName();
         $tariffDto->price = $entity->getPrice();
