@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataTransformer;
+namespace App\DataTransformer\Input;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Dto\Mapper\TariffMapper;
