@@ -4,7 +4,7 @@ namespace App\DataTransformer\Output;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Dto\Mapper\TariffMapper;
-use App\Dto\TariffDtoOut;
+use App\Dto\Out\TariffDtoOut;
 use App\Entity\Tariff;
 
 class TariffOutputDataTransformer implements DataTransformerInterface

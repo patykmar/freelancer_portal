@@ -4,7 +4,7 @@ namespace App\DataTransformer\Output;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Dto\Mapper\VatMapper;
-use App\Dto\VatDto;
+use App\Dto\Out\VatDto;
 use App\Entity\Vat;
 
 class VatOutputDataTransformer implements DataTransformerInterface

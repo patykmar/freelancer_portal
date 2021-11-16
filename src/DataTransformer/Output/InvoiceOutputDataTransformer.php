@@ -3,7 +3,7 @@
 namespace App\DataTransformer\Output;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
-use App\Dto\InvoiceDto;
+use App\Dto\In\InvoiceDto;
 use App\Dto\Mapper\InvoiceMapper;
 use App\Entity\Invoice;
 

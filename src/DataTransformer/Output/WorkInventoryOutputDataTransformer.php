@@ -4,7 +4,7 @@ namespace App\DataTransformer\Output;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Dto\Mapper\WorkInventoryMapper;
-use App\Dto\WorkInventoryDto;
+use App\Dto\Out\WorkInventoryDto;
 use App\Entity\WorkInventory;
 
 class WorkInventoryOutputDataTransformer implements DataTransformerInterface
