@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Dto\CompanyDtoOut;
+use App\Dto\Out\CompanyDtoOut;
 use App\Dto\Mapper\CompanyMapper;
 use App\Repository\CompanyRepository;
 
