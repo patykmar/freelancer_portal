@@ -4,7 +4,7 @@ namespace App\DataTransformer\Output;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Dto\Mapper\WorkInventoryMapper;
-use App\Dto\Out\WorkInventoryDto;
+use App\Dto\Out\WorkInventoryDtoOut;
 use App\Entity\WorkInventory;
 
 class WorkInventoryOutputDataTransformer implements DataTransformerInterface
@@ -32,6 +32,6 @@ class WorkInventoryOutputDataTransformer implements DataTransformerInterface
      */
     public function supportsTransformation($data, string $to, array $context = []): bool
     {
-        return WorkInventoryDto::class === $to && $data instanceof WorkInventory;
+        return WorkInventoryDtoOut::class === $to && $data instanceof WorkInventory;
     }
 }
