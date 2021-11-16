@@ -2,8 +2,8 @@
 
 namespace App\Dto\Mapper;
 
-use App\Dto\CompanyDtoOut;
-use App\Dto\CompanyDtoIn;
+use App\Dto\Out\CompanyDtoOut;
+use App\Dto\In\CompanyDtoIn;
 use App\Entity\Company;
 use App\Repository\CountryRepository;
 

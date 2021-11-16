@@ -2,7 +2,7 @@
 
 namespace App\Dto\Mapper;
 
-use App\Dto\InvoiceDto;
+use App\Dto\In\InvoiceDto;
 use App\Entity\Invoice;
 
 class InvoiceMapper implements MapperInterface

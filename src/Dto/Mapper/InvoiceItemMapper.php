@@ -2,7 +2,7 @@
 
 namespace App\Dto\Mapper;
 
-use App\Dto\InvoiceItemDto;
+use App\Dto\Out\InvoiceItemDto;
 use App\Entity\Invoice;
 use App\Entity\InvoiceItem;
 

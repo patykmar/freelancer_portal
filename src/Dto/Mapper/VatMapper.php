@@ -2,7 +2,7 @@
 
 namespace App\Dto\Mapper;
 
-use App\Dto\VatDto;
+use App\Dto\Out\VatDto;
 use App\Entity\Vat;
 
 class VatMapper implements MapperInterface

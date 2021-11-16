@@ -2,7 +2,7 @@
 
 namespace App\Dto\Mapper;
 
-use App\Dto\WorkInventoryDto;
+use App\Dto\Out\WorkInventoryDto;
 use App\Entity\WorkInventory;
 
 class WorkInventoryMapper implements MapperInterface

@@ -2,8 +2,8 @@
 
 namespace App\Dto\Mapper;
 
-use App\Dto\TariffDtoIn;
-use App\Dto\TariffDtoOut;
+use App\Dto\In\TariffDtoIn;
+use App\Dto\Out\TariffDtoOut;
 use App\Entity\Tariff;
 use App\Repository\VatRepository;
 
