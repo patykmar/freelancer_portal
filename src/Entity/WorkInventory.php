@@ -4,7 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WorkInventoryRepository;
-use App\Dto\Out\WorkInventoryDto;
+use App\Dto\In\WorkInventoryDtoIn;
+use App\Dto\Out\WorkInventoryDtoOut;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,8 +14,8 @@ use DateTimeInterface;
 /**
  * @ORM\Entity(repositoryClass=WorkInventoryRepository::class)
  * @ApiResource(
- *     input=WorkInventoryDto::Class,
- *     output=WorkInventoryDto::Class
+ *     input=WorkInventoryDtoIn::Class,
+ *     output=WorkInventoryDtoOut::Class
  * )
  */
 class WorkInventory
