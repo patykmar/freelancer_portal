@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CompanyRepository;
-use App\Dto\CompanyDtoOut;
-use App\Dto\CompanyDtoIn;
+use App\Dto\Out\CompanyDtoOut;
+use App\Dto\In\CompanyDtoIn;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
