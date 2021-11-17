@@ -27,6 +27,10 @@ class InvoiceOutputDataTransformer implements DataTransformerInterface
      */
     public function transform($object, string $to, array $context = []): InvoiceDto
     {
+        if (isset($context['operation_type']) && $context['operation_type'] === 'item'){
+            return $this->invoiceMapper->toDtoItem($object);
+        }
+
         return $this->invoiceMapper->toDto($object);
     }
 

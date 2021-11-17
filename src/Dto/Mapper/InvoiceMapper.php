@@ -26,6 +26,7 @@ class InvoiceMapper implements MapperInterface
     }
 
     /**
+     * For collection
      * @param Invoice|object $entity
      * @return InvoiceDto
      */
@@ -48,10 +49,21 @@ class InvoiceMapper implements MapperInterface
         $invoiceDto->userCreated['name'] = $entity->getUserCreated()->getId();
         $invoiceDto->vs = $entity->getVs();
         $invoiceDto->ks = $entity->getKs();
-        foreach ($entity->getInvoiceItems() as $invoiceItems) {
-            $invoiceDto->invoiceItems[] = $this->invoiceItemMapper->toDto($invoiceItems);
-        }
 
+        return $invoiceDto;
+    }
+
+    /**
+     * For item add invoiceItems
+     * @param Invoice|object $invoice
+     * @return InvoiceDto
+     */
+    public function toDtoItem(Invoice $invoice): InvoiceDto
+    {
+        $invoiceDto = $this->toDto($invoice);
+        foreach ($invoice->getInvoiceItems() as $invoiceItem){
+            $invoiceDto->invoiceItems[] = $this->invoiceItemMapper->toDto($invoiceItem);
+        }
         return $invoiceDto;
     }
 
