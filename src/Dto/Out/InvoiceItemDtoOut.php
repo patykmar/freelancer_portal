@@ -2,7 +2,7 @@
 
 namespace App\Dto\Out;
 
-class InvoiceItemDto
+class InvoiceItemDtoOut
 {
     public int $id;
     public int $invoice;
