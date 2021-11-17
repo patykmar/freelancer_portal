@@ -40,12 +40,13 @@ class InvoiceItemMapper implements MapperInterface
      */
     public function fullFillEntity(object $existingItem, object $userData): InvoiceItem
     {
-        $existingItem->setInvoice($this->invoiceRepository->find($userData->id));
+        $existingItem->setInvoice($this->invoiceRepository->find($userData->invoice));
         $existingItem->setVat($this->vatRepository->find($userData->vat));
         $existingItem->setName($userData->name);
         $existingItem->setPrice($userData->price);
         $existingItem->setMargin($userData->margin);
         $existingItem->setDiscount($userData->discount);
+        $existingItem->setUnitCount($userData->unitCount);
         return $existingItem;
     }
 
@@ -57,6 +58,7 @@ class InvoiceItemMapper implements MapperInterface
     {
         $invoiceItemDto = new InvoiceItemDtoOut();
         $invoiceItemDto->id = $entity->getId();
+        $invoiceItemDto->name = $entity->getName();
         $invoiceItemDto->invoice = $entity->getInvoice()->getId();
         $invoiceItemDto->vat['id'] = $entity->getVat()->getId();
         $invoiceItemDto->vat['name'] = $entity->getVat()->getName();
