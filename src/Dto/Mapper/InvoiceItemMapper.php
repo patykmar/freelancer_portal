@@ -2,32 +2,60 @@
 
 namespace App\Dto\Mapper;
 
-use App\Dto\Out\InvoiceItemDto;
-use App\Entity\Invoice;
+use App\Dto\In\InvoiceItemDtoIn;
+use App\Dto\Out\InvoiceItemDtoOut;
 use App\Entity\InvoiceItem;
+use App\Repository\InvoiceRepository;
+use App\Repository\VatRepository;
 
 class InvoiceItemMapper implements MapperInterface
 {
+    private InvoiceRepository $invoiceRepository;
+    private VatRepository $vatRepository;
+
     /**
-     * @inheritDoc
+     * @param InvoiceRepository $invoiceRepository
+     * @param VatRepository $vatRepository
      */
-    public function toEntity(object $dto): Invoice
+    public function __construct(InvoiceRepository $invoiceRepository, VatRepository $vatRepository)
     {
-        return new Invoice(); // TODO: Implement toEntity() method.
+        $this->invoiceRepository = $invoiceRepository;
+        $this->vatRepository = $vatRepository;
     }
 
-    public function fullFillEntity(object $existingItem, object $userData): Invoice
+
+    /**
+     * @param InvoiceItemDtoIn|object $dto
+     * @return InvoiceItem
+     */
+    public function toEntity(object $dto): InvoiceItem
     {
-        return new Invoice(); // TODO: Implement fullFillEntity() method.
+        return $this->fullFillEntity(new InvoiceItem(), $dto);
+    }
+
+    /**
+     * @param InvoiceItem|object $existingItem
+     * @param InvoiceItemDtoIn|object $userData
+     * @return InvoiceItem
+     */
+    public function fullFillEntity(object $existingItem, object $userData): InvoiceItem
+    {
+        $existingItem->setInvoice($this->invoiceRepository->find($userData->id));
+        $existingItem->setVat($this->vatRepository->find($userData->vat));
+        $existingItem->setName($userData->name);
+        $existingItem->setPrice($userData->price);
+        $existingItem->setMargin($userData->margin);
+        $existingItem->setDiscount($userData->discount);
+        return $existingItem;
     }
 
     /**
      * @param InvoiceItem|object $entity
-     * @return InvoiceItemDto
+     * @return InvoiceItemDtoOut
      */
-    public function toDto(object $entity): InvoiceItemDto
+    public function toDto(object $entity): InvoiceItemDtoOut
     {
-        $invoiceItemDto = new InvoiceItemDto();
+        $invoiceItemDto = new InvoiceItemDtoOut();
         $invoiceItemDto->id = $entity->getId();
         $invoiceItemDto->invoice = $entity->getInvoice()->getId();
         $invoiceItemDto->vat['id'] = $entity->getVat()->getId();
