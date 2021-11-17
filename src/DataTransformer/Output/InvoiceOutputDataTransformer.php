@@ -3,8 +3,8 @@
 namespace App\DataTransformer\Output;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
-use App\Dto\In\InvoiceDto;
 use App\Dto\Mapper\InvoiceMapper;
+use App\Dto\Out\InvoiceDtoOut;
 use App\Entity\Invoice;
 
 class InvoiceOutputDataTransformer implements DataTransformerInterface
@@ -23,9 +23,9 @@ class InvoiceOutputDataTransformer implements DataTransformerInterface
      * @param object $object
      * @param string $to
      * @param array $context
-     * @return InvoiceDto|object
+     * @return InvoiceDtoOut|object
      */
-    public function transform($object, string $to, array $context = []): InvoiceDto
+    public function transform($object, string $to, array $context = []): InvoiceDtoOut
     {
         if (isset($context['operation_type']) && $context['operation_type'] === 'item'){
             return $this->invoiceMapper->toDtoItem($object);
@@ -42,6 +42,6 @@ class InvoiceOutputDataTransformer implements DataTransformerInterface
      */
     public function supportsTransformation($data, string $to, array $context = []): bool
     {
-        return InvoiceDto::class === $to && $data instanceof Invoice;
+        return InvoiceDtoOut::class === $to && $data instanceof Invoice;
     }
 }
