@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Dto\In;
+namespace App\Dto\Out;
 
 use DateTimeInterface;
 
-class InvoiceDto
+class InvoiceDtoOut
 {
     public ?int $id;
     public array $supplier;
