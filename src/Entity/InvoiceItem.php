@@ -3,12 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\InvoiceItemRepository;
+use App\Dto\In\InvoiceItemDtoIn;
+use App\Dto\Out\InvoiceItemDtoOut;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=InvoiceItemRepository::class)
+ * @ApiResource(
+ *     input=InvoiceItemDtoIn::class,
+ *     output=InvoiceItemDtoOut::class
+ * )
  */
 class InvoiceItem
 {
