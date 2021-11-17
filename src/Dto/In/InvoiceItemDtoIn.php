@@ -11,4 +11,5 @@ class InvoiceItemDtoIn
     public int $price;
     public int $margin = 0;
     public int $discount = 0;
+    public float $unitCount;
 }
