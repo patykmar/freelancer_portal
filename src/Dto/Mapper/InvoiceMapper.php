@@ -2,37 +2,56 @@
 
 namespace App\Dto\Mapper;
 
-use App\Dto\In\InvoiceDto;
+use App\Dto\In\InvoiceDtoIn;
+use App\Dto\Out\InvoiceDtoOut;
 use App\Entity\Invoice;
+use App\Repository\CompanyRepository;
+use App\Repository\PaymentTypeRepository;
+use App\Repository\UserRepository;
 
 class InvoiceMapper implements MapperInterface
 {
+    private CompanyRepository $companyRepository;
     private InvoiceItemMapper $invoiceItemMapper;
+    private PaymentTypeRepository $paymentTypeRepository;
+    private UserRepository $userRepository;
 
     /**
      * @param InvoiceItemMapper $invoiceItemMapper
+     * @param CompanyRepository $companyRepository
+     * @param PaymentTypeRepository $paymentTypeRepository
+     * @param UserRepository $userRepository
      */
-    public function __construct(InvoiceItemMapper $invoiceItemMapper)
+    public function __construct(
+        InvoiceItemMapper     $invoiceItemMapper,
+        CompanyRepository     $companyRepository,
+        PaymentTypeRepository $paymentTypeRepository,
+        UserRepository        $userRepository
+    )
     {
         $this->invoiceItemMapper = $invoiceItemMapper;
+        $this->companyRepository = $companyRepository;
+        $this->paymentTypeRepository = $paymentTypeRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
-     * @inheritDoc
+     * @param InvoiceDtoIn|object $dto
+     * @return Invoice
      */
     public function toEntity(object $dto): Invoice
     {
-        return new Invoice(); // TODO: Implement toEntity() method.
+        return $this->fullFillEntity(new Invoice(), $dto);
     }
 
     /**
      * For collection
      * @param Invoice|object $entity
-     * @return InvoiceDto
+     * @return InvoiceDtoOut
      */
-    public function toDto(object $entity): InvoiceDto
+    public function toDto(object $entity): InvoiceDtoOut
     {
-        $invoiceDto = new InvoiceDto();
+        $invoiceDto = new InvoiceDtoOut();
         $invoiceDto->id = $entity->getId();
         $invoiceDto->name = $entity->getName();
         $invoiceDto->supplier['id'] = $entity->getSupplier()->getId();
@@ -56,19 +75,37 @@ class InvoiceMapper implements MapperInterface
     /**
      * For item add invoiceItems
      * @param Invoice|object $invoice
-     * @return InvoiceDto
+     * @return InvoiceDtoOut
      */
-    public function toDtoItem(Invoice $invoice): InvoiceDto
+    public function toDtoItem(Invoice $invoice): InvoiceDtoOut
     {
         $invoiceDto = $this->toDto($invoice);
-        foreach ($invoice->getInvoiceItems() as $invoiceItem){
+        foreach ($invoice->getInvoiceItems() as $invoiceItem) {
             $invoiceDto->invoiceItems[] = $this->invoiceItemMapper->toDto($invoiceItem);
         }
         return $invoiceDto;
     }
 
+    /**
+     * @param Invoice|object $existingItem
+     * @param InvoiceDtoIn|object $userData
+     * @return Invoice
+     */
     public function fullFillEntity(object $existingItem, object $userData): Invoice
     {
-        return new Invoice(); // TODO: Implement fullFillEntity() method.
+        $existingItem->setName($userData->name);
+        $existingItem->setSupplier($this->companyRepository->find($userData->supplier));
+        $existingItem->setSubscriber($this->companyRepository->find($userData->subscriber));
+        $existingItem->setPaymentType($this->paymentTypeRepository->find($userData->paymentType));
+        $existingItem->setDue($userData->due);
+        $existingItem->setUserCreated($this->userRepository->find($userData->userCreated));
+        foreach ($userData->invoiceItems as $workInventoryDto) {
+            $existingItem->addInvoiceItem(
+                $this->invoiceItemMapper->toEntity(
+                    $this->invoiceItemMapper->toDtoFromArray($workInventoryDto)
+                ));
+        }
+
+        return $existingItem;
     }
 }
