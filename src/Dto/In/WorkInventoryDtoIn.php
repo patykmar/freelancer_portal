@@ -2,16 +2,14 @@
 
 namespace App\Dto\In;
 
-use DateTimeInterface;
-
 class WorkInventoryDtoIn
 {
     public ?int $id;
     public string $description;
     public int $tariff;
-    public DateTimeInterface $work_start;
-    public ?DateTimeInterface $work_end;
+    public int $work_start;
+    public ?int $work_end = null;
     public int $user;
-    public ?int $invoice;
+    public ?int $invoice = null;
     public int $company;
 }
