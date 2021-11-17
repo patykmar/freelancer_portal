@@ -4,7 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\InvoiceRepository;
-use App\Dto\In\InvoiceDto;
+use App\Dto\In\InvoiceDtoIn;
+use App\Dto\Out\InvoiceDtoOut;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,8 +16,8 @@ use DateTimeInterface;
 /**
  * @ORM\Entity(repositoryClass=InvoiceRepository::class)
  * @ApiResource(
- *     input=InvoiceDto::class,
- *     output=InvoiceDto::class
+ *     input=InvoiceDtoIn::class,
+ *     output=InvoiceDtoOut::class
  * )
  */
 class Invoice
@@ -315,7 +316,7 @@ class Invoice
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
