@@ -7,6 +7,7 @@ use App\Dto\Out\InvoiceItemDtoOut;
 use App\Entity\InvoiceItem;
 use App\Repository\InvoiceRepository;
 use App\Repository\VatRepository;
+use InvalidArgumentException;
 
 class InvoiceItemMapper implements MapperInterface
 {
@@ -75,5 +76,31 @@ class InvoiceItemMapper implements MapperInterface
         $invoiceItemDto->total_price_inc_margin_discount_vat = $entity->getTotalPriceIncMarginDiscountVat();
         $invoiceItemDto->total_price_inc_margin_vat = $entity->getTotalPriceIncMarginVat();
         return $invoiceItemDto;
+    }
+
+    /**
+     * @param array $invoiceItemArray
+     * @return InvoiceItemDtoIn
+     */
+    public function toDtoFromArray(array $invoiceItemArray): InvoiceItemDtoIn
+    {
+        if(
+            isset($invoiceItemArray['name']) &&
+            isset($invoiceItemArray['vat']) &&
+            isset($invoiceItemArray['price']) &&
+            isset($invoiceItemArray['margin']) &&
+            isset($invoiceItemArray['discount']) &&
+            isset($invoiceItemArray['unitCount'])
+        ){
+            $invoiceItemDto = new InvoiceItemDtoIn();
+            $invoiceItemDto->name = $invoiceItemArray['name'];
+            $invoiceItemDto->vat = $invoiceItemArray['vat'];
+            $invoiceItemDto->price = $invoiceItemArray['price'];
+            $invoiceItemDto->margin = $invoiceItemArray['margin'];
+            $invoiceItemDto->discount = $invoiceItemArray['discount'];
+            $invoiceItemDto->unitCount = $invoiceItemArray['unitCount'];
+            return $invoiceItemDto;
+        }
+        throw new InvalidArgumentException("Wrong format of Invoice Item");
     }
 }
