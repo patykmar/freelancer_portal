@@ -47,7 +47,7 @@ class WorkInventoryMapper implements MapperInterface
         $workInventoryDtoOut->tariff['id'] = $entity->getTariff()->getId();
         $workInventoryDtoOut->tariff['name'] = $entity->getTariff()->getName();
         $workInventoryDtoOut->work_start = date_timestamp_get($entity->getWorkStart());
-        $workInventoryDtoOut->work_end = date_timestamp_get($entity->getWorkEnd());
+        $workInventoryDtoOut->work_end = is_null($entity->getWorkEnd())? null : date_timestamp_get($entity->getWorkEnd());
         $workInventoryDtoOut->user['id'] = $entity->getUser()->getId();
         $workInventoryDtoOut->user['name'] = $entity->getUser()->__toString();
         $workInventoryDtoOut->invoice = is_null($entity->getInvoice()) ? null : $entity->getInvoice()->getId();
