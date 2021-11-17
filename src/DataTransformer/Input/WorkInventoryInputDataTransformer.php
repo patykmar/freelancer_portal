@@ -4,7 +4,6 @@ namespace App\DataTransformer\Input;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use App\Dto\Mapper\WorkInventoryMapper;
-use App\Entity\Company;
 use App\Entity\WorkInventory;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
@@ -48,6 +47,6 @@ class WorkInventoryInputDataTransformer implements DataTransformerInterface
         if ($data instanceof WorkInventory) {
             return false;
         }
-        return Company::class === $to && null !== ($context['input']['class'] ?? null);
+        return WorkInventory::class === $to && null !== ($context['input']['class'] ?? null);
     }
 }
