@@ -5,7 +5,7 @@ namespace App\Dto\In;
 class InvoiceItemDtoIn
 {
     public ?int $id;
-    public int $invoice;
+    public ?int $invoice = null;
     public int $vat;
     public string $name;
     public int $price;

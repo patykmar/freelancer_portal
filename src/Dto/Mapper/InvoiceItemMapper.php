@@ -41,7 +41,8 @@ class InvoiceItemMapper implements MapperInterface
      */
     public function fullFillEntity(object $existingItem, object $userData): InvoiceItem
     {
-        $existingItem->setInvoice($this->invoiceRepository->find($userData->invoice));
+        // can be null when creating new invoice with items
+        !is_null($userData->invoice) && $existingItem->setInvoice($this->invoiceRepository->find($userData->invoice));
         $existingItem->setVat($this->vatRepository->find($userData->vat));
         $existingItem->setName($userData->name);
         $existingItem->setPrice($userData->price);
@@ -79,19 +80,22 @@ class InvoiceItemMapper implements MapperInterface
     }
 
     /**
+     * When create new Invoice with their items I receive array of arrays (InvoiceItem), the array
+     *
      * @param array $invoiceItemArray
      * @return InvoiceItemDtoIn
      */
     public function toDtoFromArray(array $invoiceItemArray): InvoiceItemDtoIn
     {
-        if(
+        if (
             isset($invoiceItemArray['name']) &&
             isset($invoiceItemArray['vat']) &&
             isset($invoiceItemArray['price']) &&
             isset($invoiceItemArray['margin']) &&
             isset($invoiceItemArray['discount']) &&
-            isset($invoiceItemArray['unitCount'])
-        ){
+            isset($invoiceItemArray['unitCount']) &&
+            (count($invoiceItemArray) == 6)
+        ) {
             $invoiceItemDto = new InvoiceItemDtoIn();
             $invoiceItemDto->name = $invoiceItemArray['name'];
             $invoiceItemDto->vat = $invoiceItemArray['vat'];
