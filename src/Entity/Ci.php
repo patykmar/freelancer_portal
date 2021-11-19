@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CiRepository;
+use App\Dto\Out\CiDtoOut;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CiRepository::class)
+ * @ApiResource(
+ *     output=CiDtoOut::class
+ * )
  */
 class Ci
 {
@@ -23,7 +29,7 @@ class Ci
     /**
      * @ORM\ManyToOne(targetEntity=Ci::class, inversedBy="childCis")
      */
-    private Ci $parentCi;
+    private ?Ci $parentCi;
 
     /**
      * @ORM\OneToMany(targetEntity=Ci::class, mappedBy="parentCi")
@@ -56,6 +62,7 @@ class Ci
 
     /**
      * @ORM\Column(type="string", length=200)
+     * @Assert\NotBlank
      */
     private string $name;
 
