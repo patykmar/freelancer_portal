@@ -4,7 +4,7 @@ namespace App\Dto\In;
 
 class CiDtoIn
 {
-    public ?int $id = 0;
+    public ?int $id;
     public ?int $parentCi = null;
     public int $createdUser;
     public int $state;
