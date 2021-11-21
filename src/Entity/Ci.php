@@ -26,7 +26,7 @@ class Ci
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer", options={"unsigned":true})
      */
-    private int $id = 0;
+    private ?int $id = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ci::class, inversedBy="childCis")
