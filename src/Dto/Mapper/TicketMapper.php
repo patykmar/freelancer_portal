@@ -122,9 +122,9 @@ class TicketMapper implements MapperInterface
         $ticketDtoOut->descriptionBody = $entity->getDescriptionBody();
         $ticketDtoOut->createdDatetime = date_timestamp_get($entity->getCreatedDatetime());
         $ticketDtoOut->toString =
-            $entity->getTicketType()->getAbbreviation() . $entity->getId() . ';' .
-            $entity->getCi()->getName() . ';' .
-            $entity->getQueueUser()->getUser()->__toString() . ';' .
+            $entity->getTicketType()->getAbbreviation().$entity->getId() . ';' .
+            $entity->getCi()->getName() . ';'.
+            $entity->getQueueUser()->getUser()->__toString().';'.
             $entity->getServiceCatalog()->getName();
 
         if (!is_null($entity->getParentTicket())) {
@@ -132,7 +132,7 @@ class TicketMapper implements MapperInterface
             $ticketDtoOut->parentTicket['ticket-id'] = $entity->getParentTicket()->getTicketType()->getAbbreviation() . $entity->getParentTicket()->getId();
         }
         !is_null($entity->getUserResolved()) && $ticketDtoOut->userResolved = $entity->getUserResolved()->getId();
-        !is_null($entity->getWorkInventory()) && $ticketDtoOut->workInventory = $entity->getWorkInventory()->getId();
+        !$entity->getWorkInventory() !== null && $ticketDtoOut->workInventory = $entity->getWorkInventory()->getId();
         !is_null($entity->getTicketCloseState()) && $ticketDtoOut->ticketCloseState = $entity->getTicketCloseState()->getId();
         !is_null($entity->getClosedNotes()) && $ticketDtoOut->closedNotes = $entity->getClosedNotes();
         !is_null($entity->getClosedDatetime()) && $ticketDtoOut->closedDatetime = date_timestamp_get($entity->getClosedDatetime());
