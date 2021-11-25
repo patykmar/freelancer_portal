@@ -132,7 +132,7 @@ class TicketMapper implements MapperInterface
             $ticketDtoOut->parentTicket['ticket-id'] = $entity->getParentTicket()->getTicketType()->getAbbreviation() . $entity->getParentTicket()->getId();
         }
         !is_null($entity->getUserResolved()) && $ticketDtoOut->userResolved = $entity->getUserResolved()->getId();
-        !$entity->getWorkInventory() !== null && $ticketDtoOut->workInventory = $entity->getWorkInventory()->getId();
+        !is_null($entity->getWorkInventory()) && $ticketDtoOut->workInventory = $entity->getWorkInventory()->getId();
         !is_null($entity->getTicketCloseState()) && $ticketDtoOut->ticketCloseState = $entity->getTicketCloseState()->getId();
         !is_null($entity->getClosedNotes()) && $ticketDtoOut->closedNotes = $entity->getClosedNotes();
         !is_null($entity->getClosedDatetime()) && $ticketDtoOut->closedDatetime = date_timestamp_get($entity->getClosedDatetime());
