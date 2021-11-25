@@ -2,14 +2,69 @@
 
 namespace App\Dto\Mapper;
 
+use App\Dto\In\TicketDtoIn;
 use App\Dto\Out\TicketDtoOut;
 use App\Entity\Ticket;
+use App\Repository\CiRepository;
+use App\Repository\GeneralStateRepository;
+use App\Repository\InfluencingTicketRepository;
+use App\Repository\QueueUserRepository;
+use App\Repository\ServiceCatalogRepository;
+use App\Repository\TicketRepository;
+use App\Repository\TicketTypeRepository;
+use App\Repository\UserRepository;
+use App\Repository\WorkInventoryRepository;
 
 class TicketMapper implements MapperInterface
 {
+    private ServiceCatalogRepository $serviceCatalogRepository;
+    private CiRepository $ciRepository;
+    private QueueUserRepository $queueUserRepository;
+    private UserRepository $userRepository;
+    private TicketRepository $ticketRepository;
+    private WorkInventoryRepository $workInventoryRepository;
+    private GeneralStateRepository $generalStateRepository;
+    private TicketTypeRepository $ticketTypeRepository;
+    private InfluencingTicketRepository $influencingTicketRepository;
 
     /**
-     * @inheritDoc
+     * @param \App\Repository\ServiceCatalogRepository $serviceCatalogRepository
+     * @param \App\Repository\CiRepository $ciRepository
+     * @param \App\Repository\QueueUserRepository $queueUserRepository
+     * @param \App\Repository\UserRepository $userRepository
+     * @param \App\Repository\TicketRepository $ticketRepository
+     * @param \App\Repository\WorkInventoryRepository $workInventoryRepository
+     * @param \App\Repository\GeneralStateRepository $generalStateRepository
+     * @param \App\Repository\TicketTypeRepository $ticketTypeRepository
+     * @param \App\Repository\InfluencingTicketRepository $influencingTicketRepository
+     */
+
+    public function __construct(
+        ServiceCatalogRepository    $serviceCatalogRepository,
+        CiRepository                $ciRepository,
+        QueueUserRepository         $queueUserRepository,
+        UserRepository              $userRepository,
+        TicketRepository            $ticketRepository,
+        WorkInventoryRepository     $workInventoryRepository,
+        GeneralStateRepository      $generalStateRepository,
+        TicketTypeRepository        $ticketTypeRepository,
+        InfluencingTicketRepository $influencingTicketRepository
+    )
+    {
+        $this->serviceCatalogRepository = $serviceCatalogRepository;
+        $this->ciRepository = $ciRepository;
+        $this->queueUserRepository = $queueUserRepository;
+        $this->userRepository = $userRepository;
+        $this->ticketRepository = $ticketRepository;
+        $this->workInventoryRepository = $workInventoryRepository;
+        $this->generalStateRepository = $generalStateRepository;
+        $this->ticketTypeRepository = $ticketTypeRepository;
+        $this->influencingTicketRepository = $influencingTicketRepository;
+    }
+
+    /**
+     * @param TicketDtoIn|object $dto
+     * @return Ticket|object
      */
     public function toEntity(object $dto): object
     {
@@ -17,11 +72,28 @@ class TicketMapper implements MapperInterface
     }
 
     /**
-     * @inheritDoc
+     * @param Ticket|object $existingItem
+     * @param TicketDtoIn|object $userData
+     * @return Ticket|object
      */
     public function fullFillEntity(object $existingItem, object $userData): object
     {
-        // TODO: Implement fullFillEntity() method.
+        $existingItem->setServiceCatalog($this->serviceCatalogRepository->find($userData->serviceCatalog));
+        $existingItem->setCi($this->ciRepository->find($userData->ci));
+        $existingItem->setQueueUser($this->queueUserRepository->find($userData->queueUser));
+        $existingItem->setUserCreated($this->userRepository->find($userData->userCreated));
+        $existingItem->setTicketState($this->generalStateRepository->find($userData->ticketState));
+        $existingItem->setTicketType($this->ticketTypeRepository->find($userData->ticketType));
+        $existingItem->setPriority($this->influencingTicketRepository->find($userData->priority));
+        $existingItem->setImpact($this->influencingTicketRepository->find($userData->impact));
+        $existingItem->setDescriptionTitle($userData->descriptionTitle);
+        $existingItem->setDescriptionBody($userData->descriptionBody);
+
+        !is_null($userData->ticketCloseState) && $existingItem->setTicketCloseState($this->generalStateRepository->find($userData->ticketCloseState));
+        !is_null($userData->workInventory) && $existingItem->setWorkInventory($this->workInventoryRepository->find($userData->workInventory));
+        !is_null($userData->userResolved) && $existingItem->setUserResolved($this->userRepository->find($userData->userResolved));
+        !is_null($userData->parentTicket) && $existingItem->setParentTicket($this->ticketRepository->find($userData->parentTicket));
+
         return $existingItem;
     }
 
@@ -50,9 +122,9 @@ class TicketMapper implements MapperInterface
         $ticketDtoOut->descriptionBody = $entity->getDescriptionBody();
         $ticketDtoOut->createdDatetime = date_timestamp_get($entity->getCreatedDatetime());
         $ticketDtoOut->toString =
-            $entity->getTicketType()->getAbbreviation().$entity->getId() . ';' .
-            $entity->getCi()->getName() . ';'.
-            $entity->getQueueUser()->getUser()->__toString().';'.
+            $entity->getTicketType()->getAbbreviation() . $entity->getId() . ';' .
+            $entity->getCi()->getName() . ';' .
+            $entity->getQueueUser()->getUser()->__toString() . ';' .
             $entity->getServiceCatalog()->getName();
 
         if (!is_null($entity->getParentTicket())) {
@@ -60,7 +132,7 @@ class TicketMapper implements MapperInterface
             $ticketDtoOut->parentTicket['ticket-id'] = $entity->getParentTicket()->getTicketType()->getAbbreviation() . $entity->getParentTicket()->getId();
         }
         !is_null($entity->getUserResolved()) && $ticketDtoOut->userResolved = $entity->getUserResolved()->getId();
-        !$entity->getWorkInventory() !== null && $ticketDtoOut->workInventory = $entity->getWorkInventory()->getId();
+        !is_null($entity->getWorkInventory()) && $ticketDtoOut->workInventory = $entity->getWorkInventory()->getId();
         !is_null($entity->getTicketCloseState()) && $ticketDtoOut->ticketCloseState = $entity->getTicketCloseState()->getId();
         !is_null($entity->getClosedNotes()) && $ticketDtoOut->closedNotes = $entity->getClosedNotes();
         !is_null($entity->getClosedDatetime()) && $ticketDtoOut->closedDatetime = date_timestamp_get($entity->getClosedDatetime());

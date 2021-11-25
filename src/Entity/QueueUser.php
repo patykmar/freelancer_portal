@@ -18,13 +18,13 @@ class QueueUser
     private int $id = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity=queue::class)
+     * @ORM\ManyToOne(targetEntity=Queue::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private Queue $queue;
 
     /**
-     * @ORM\ManyToOne(targetEntity=user::class)
+     * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private User $user;

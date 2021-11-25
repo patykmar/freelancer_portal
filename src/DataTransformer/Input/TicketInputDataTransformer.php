@@ -3,20 +3,20 @@
 namespace App\DataTransformer\Input;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
-use App\Dto\Mapper\InvoiceMapper;
-use App\Entity\Invoice;
+use App\Dto\Mapper\TicketMapper;
+use App\Entity\Ticket;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-class InvoiceInputDataTransformer implements DataTransformerInterface
+class TicketInputDataTransformer implements DataTransformerInterface
 {
-    private InvoiceMapper $invoiceMapper;
+    private TicketMapper $ticketMapper;
 
     /**
-     * @param InvoiceMapper $invoiceMapper
+     * @param TicketMapper $ticketMapper
      */
-    public function __construct(InvoiceMapper $invoiceMapper)
+    public function __construct(TicketMapper $ticketMapper)
     {
-        $this->invoiceMapper = $invoiceMapper;
+        $this->ticketMapper = $ticketMapper;
     }
 
     /**
@@ -26,13 +26,13 @@ class InvoiceInputDataTransformer implements DataTransformerInterface
     {
         if (isset($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
             // PUT method
-            return $this->invoiceMapper->fullFillEntity(
+            return $this->ticketMapper->fullFillEntity(
                 $context[AbstractNormalizer::OBJECT_TO_POPULATE],
                 $object
             );
         } else {
             // POST method
-            return $this->invoiceMapper->toEntity($object);
+            return $this->ticketMapper->toEntity($object);
         }
     }
 
@@ -41,9 +41,10 @@ class InvoiceInputDataTransformer implements DataTransformerInterface
      */
     public function supportsTransformation($data, string $to, array $context = []): bool
     {
-        if ($data instanceof Invoice) {
+        if ($data instanceof Ticket) {
             return false;
         }
-        return Invoice::class === $to && null !== ($context['input']['class'] ?? null);
+        return Ticket::class === $to && null !== ($context['input']['class'] ?? null);
+
     }
 }

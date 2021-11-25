@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TicketRepository;
 use App\Dto\Out\TicketDtoOut;
+use App\Dto\In\TicketDtoIn;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,7 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=TicketRepository::class)
  * @ApiResource(
- *     output=TicketDtoOut::class
+ *     output=TicketDtoOut::class,
+ *     input=TicketDtoIn::class
  * )
  */
 class Ticket
@@ -74,12 +76,12 @@ class Ticket
     /**
      * @ORM\ManyToOne(targetEntity=WorkInventory::class, inversedBy="tickets")
      */
-    private WorkInventory $workInventory;
+    private ?WorkInventory $workInventory;
 
     /**
      * @ORM\ManyToOne(targetEntity=GeneralState::class)
      */
-    private GeneralState $ticketCloseState;
+    private ?GeneralState $ticketCloseState;
 
     /**
      * @ORM\ManyToOne(targetEntity=GeneralState::class)
