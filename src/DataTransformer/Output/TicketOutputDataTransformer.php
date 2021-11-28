@@ -20,13 +20,16 @@ class TicketOutputDataTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param Ticket|object
+     * @param Ticket|object $object
      * @param string $to
      * @param array $context
      * @return TicketDtoOut|object
      */
     public function transform($object, string $to, array $context = [])
     {
+        if (isset($context['operation_type']) && $context['operation_type'] === 'item') {
+            return $this->ticketMapper->toDtoItem($object);
+        }
         return $this->ticketMapper->toDto($object);
     }
 
