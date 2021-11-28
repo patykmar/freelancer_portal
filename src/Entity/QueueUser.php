@@ -18,13 +18,13 @@ class QueueUser
     private int $id = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity=queue::class)
+     * @ORM\ManyToOne(targetEntity=Queue::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private Queue $queue;
 
     /**
-     * @ORM\ManyToOne(targetEntity=user::class)
+     * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private User $user;
@@ -34,24 +34,24 @@ class QueueUser
         return $this->id;
     }
 
-    public function getQueue(): ?queue
+    public function getQueue(): Queue
     {
         return $this->queue;
     }
 
-    public function setQueue(?queue $queue): self
+    public function setQueue(Queue $queue): self
     {
         $this->queue = $queue;
 
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

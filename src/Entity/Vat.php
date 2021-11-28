@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\VatRepository;
+use App\Dto\Out\VatDto;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VatRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *     input=VatDto::class,
+ *     output=VatDto::class
+ * )
  */
 class Vat
 {
@@ -29,6 +33,7 @@ class Vat
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private string $name;
 
@@ -185,6 +190,4 @@ class Vat
     {
         return $this->name;
     }
-
-
 }

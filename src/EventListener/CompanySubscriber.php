@@ -27,6 +27,7 @@ class CompanySubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args): void
     {
         if ($args->getObject() instanceof Company) {
+            $this->addedParameter($args->getObject());
             $this->addedModifyParameter($args->getObject());
         }
     }
@@ -38,6 +39,17 @@ class CompanySubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * @param Company|object $company
+     */
+    private function addedParameter(Company $company): void
+    {
+        $company->getCreated() === null && $company->setCreated(new DateTime());
+    }
+
+    /**
+     * @param Company|object $company
+     */
     private function addedModifyParameter(Company $company): void
     {
         $company->setModify(new DateTime());

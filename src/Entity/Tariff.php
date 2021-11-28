@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TariffRepository;
+use App\Dto\In\TariffDtoIn;
+use App\Dto\Out\TariffDtoOut;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TariffRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *     input=TariffDtoIn::class,
+ *     output=TariffDtoOut::class
+ * )
  */
 class Tariff
 {
@@ -31,6 +36,7 @@ class Tariff
     /**
      * @Assert\NotBlank
      * @ORM\Column(type="integer", options={"unsigned":true})
+     * @Assert\Range( min=0 )
      */
     private int $price;
 
@@ -70,7 +76,6 @@ class Tariff
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -82,7 +87,6 @@ class Tariff
     public function setPrice(string $price): self
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -100,7 +104,6 @@ class Tariff
             $this->workInventories[] = $workInventory;
             $workInventory->setTariff($this);
         }
-
         return $this;
     }
 
@@ -112,7 +115,6 @@ class Tariff
                 $workInventory->setTariff(null);
             }
         }
-
         return $this;
     }
 
@@ -137,7 +139,6 @@ class Tariff
     public function setVat(?Vat $vat): self
     {
         $this->vat = $vat;
-
         return $this;
     }
 
@@ -155,7 +156,6 @@ class Tariff
             $this->slas[] = $sla;
             $sla->setTariff($this);
         }
-
         return $this;
     }
 
@@ -167,7 +167,6 @@ class Tariff
                 $sla->setTariff(null);
             }
         }
-
         return $this;
     }
 }

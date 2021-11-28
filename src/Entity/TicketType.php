@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TicketTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TicketTypeRepository::class)
+ * @ApiResource
  */
 class TicketType
 {
@@ -38,12 +40,12 @@ class TicketType
     /**
      * @ORM\Column(type="float")
      */
-    private float $coefficient_price;
+    private float $coefficientPrice;
 
     /**
      * @ORM\Column(type="float")
      */
-    private float $coefficient_time;
+    private float $coefficientTime;
 
     public function getId(): ?int
     {
@@ -88,24 +90,24 @@ class TicketType
 
     public function getCoefficientPrice(): ?float
     {
-        return $this->coefficient_price;
+        return $this->coefficientPrice;
     }
 
-    public function setCoefficientPrice(float $coefficient_price): self
+    public function setCoefficientPrice(float $coefficientPrice): self
     {
-        $this->coefficient_price = $coefficient_price;
+        $this->coefficientPrice = $coefficientPrice;
 
         return $this;
     }
 
     public function getCoefficientTime(): ?float
     {
-        return $this->coefficient_time;
+        return $this->coefficientTime;
     }
 
-    public function setCoefficientTime(float $coefficient_time): self
+    public function setCoefficientTime(float $coefficientTime): self
     {
-        $this->coefficient_time = $coefficient_time;
+        $this->coefficientTime = $coefficientTime;
 
         return $this;
     }
