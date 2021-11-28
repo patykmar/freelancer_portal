@@ -33,7 +33,7 @@ class Ticket
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id = 0;
+    private ?int $id = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity=ServiceCatalog::class, inversedBy="tickets")
