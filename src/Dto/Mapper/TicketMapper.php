@@ -26,6 +26,7 @@ class TicketMapper implements MapperInterface
     private GeneralStateRepository $generalStateRepository;
     private TicketTypeRepository $ticketTypeRepository;
     private InfluencingTicketRepository $influencingTicketRepository;
+    private GeneralLogMapper $generalLogMapper;
 
     /**
      * @param \App\Repository\ServiceCatalogRepository $serviceCatalogRepository
@@ -37,6 +38,7 @@ class TicketMapper implements MapperInterface
      * @param \App\Repository\GeneralStateRepository $generalStateRepository
      * @param \App\Repository\TicketTypeRepository $ticketTypeRepository
      * @param \App\Repository\InfluencingTicketRepository $influencingTicketRepository
+     * @param \App\Dto\Mapper\GeneralLogMapper $generalLogMapper
      */
 
     public function __construct(
@@ -48,7 +50,8 @@ class TicketMapper implements MapperInterface
         WorkInventoryRepository     $workInventoryRepository,
         GeneralStateRepository      $generalStateRepository,
         TicketTypeRepository        $ticketTypeRepository,
-        InfluencingTicketRepository $influencingTicketRepository
+        InfluencingTicketRepository $influencingTicketRepository,
+        GeneralLogMapper $generalLogMapper
     )
     {
         $this->serviceCatalogRepository = $serviceCatalogRepository;
@@ -60,6 +63,7 @@ class TicketMapper implements MapperInterface
         $this->generalStateRepository = $generalStateRepository;
         $this->ticketTypeRepository = $ticketTypeRepository;
         $this->influencingTicketRepository = $influencingTicketRepository;
+        $this->generalLogMapper = $generalLogMapper;
     }
 
     /**
@@ -139,6 +143,22 @@ class TicketMapper implements MapperInterface
         !is_null($entity->getReactionDatetime()) && $ticketDtoOut->reactionDatetime = date_timestamp_get($entity->getReactionDatetime());
         !is_null($entity->getDeliveryDatetime()) && $ticketDtoOut->deliveryDatetime = date_timestamp_get($entity->getDeliveryDatetime());
 
+        return $ticketDtoOut;
+    }
+
+    /**
+     * @param Ticket|object $entity
+     * @return TicketDtoOut;
+     */
+    public function toDtoItem(object $entity)
+    {
+        $ticketDtoOut = $this->toDto($entity);
+        foreach ($entity->getLogs() as $logItem){
+            $ticketDtoOut->logs[] = $this->generalLogMapper->toDto($logItem);
+        }
+        foreach ($entity->getChildTickets() as $childTicket){
+            $ticketDtoOut->childTickets[] = $this->toDto($childTicket);
+        }
         return $ticketDtoOut;
     }
 }
