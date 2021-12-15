@@ -12,8 +12,7 @@ use function PHPUnit\Framework\assertEquals;
 class CompanyApiTest extends ApiTestCase
 {
     private const URL = '/api/companies';
-
-    private int $id = 0;
+    private const BASE_URI = 'https://127.0.0.1:8000';
 
     private array $body = [
         "name" => "FOXCONN CZ s.r.o.",
@@ -24,6 +23,17 @@ class CompanyApiTest extends ApiTestCase
         "city" => "Pardubice",
         "zipCode" => "530 03",
         "country" => 1
+    ];
+
+    private array $bodyChanged = [
+        "name" => "F@XC@NN CZ sro",
+        "description" => "electronicsConsumer ",
+        "companyId" => "80022593",
+        "vatNumber" => "3800CZ2592",
+        "street" => "UZábičky 27, Pardumečku",
+        "city" => "Paicerdub",
+        "zipCode" => "555 77",
+        "country" => 3
     ];
 
     /**
@@ -38,7 +48,7 @@ class CompanyApiTest extends ApiTestCase
             ->request('GET', self::URL)
             ->getContent();
         $jsonData = json_decode($content, true);
-        self::assertNotEmpty($jsonData['hydra:member']);
+        $this->assertNotEmpty($jsonData['hydra:member']);
     }
 
     /**
@@ -47,17 +57,47 @@ class CompanyApiTest extends ApiTestCase
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function testPostCompanies(): void
+    public function testPostCompanies(): int
     {
         $response = self::createClient()
             ->request('POST', self::URL, [
                 'json' => $this->body,
-                'base_uri' => "https://127.0.0.1:8000"
+                'base_uri' => self::BASE_URI
             ]);
-        self::assertResponseStatusCodeSame(201);
+
+        $this->assertResponseIsSuccessful();
 
         $content = json_decode($response->getContent(), true);
-        $this->id = $content['id'];
+
+        assertEquals($this->body['name'], $content['name']);
+        assertEquals($this->body['description'], $content['description']);
+        assertEquals($this->body['companyId'], $content['companyId']);
+        assertEquals($this->body['vatNumber'], $content['vatNumber']);
+        assertEquals($this->body['street'], $content['street']);
+        assertEquals($this->body['city'], $content['city']);
+        assertEquals($this->body['zipCode'], $content['zipCode']);
+        assertEquals($this->body['country'], $content['country']['id']);
+
+        return $content['id'];
+    }
+
+    /**
+     * @depends testPostCompanies
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function testGetCollection(int $id)
+    {
+        $response = $this->createClient()
+            ->request('GET', self::URL . '/' . $id, [
+                'base_uri' => self::BASE_URI
+            ]);
+
+        $this->assertResponseIsSuccessful();
+
+        $content = json_decode($response->getContent(), true);
 
         assertEquals($this->body['name'], $content['name']);
         assertEquals($this->body['description'], $content['description']);
