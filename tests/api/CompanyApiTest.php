@@ -41,6 +41,7 @@ class CompanyApiTest extends ApiTestCase implements ApiTestInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
+     * @return int
      */
     public function testPost(): int
     {
@@ -71,7 +72,7 @@ class CompanyApiTest extends ApiTestCase implements ApiTestInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
-     * @depends testPostCompanies
+     * @depends testPost
      */
     public function testGetAll(): void
     {
@@ -83,7 +84,7 @@ class CompanyApiTest extends ApiTestCase implements ApiTestInterface
     }
 
     /**
-     * @depends testPostCompanies
+     * @depends testPost
      * @param int $id
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -117,7 +118,7 @@ class CompanyApiTest extends ApiTestCase implements ApiTestInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
-     * @depends testPostCompanies
+     * @depends testPost
      */
     public function testPut(int $id): void
     {
@@ -145,7 +146,7 @@ class CompanyApiTest extends ApiTestCase implements ApiTestInterface
      * @param int $id
      * @return void
      * @throws TransportExceptionInterface
-     * @depends testPostCompanies
+     * @depends testPost
      */
     public function testDelete(int $id): void
     {
@@ -153,7 +154,7 @@ class CompanyApiTest extends ApiTestCase implements ApiTestInterface
             ->request('DELETE', self::URL . '/' . $id, [
                 'base_uri' => self::BASE_URI
             ]);
-        dump($response);
         $this->assertResponseIsSuccessful();
+        $this->assertEquals(204, $response->getStatusCode());
     }
 }
