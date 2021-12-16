@@ -42,7 +42,7 @@ class CompanyApiTest extends ApiTestCase
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function testCollections(): void
+    public function testGetCollections(): void
     {
         $content = self::createClient()
             ->request('GET', self::URL)
@@ -83,12 +83,13 @@ class CompanyApiTest extends ApiTestCase
 
     /**
      * @depends testPostCompanies
+     * @param int $id
      * @throws ClientExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function testGetCollection(int $id)
+    public function testGetItem(int $id): void
     {
         $response = $this->createClient()
             ->request('GET', self::URL . '/' . $id, [
@@ -109,4 +110,49 @@ class CompanyApiTest extends ApiTestCase
         assertEquals($this->body['country'], $content['country']['id']);
     }
 
+    /**
+     * @param int $id
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     * @depends testPostCompanies
+     */
+    public function testPutCollection(int $id): void
+    {
+        $response = $this->createClient()
+            ->request('PUT', self::URL . '/' . $id, [
+                'json' => $this->bodyChanged,
+                'base_uri' => self::BASE_URI
+            ]);
+
+        $this->assertResponseIsSuccessful();
+
+        $content = json_decode($response->getContent(), true);
+
+        assertEquals($this->bodyChanged['name'], $content['name']);
+        assertEquals($this->bodyChanged['description'], $content['description']);
+        assertEquals($this->bodyChanged['companyId'], $content['companyId']);
+        assertEquals($this->bodyChanged['vatNumber'], $content['vatNumber']);
+        assertEquals($this->bodyChanged['street'], $content['street']);
+        assertEquals($this->bodyChanged['city'], $content['city']);
+        assertEquals($this->bodyChanged['zipCode'], $content['zipCode']);
+        assertEquals($this->bodyChanged['country'], $content['country']['id']);
+    }
+
+    /**
+     * @param int $id
+     * @return void
+     * @throws TransportExceptionInterface
+     * @depends testPostCompanies
+     */
+    public function testDeleteCollections(int $id): void
+    {
+        $response = $this->createClient()
+            ->request('DELETE', self::URL . '/' . $id, [
+                'base_uri' => self::BASE_URI
+            ]);
+        dump($response);
+        $this->assertResponseIsSuccessful();
+    }
 }
