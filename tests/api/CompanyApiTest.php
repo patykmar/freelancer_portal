@@ -42,21 +42,6 @@ class CompanyApiTest extends ApiTestCase
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function testGetCollections(): void
-    {
-        $content = self::createClient()
-            ->request('GET', self::URL)
-            ->getContent();
-        $jsonData = json_decode($content, true);
-        $this->assertNotEmpty($jsonData['hydra:member']);
-    }
-
-    /**
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
-     */
     public function testPostCompanies(): int
     {
         $response = self::createClient()
@@ -79,6 +64,22 @@ class CompanyApiTest extends ApiTestCase
         assertEquals($this->body['country'], $content['country']['id']);
 
         return $content['id'];
+    }
+
+    /**
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     * @depends testPostCompanies
+     */
+    public function testGetCollections(): void
+    {
+        $content = self::createClient()
+            ->request('GET', self::URL)
+            ->getContent();
+        $jsonData = json_decode($content, true);
+        $this->assertNotEmpty($jsonData['hydra:member']);
     }
 
     /**
