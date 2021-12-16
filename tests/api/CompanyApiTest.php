@@ -9,7 +9,7 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use function PHPUnit\Framework\assertEquals;
 
-class CompanyApiTest extends ApiTestCase
+class CompanyApiTest extends ApiTestCase implements ApiTestInterface
 {
     private const URL = '/api/companies';
     private const BASE_URI = 'https://127.0.0.1:8000';
@@ -42,7 +42,7 @@ class CompanyApiTest extends ApiTestCase
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function testPostCompanies(): int
+    public function testPost(): int
     {
         $response = self::createClient()
             ->request('POST', self::URL, [
@@ -73,7 +73,7 @@ class CompanyApiTest extends ApiTestCase
      * @throws TransportExceptionInterface
      * @depends testPostCompanies
      */
-    public function testGetCollections(): void
+    public function testGetAll(): void
     {
         $content = self::createClient()
             ->request('GET', self::URL)
@@ -119,7 +119,7 @@ class CompanyApiTest extends ApiTestCase
      * @throws TransportExceptionInterface
      * @depends testPostCompanies
      */
-    public function testPutCollection(int $id): void
+    public function testPut(int $id): void
     {
         $response = $this->createClient()
             ->request('PUT', self::URL . '/' . $id, [
@@ -147,7 +147,7 @@ class CompanyApiTest extends ApiTestCase
      * @throws TransportExceptionInterface
      * @depends testPostCompanies
      */
-    public function testDeleteCollections(int $id): void
+    public function testDelete(int $id): void
     {
         $response = $this->createClient()
             ->request('DELETE', self::URL . '/' . $id, [
