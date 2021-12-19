@@ -61,9 +61,9 @@ class InvoiceMapper implements MapperInterface
         $invoiceDto->paymentType['id'] = $entity->getPaymentType()->getId();
         $invoiceDto->paymentType['name'] = $entity->getPaymentType()->getName();
         $invoiceDto->due = $entity->getDue();
-        $invoiceDto->dueDate = $entity->getDueDate();
-        $invoiceDto->paymentDate = $entity->getPaymentDate();
-        $invoiceDto->invoiceCreated = $entity->getInvoiceCreated();
+        $invoiceDto->dueDate = date_timestamp_get($entity->getDueDate());
+        $invoiceDto->paymentDate = is_null($entity->getPaymentDate())? null : date_timestamp_get($entity->getPaymentDate());
+        $invoiceDto->invoiceCreated = date_timestamp_get($entity->getInvoiceCreated());
         $invoiceDto->userCreated['id'] = $entity->getUserCreated()->getId();
         $invoiceDto->userCreated['name'] = $entity->getUserCreated()->getId();
         $invoiceDto->vs = $entity->getVs();
