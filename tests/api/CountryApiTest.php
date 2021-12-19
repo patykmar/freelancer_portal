@@ -4,7 +4,7 @@ namespace App\Tests\api;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 
-class CountryTestApi extends ApiTestCase implements ApiTestInterface
+class CountryApiTest extends ApiTestCase implements ApiTestInterface
 {
     use ApiTestTrait;
 
