@@ -46,8 +46,8 @@ class WorkInventoryMapper implements MapperInterface
         $workInventoryDtoOut->description = $entity->getDescription();
         $workInventoryDtoOut->tariff['id'] = $entity->getTariff()->getId();
         $workInventoryDtoOut->tariff['name'] = $entity->getTariff()->getName();
-        $workInventoryDtoOut->work_start = date_timestamp_get($entity->getWorkStart());
-        $workInventoryDtoOut->work_end = is_null($entity->getWorkEnd())? null : date_timestamp_get($entity->getWorkEnd());
+        $workInventoryDtoOut->workStart = date_timestamp_get($entity->getWorkStart());
+        $workInventoryDtoOut->workEnd = is_null($entity->getWorkEnd())? null : date_timestamp_get($entity->getWorkEnd());
         $workInventoryDtoOut->user['id'] = $entity->getUser()->getId();
         $workInventoryDtoOut->user['name'] = $entity->getUser()->__toString();
         $workInventoryDtoOut->invoice = is_null($entity->getInvoice()) ? null : $entity->getInvoice()->getId();
@@ -66,11 +66,11 @@ class WorkInventoryMapper implements MapperInterface
     {
         $existingItem->setDescription($userData->description);
         $existingItem->setTariff($this->tariffRepository->find($userData->tariff));
-        $existingItem->setWorkStart(new DateTime("@$userData->work_start"));
+        $existingItem->setWorkStart(new DateTime("@$userData->workStart"));
         $existingItem->setUser($this->userRepository->find($userData->user));
         $existingItem->setCompany($this->companyRepository->find($userData->company));
-        if (!is_null($userData->work_end)) {
-            $existingItem->setWorkEnd(new DateTime("@$userData->work_end"));
+        if (!is_null($userData->workEnd)) {
+            $existingItem->setWorkEnd(new DateTime("@$userData->workEnd"));
         }
         return $existingItem;
     }
