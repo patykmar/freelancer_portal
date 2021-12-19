@@ -7,7 +7,6 @@ use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use function PHPUnit\Framework\assertEquals;
 
 class CountryTestApi extends ApiTestCase implements ApiTestInterface
 {
@@ -83,8 +82,8 @@ class CountryTestApi extends ApiTestCase implements ApiTestInterface
 
         $content = json_decode($response->getContent(), true);
 
-        assertEquals($this->body['name'], $content['name']);
-        assertEquals($this->body['iso3166alpha3'], $content['iso3166alpha3']);
+        $this->assertEquals($this->body['name'], $content['name']);
+        $this->assertEquals($this->body['iso3166alpha3'], $content['iso3166alpha3']);
     }
 
     /**
@@ -106,8 +105,8 @@ class CountryTestApi extends ApiTestCase implements ApiTestInterface
 
         $content = json_decode($response->getContent(), true);
 
-        assertEquals($this->bodyChanged['name'], $content['name']);
-        assertEquals($this->bodyChanged['iso3166alpha3'], $content['iso3166alpha3']);
+        $this->assertEquals($this->bodyChanged['name'], $content['name']);
+        $this->assertEquals($this->bodyChanged['iso3166alpha3'], $content['iso3166alpha3']);
     }
 
     /**
