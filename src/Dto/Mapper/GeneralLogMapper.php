@@ -56,11 +56,12 @@ class GeneralLogMapper implements MapperInterface
     {
         $generalLogDto = new GeneralLogDto();
         $generalLogDto->id = $entity->getId();
-        $generalLogDto->ci = $entity->getCi()->getId();
-        $generalLogDto->ticket = $entity->getTicket()->getId();
         $generalLogDto->user = $entity->getUser()->getId();
         $generalLogDto->body = $entity->getBody();
         $generalLogDto->created = date_timestamp_get($entity->getCreated());
+
+        !is_null($entity->getTicket()) && $generalLogDto->ticket = $entity->getTicket()->getId();
+        !is_null($entity->getCi()) && $generalLogDto->ci = $entity->getCi()->getId();
 
         return $generalLogDto;
     }
