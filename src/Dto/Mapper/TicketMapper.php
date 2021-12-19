@@ -29,16 +29,16 @@ class TicketMapper implements MapperInterface
     private GeneralLogMapper $generalLogMapper;
 
     /**
-     * @param \App\Repository\ServiceCatalogRepository $serviceCatalogRepository
-     * @param \App\Repository\CiRepository $ciRepository
-     * @param \App\Repository\QueueUserRepository $queueUserRepository
-     * @param \App\Repository\UserRepository $userRepository
-     * @param \App\Repository\TicketRepository $ticketRepository
-     * @param \App\Repository\WorkInventoryRepository $workInventoryRepository
-     * @param \App\Repository\GeneralStateRepository $generalStateRepository
-     * @param \App\Repository\TicketTypeRepository $ticketTypeRepository
-     * @param \App\Repository\InfluencingTicketRepository $influencingTicketRepository
-     * @param \App\Dto\Mapper\GeneralLogMapper $generalLogMapper
+     * @param ServiceCatalogRepository $serviceCatalogRepository
+     * @param CiRepository $ciRepository
+     * @param QueueUserRepository $queueUserRepository
+     * @param UserRepository $userRepository
+     * @param TicketRepository $ticketRepository
+     * @param WorkInventoryRepository $workInventoryRepository
+     * @param GeneralStateRepository $generalStateRepository
+     * @param TicketTypeRepository $ticketTypeRepository
+     * @param InfluencingTicketRepository $influencingTicketRepository
+     * @param GeneralLogMapper $generalLogMapper
      */
 
     public function __construct(
@@ -113,9 +113,9 @@ class TicketMapper implements MapperInterface
         $ticketDtoOut->serviceCatalog['name'] = $entity->getServiceCatalog()->getName();
         $ticketDtoOut->ci['id'] = $entity->getCi()->getId();
         $ticketDtoOut->ci['name'] = $entity->getCi()->getName();
-        $ticketDtoOut->queue_user['id'] = $entity->getQueueUser()->getId();
-        $ticketDtoOut->queue_user['user'] = $entity->getQueueUser()->getUser()->__toString();
-        $ticketDtoOut->queue_user['queue'] = $entity->getQueueUser()->getQueue()->getName();
+        $ticketDtoOut->queueUser['id'] = $entity->getQueueUser()->getId();
+        $ticketDtoOut->queueUser['user'] = $entity->getQueueUser()->getUser()->__toString();
+        $ticketDtoOut->queueUser['queue'] = $entity->getQueueUser()->getQueue()->getName();
         $ticketDtoOut->userCreated['id'] = $entity->getUserCreated()->getId();
         $ticketDtoOut->userCreated['name'] = $entity->getUserCreated()->__toString();
         $ticketDtoOut->ticketState = $entity->getTicketState()->getId();
