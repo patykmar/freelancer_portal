@@ -10,6 +10,8 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class CiApiTest extends ApiTestCase implements ApiTestInterface
 {
+    use ApiTestTrait;
+
     private const URL = '/api/cis';
     private const BASE_URI = 'https://127.0.0.1:8000';
 
@@ -25,7 +27,6 @@ class CiApiTest extends ApiTestCase implements ApiTestInterface
         "name" => "Test name of CI",
         "description" => "Suspendisse ac nisi laoreet, vulputate augue eget, porttitor arcu."
     ];
-
     private array $bodyChanged = [
         "parentCi" => 2,
         "createdUser" => 2,
@@ -38,6 +39,7 @@ class CiApiTest extends ApiTestCase implements ApiTestInterface
         "name" => "Test name of CI AAAAAA",
         "description" => "Suspendisse ac"
     ];
+
 
     /**
      * @throws TransportExceptionInterface
@@ -68,21 +70,10 @@ class CiApiTest extends ApiTestCase implements ApiTestInterface
                 'json' => $this->body,
                 'base_uri' => self::BASE_URI
             ]);
-
         $this->assertResponseIsSuccessful();
-
         $content = json_decode($response->getContent(), true);
 
-        $this->assertEquals($this->body['parentCi'], $content['parentCi']['id']);
-        $this->assertEquals($this->body['createdUser'], $content['createdUser']['id']);
-        $this->assertEquals($this->body['state'], $content['state']['id']);
-        $this->assertEquals($this->body['tariff'], $content['tariff']['id']);
-        $this->assertEquals($this->body['company'], $content['company']['id']);
-        $this->assertEquals($this->body['queueTier1'], $content['queueTier1']['id']);
-        $this->assertEquals($this->body['queueTier2'], $content['queueTier2']['id']);
-        $this->assertEquals($this->body['queueTier3'], $content['queueTier3']['id']);
-        $this->assertEquals($this->body['name'], $content['name']);
-        $this->assertEquals($this->body['description'], $content['description']);
+        $this->checkResponse($this->body, $content);
 
         return $content['id'];
     }
@@ -105,25 +96,7 @@ class CiApiTest extends ApiTestCase implements ApiTestInterface
         $this->assertResponseIsSuccessful();
 
         $content = json_decode($response->getContent(), true);
-
-        foreach(array_keys($this->body) as $key){
-            if(is_array($content[$key])){
-                $this->assertEquals($this->body[$key], $content[$key]['id']);
-            }else{
-                $this->assertEquals($this->body[$key], $content[$key]);
-            }
-        }
-
-        $this->assertEquals($this->body['parentCi'], $content['parentCi']['id']);
-        $this->assertEquals($this->body['createdUser'], $content['createdUser']['id']);
-        $this->assertEquals($this->body['state'], $content['state']['id']);
-        $this->assertEquals($this->body['tariff'], $content['tariff']['id']);
-        $this->assertEquals($this->body['company'], $content['company']['id']);
-        $this->assertEquals($this->body['queueTier1'], $content['queueTier1']['id']);
-        $this->assertEquals($this->body['queueTier2'], $content['queueTier2']['id']);
-        $this->assertEquals($this->body['queueTier3'], $content['queueTier3']['id']);
-        $this->assertEquals($this->body['name'], $content['name']);
-        $this->assertEquals($this->body['description'], $content['description']);
+        $this->checkResponse($this->body, $content);
     }
 
     /**
@@ -145,17 +118,7 @@ class CiApiTest extends ApiTestCase implements ApiTestInterface
         $this->assertResponseIsSuccessful();
 
         $content = json_decode($response->getContent(), true);
-
-        $this->assertEquals($this->bodyChanged['parentCi'], $content['parentCi']['id']);
-        $this->assertEquals($this->bodyChanged['createdUser'], $content['createdUser']['id']);
-        $this->assertEquals($this->bodyChanged['state'], $content['state']['id']);
-        $this->assertEquals($this->bodyChanged['tariff'], $content['tariff']['id']);
-        $this->assertEquals($this->bodyChanged['company'], $content['company']['id']);
-        $this->assertEquals($this->bodyChanged['queueTier1'], $content['queueTier1']['id']);
-        $this->assertEquals($this->bodyChanged['queueTier2'], $content['queueTier2']['id']);
-        $this->assertEquals($this->bodyChanged['queueTier3'], $content['queueTier3']['id']);
-        $this->assertEquals($this->bodyChanged['name'], $content['name']);
-        $this->assertEquals($this->bodyChanged['description'], $content['description']);
+        $this->checkResponse($this->bodyChanged, $content);
     }
 
     /**
