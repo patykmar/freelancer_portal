@@ -66,16 +66,16 @@ class InvoiceItemMapper implements MapperInterface
         $invoiceItemDto->vat['name'] = $entity->getVat()->getName();
         $invoiceItemDto->price = $entity->getPrice();
         $invoiceItemDto->margin = $entity->getMargin();
-        $invoiceItemDto->margin_total = $entity->getMarginTotal();
-        $invoiceItemDto->price_inc_margin = $entity->getPriceIncMargin();
+        $invoiceItemDto->marginTotal = $entity->getMarginTotal();
+        $invoiceItemDto->priceIncMargin = $entity->getPriceIncMargin();
         $invoiceItemDto->discount = $entity->getDiscount();
-        $invoiceItemDto->discount_total = $entity->getDiscountTotal();
-        $invoiceItemDto->price_inc_margin_minus_discount = $entity->getPriceIncMarginMinusDiscount();
-        $invoiceItemDto->price_inc_margin_discount_multi_vat = $entity->getPriceIncMarginDiscountMultiVat();
-        $invoiceItemDto->price_inc_margin_multi_vat = $entity->getPriceIncMarginMultiVat();
-        $invoiceItemDto->unit_count = $entity->getUnitCount();
-        $invoiceItemDto->total_price_inc_margin_discount_vat = $entity->getTotalPriceIncMarginDiscountVat();
-        $invoiceItemDto->total_price_inc_margin_vat = $entity->getTotalPriceIncMarginVat();
+        $invoiceItemDto->discountTotal = $entity->getDiscountTotal();
+        $invoiceItemDto->priceIncMarginMinusDiscount = $entity->getPriceIncMarginMinusDiscount();
+        $invoiceItemDto->priceIncMarginDiscountMultiVat = $entity->getPriceIncMarginDiscountMultiVat();
+        $invoiceItemDto->priceIncMarginMultiVat = $entity->getPriceIncMarginMultiVat();
+        $invoiceItemDto->unitCount = $entity->getUnitCount();
+        $invoiceItemDto->totalPriceIncMarginDiscountVat = $entity->getTotalPriceIncMarginDiscountVat();
+        $invoiceItemDto->totalPriceIncMarginVat = $entity->getTotalPriceIncMarginVat();
         return $invoiceItemDto;
     }
 
