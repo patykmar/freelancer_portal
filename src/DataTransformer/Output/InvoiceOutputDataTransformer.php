@@ -27,10 +27,17 @@ class InvoiceOutputDataTransformer implements DataTransformerInterface
      */
     public function transform($object, string $to, array $context = []): InvoiceDtoOut
     {
-        if (isset($context['operation_type']) && $context['operation_type'] === 'item'){
+        // show detail of invoice
+        if (isset($context['operation_type']) && $context['operation_type'] === 'item') {
             return $this->invoiceMapper->toDtoItem($object);
         }
 
+        // return value after POST operation, new item
+        if (isset($context['operation_type']) && $context['operation_type'] === 'collection' && $context['collection_operation_name'] == "post") {
+            return $this->invoiceMapper->toDtoItem($object);
+        }
+
+        //TODO: check if this row is using, it should be use when using get all items via API
         return $this->invoiceMapper->toDto($object);
     }
 
