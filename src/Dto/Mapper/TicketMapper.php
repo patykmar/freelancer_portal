@@ -51,7 +51,7 @@ class TicketMapper implements MapperInterface
         GeneralStateRepository      $generalStateRepository,
         TicketTypeRepository        $ticketTypeRepository,
         InfluencingTicketRepository $influencingTicketRepository,
-        GeneralLogMapper $generalLogMapper
+        GeneralLogMapper            $generalLogMapper
     )
     {
         $this->serviceCatalogRepository = $serviceCatalogRepository;
@@ -126,9 +126,9 @@ class TicketMapper implements MapperInterface
         $ticketDtoOut->descriptionBody = $entity->getDescriptionBody();
         $ticketDtoOut->createdDatetime = date_timestamp_get($entity->getCreatedDatetime());
         $ticketDtoOut->toString =
-            $entity->getTicketType()->getAbbreviation().$entity->getId() . ';' .
-            $entity->getCi()->getName() . ';'.
-            $entity->getQueueUser()->getUser()->__toString().';'.
+            $entity->getTicketType()->getAbbreviation() . $entity->getId() . ';' .
+            $entity->getCi()->getName() . ';' .
+            $entity->getQueueUser()->getUser()->__toString() . ';' .
             $entity->getServiceCatalog()->getName();
 
         if (!is_null($entity->getParentTicket())) {
@@ -153,10 +153,10 @@ class TicketMapper implements MapperInterface
     public function toDtoItem(object $entity)
     {
         $ticketDtoOut = $this->toDto($entity);
-        foreach ($entity->getLogs() as $logItem){
+        foreach ($entity->getLogs() as $logItem) {
             $ticketDtoOut->logs[] = $this->generalLogMapper->toDto($logItem);
         }
-        foreach ($entity->getChildTickets() as $childTicket){
+        foreach ($entity->getChildTickets() as $childTicket) {
             $ticketDtoOut->childTickets[] = $this->toDto($childTicket);
         }
         return $ticketDtoOut;
