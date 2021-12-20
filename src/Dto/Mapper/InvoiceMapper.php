@@ -8,6 +8,7 @@ use App\Entity\Invoice;
 use App\Repository\CompanyRepository;
 use App\Repository\PaymentTypeRepository;
 use App\Repository\UserRepository;
+use DateTime;
 
 class InvoiceMapper implements MapperInterface
 {
@@ -97,6 +98,7 @@ class InvoiceMapper implements MapperInterface
         $existingItem->setSupplier($this->companyRepository->find($userData->supplier));
         $existingItem->setSubscriber($this->companyRepository->find($userData->subscriber));
         $existingItem->setPaymentType($this->paymentTypeRepository->find($userData->paymentType));
+        !is_null($userData->paymentDate) && $existingItem->setPaymentDate(new DateTime("@$userData->paymentDate"));
         $existingItem->setDue($userData->due);
         $existingItem->setUserCreated($this->userRepository->find($userData->userCreated));
         foreach ($userData->invoiceItems as $workInventoryDto) {
