@@ -25,11 +25,11 @@ trait ApiTestTrait
     }
 
     /**
-     * @throws TransportExceptionInterface
+     * @return int
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
-     * @return int
+     * @throws TransportExceptionInterface
      */
     function testPost(): int
     {
