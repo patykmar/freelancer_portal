@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  php-apache:
+    build:
+      context: .
+      args:
+        - DEVEL=true
+      dockerfile: ./docker/php-apache/Dockerfile
+    ports:
+      - "8000:80"
+      - "9001:9001"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - APP_KEY=SomeRandomStringToAddSecurity123
+      - APP_ENV=development
+      - APP_DEBUG=true
+      - APACHE_RUN_USER=apache-www-volume
+      - APACHE_RUN_GROUP=apache-www-volume
