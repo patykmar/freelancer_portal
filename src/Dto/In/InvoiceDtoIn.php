@@ -8,6 +8,7 @@ class InvoiceDtoIn
     public int $supplier;
     public int $subscriber;
     public int $paymentType;
+    public ?int $paymentDate = null;
     public int $due;
     public int $userCreated;
     public ?string $ks = null;

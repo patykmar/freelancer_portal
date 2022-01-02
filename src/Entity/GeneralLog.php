@@ -21,12 +21,12 @@ class GeneralLog
     /**
      * @ORM\ManyToOne(targetEntity=Ci::class, inversedBy="logs")
      */
-    private Ci $ci;
+    private ?Ci $ci;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ticket::class, inversedBy="logs")
      */
-    private Ticket $ticket;
+    private ?Ticket $ticket;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)

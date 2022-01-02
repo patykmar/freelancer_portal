@@ -8,6 +8,7 @@ use App\Entity\Invoice;
 use App\Repository\CompanyRepository;
 use App\Repository\PaymentTypeRepository;
 use App\Repository\UserRepository;
+use DateTime;
 
 class InvoiceMapper implements MapperInterface
 {
@@ -61,9 +62,9 @@ class InvoiceMapper implements MapperInterface
         $invoiceDto->paymentType['id'] = $entity->getPaymentType()->getId();
         $invoiceDto->paymentType['name'] = $entity->getPaymentType()->getName();
         $invoiceDto->due = $entity->getDue();
-        $invoiceDto->dueDate = $entity->getDueDate();
-        $invoiceDto->paymentDate = $entity->getPaymentDate();
-        $invoiceDto->invoiceCreated = $entity->getInvoiceCreated();
+        $invoiceDto->dueDate = date_timestamp_get($entity->getDueDate());
+        $invoiceDto->paymentDate = is_null($entity->getPaymentDate()) ? null : date_timestamp_get($entity->getPaymentDate());
+        $invoiceDto->invoiceCreated = date_timestamp_get($entity->getInvoiceCreated());
         $invoiceDto->userCreated['id'] = $entity->getUserCreated()->getId();
         $invoiceDto->userCreated['name'] = $entity->getUserCreated()->getId();
         $invoiceDto->vs = $entity->getVs();
@@ -97,6 +98,7 @@ class InvoiceMapper implements MapperInterface
         $existingItem->setSupplier($this->companyRepository->find($userData->supplier));
         $existingItem->setSubscriber($this->companyRepository->find($userData->subscriber));
         $existingItem->setPaymentType($this->paymentTypeRepository->find($userData->paymentType));
+        !is_null($userData->paymentDate) && $existingItem->setPaymentDate(new DateTime("@$userData->paymentDate"));
         $existingItem->setDue($userData->due);
         $existingItem->setUserCreated($this->userRepository->find($userData->userCreated));
         foreach ($userData->invoiceItems as $workInventoryDto) {

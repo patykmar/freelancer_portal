@@ -29,16 +29,16 @@ class TicketMapper implements MapperInterface
     private GeneralLogMapper $generalLogMapper;
 
     /**
-     * @param \App\Repository\ServiceCatalogRepository $serviceCatalogRepository
-     * @param \App\Repository\CiRepository $ciRepository
-     * @param \App\Repository\QueueUserRepository $queueUserRepository
-     * @param \App\Repository\UserRepository $userRepository
-     * @param \App\Repository\TicketRepository $ticketRepository
-     * @param \App\Repository\WorkInventoryRepository $workInventoryRepository
-     * @param \App\Repository\GeneralStateRepository $generalStateRepository
-     * @param \App\Repository\TicketTypeRepository $ticketTypeRepository
-     * @param \App\Repository\InfluencingTicketRepository $influencingTicketRepository
-     * @param \App\Dto\Mapper\GeneralLogMapper $generalLogMapper
+     * @param ServiceCatalogRepository $serviceCatalogRepository
+     * @param CiRepository $ciRepository
+     * @param QueueUserRepository $queueUserRepository
+     * @param UserRepository $userRepository
+     * @param TicketRepository $ticketRepository
+     * @param WorkInventoryRepository $workInventoryRepository
+     * @param GeneralStateRepository $generalStateRepository
+     * @param TicketTypeRepository $ticketTypeRepository
+     * @param InfluencingTicketRepository $influencingTicketRepository
+     * @param GeneralLogMapper $generalLogMapper
      */
 
     public function __construct(
@@ -51,7 +51,7 @@ class TicketMapper implements MapperInterface
         GeneralStateRepository      $generalStateRepository,
         TicketTypeRepository        $ticketTypeRepository,
         InfluencingTicketRepository $influencingTicketRepository,
-        GeneralLogMapper $generalLogMapper
+        GeneralLogMapper            $generalLogMapper
     )
     {
         $this->serviceCatalogRepository = $serviceCatalogRepository;
@@ -113,9 +113,9 @@ class TicketMapper implements MapperInterface
         $ticketDtoOut->serviceCatalog['name'] = $entity->getServiceCatalog()->getName();
         $ticketDtoOut->ci['id'] = $entity->getCi()->getId();
         $ticketDtoOut->ci['name'] = $entity->getCi()->getName();
-        $ticketDtoOut->queue_user['id'] = $entity->getQueueUser()->getId();
-        $ticketDtoOut->queue_user['user'] = $entity->getQueueUser()->getUser()->__toString();
-        $ticketDtoOut->queue_user['queue'] = $entity->getQueueUser()->getQueue()->getName();
+        $ticketDtoOut->queueUser['id'] = $entity->getQueueUser()->getId();
+        $ticketDtoOut->queueUser['user'] = $entity->getQueueUser()->getUser()->__toString();
+        $ticketDtoOut->queueUser['queue'] = $entity->getQueueUser()->getQueue()->getName();
         $ticketDtoOut->userCreated['id'] = $entity->getUserCreated()->getId();
         $ticketDtoOut->userCreated['name'] = $entity->getUserCreated()->__toString();
         $ticketDtoOut->ticketState = $entity->getTicketState()->getId();
@@ -126,9 +126,9 @@ class TicketMapper implements MapperInterface
         $ticketDtoOut->descriptionBody = $entity->getDescriptionBody();
         $ticketDtoOut->createdDatetime = date_timestamp_get($entity->getCreatedDatetime());
         $ticketDtoOut->toString =
-            $entity->getTicketType()->getAbbreviation().$entity->getId() . ';' .
-            $entity->getCi()->getName() . ';'.
-            $entity->getQueueUser()->getUser()->__toString().';'.
+            $entity->getTicketType()->getAbbreviation() . $entity->getId() . ';' .
+            $entity->getCi()->getName() . ';' .
+            $entity->getQueueUser()->getUser()->__toString() . ';' .
             $entity->getServiceCatalog()->getName();
 
         if (!is_null($entity->getParentTicket())) {
@@ -153,10 +153,10 @@ class TicketMapper implements MapperInterface
     public function toDtoItem(object $entity)
     {
         $ticketDtoOut = $this->toDto($entity);
-        foreach ($entity->getLogs() as $logItem){
+        foreach ($entity->getLogs() as $logItem) {
             $ticketDtoOut->logs[] = $this->generalLogMapper->toDto($logItem);
         }
-        foreach ($entity->getChildTickets() as $childTicket){
+        foreach ($entity->getChildTickets() as $childTicket) {
             $ticketDtoOut->childTickets[] = $this->toDto($childTicket);
         }
         return $ticketDtoOut;

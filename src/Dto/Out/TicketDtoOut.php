@@ -7,7 +7,7 @@ class TicketDtoOut
     public ?int $id = 0;
     public array $serviceCatalog = [];
     public array $ci = [];
-    public array $queue_user = [];
+    public array $queueUser = [];
     public array $userCreated = [];
     public int $ticketState = 0;
     public int $ticketType = 0;

@@ -7,8 +7,8 @@ class WorkInventoryDtoIn
     public ?int $id;
     public string $description;
     public int $tariff;
-    public int $work_start;
-    public ?int $work_end = null;
+    public int $workStart;
+    public ?int $workEnd = null;
     public int $user;
     public ?int $invoice = null;
     public int $company;

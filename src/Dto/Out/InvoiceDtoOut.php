@@ -2,8 +2,6 @@
 
 namespace App\Dto\Out;
 
-use DateTimeInterface;
-
 class InvoiceDtoOut
 {
     public ?int $id;
@@ -11,9 +9,9 @@ class InvoiceDtoOut
     public array $subscriber;
     public array $paymentType;
     public int $due;
-    public DateTimeInterface $invoiceCreated;
-    public DateTimeInterface $dueDate;
-    public ?DateTimeInterface $paymentDate;
+    public int $invoiceCreated;
+    public int $dueDate;
+    public ?int $paymentDate;
     public array $userCreated;
     public ?string $vs;
     public ?string $ks;
